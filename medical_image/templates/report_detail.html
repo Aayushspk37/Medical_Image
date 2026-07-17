@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Diagnostic Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.report-page{padding:100px 0 80px;position:relative;z-index:1;}
+.report-doc{max-width:860px;margin:0 auto;}
+.report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
+.report-toolbar h2{font-family:var(--font-head);font-size:20px;font-weight:700;letter-spacing:-0.5px;}
+.report-actions{display:flex;gap:10px;}
+.rd-paper{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+/* Report header */
+.rd-head{padding:32px 36px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
+.rd-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.rd-title-block h1{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-0.7px;margin-bottom:4px;}
+.rd-title-block p{font-size:13px;color:var(--text-muted);}
+.rd-meta-block{text-align:right;}
+.rd-case-id{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--teal);letter-spacing:-0.5px;}
+.rd-meta-item{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-top:4px;}
+/* Sections */
+.rd-section{padding:28px 36px;border-bottom:1px solid var(--border);}
+.rd-section:last-child{border-bottom:none;}
+.rd-section-title{font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.rd-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+/* Diagnosis result */
+.rd-diagnosis{display:flex;align-items:center;justify-content:space-between;background:rgba(0,229,176,0.06);border:1px solid rgba(0,229,176,0.15);border-radius:var(--r-md);padding:20px 24px;margin-bottom:20px;}
+.rd-disease-name{font-family:var(--font-head);font-size:26px;font-weight:800;letter-spacing:-1px;}
+.rd-confidence{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--teal);}
+.rd-conf-label{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:2px;}
+/* Info grid */
+.rd-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.rd-info-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;}
+.rd-info-label{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.rd-info-value{font-family:var(--font-mono);font-size:13px;color:var(--text);}
+/* Prob list */
+.prob-list{display:flex;flex-direction:column;gap:10px;}
+.prob-item-row{display:flex;align-items:center;gap:14px;}
+.prob-name{font-size:13px;color:var(--text-muted);width:150px;flex-shrink:0;}
+.prob-track{flex:1;height:6px;background:var(--bg3);border-radius:10px;overflow:hidden;}
+.prob-fill{height:100%;border-radius:10px;}
+.prob-pct{font-family:var(--font-mono);font-size:12px;width:50px;text-align:right;flex-shrink:0;}
+/* Heatmap */
+.heatmap-area{height:180px;border-radius:var(--r-md);background:linear-gradient(135deg,#0d1f3a 0%,#0a3020 40%,#1a0d2e 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
+.heatmap-blob{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,176,0.65) 0%,rgba(0,229,176,0.25) 40%,transparent 70%);filter:blur(16px);animation:hblob 3.5s ease-in-out infinite alternate;}
+@keyframes hblob{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.4) translate(14px,-12px)}}
+.hm-overlay-label{position:absolute;bottom:12px;left:16px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.4);}
+/* Clinical notes */
+.clinical-note{background:rgba(255,201,71,0.05);border:1px solid rgba(255,201,71,0.2);border-radius:var(--r-sm);padding:16px 20px;font-size:13.5px;color:var(--text-muted);line-height:1.75;}
+.clinical-note strong{color:var(--yellow);}
+/* Model info */
+.model-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.mi-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;}
+.mi-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.mi-val{font-family:var(--font-mono);font-size:12px;color:var(--text);}
+/* Print */
+@media print{nav,footer,.report-toolbar,.report-actions{display:none!important;} .report-page{padding-top:0;} .rd-paper{border:none;}}
+@media(max-width:700px){.rd-head{flex-direction:column;} .rd-meta-block{text-align:left;} .rd-info-grid{grid-template-columns:repeat(2,1fr);} .model-info-grid{grid-template-columns:repeat(2,1fr);} .rd-diagnosis{flex-direction:column;gap:10px;}}
+</style>
+</head><body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="active">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="report-page"><div class="container">
+  <div class="report-doc">
+    <div class="report-toolbar reveal">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-bottom:4px">← <a href="reports.html" style="color:var(--teal)">Back to Reports</a></div>
+        <h2>Diagnostic Report — CASE-2026-024</h2>
+      </div>
+      <div class="report-actions">
+        <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Print</button>
+        <button class="btn btn-outline" onclick="alert('PDF download would trigger here')">⬇ Download PDF</button>
+        <a href="diagnose.html" class="btn btn-primary btn-sm">+ New Diagnosis</a>
+      </div>
+    </div>
+
+    <div class="rd-paper reveal">
+      <!-- Report Header -->
+      <div class="rd-head">
+        <div>
+          <div class="rd-brand">
+            <div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div>
+            <div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div>
+          </div>
+          <div class="rd-title-block">
+            <h1>AI Diagnostic Report</h1>
+            <p>Generated by X-HViT v1.0 · United Technical College · Pokhara University</p>
+          </div>
+        </div>
+        <div class="rd-meta-block">
+          <div class="rd-case-id">CASE-2026-024</div>
+          <div class="rd-meta-item">📅 February 14, 2026 · 09:42 AM</div>
+          <div class="rd-meta-item">👤 Aayush Sapkota</div>
+          <div class="rd-meta-item">⏱ Inference: 2,143 ms</div>
+        </div>
+      </div>
+
+      <!-- Patient & Scan Info -->
+      <div class="rd-section">
+        <div class="rd-section-title">Scan Information</div>
+        <div class="rd-info-grid">
+          <div class="rd-info-item"><div class="rd-info-label">Modality</div><div class="rd-info-value">Brain MRI</div></div>
+          <div class="rd-info-item"><div class="rd-info-label">Image Format</div><div class="rd-info-value">DICOM (.dcm)</div></div>
+          <div class="rd-info-item"><div class="rd-info-label">Input Resolution</div><div class="rd-info-value">224 × 224 px</div></div>
+          <div class="rd-info-item"><div class="rd-info-label">Disease Category</div><div class="rd-info-value">Brain Tumor</div></div>
+          <div class="rd-info-item"><div class="rd-info-label">XAI Mode</div><div class="rd-info-value">Grad-CAM + Attention</div></div>
+          <div class="rd-info-item"><div class="rd-info-label">Status</div><div class="rd-info-value" style="color:var(--teal)">✓ Complete</div></div>
+        </div>
+      </div>
+
+      <!-- Primary Diagnosis -->
+      <div class="rd-section">
+        <div class="rd-section-title">Primary Diagnosis</div>
+        <div class="rd-diagnosis">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px">PREDICTED DISEASE</div>
+            <div class="rd-disease-name">Glioma Tumor</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px">CONFIDENCE SCORE</div>
+            <div class="rd-confidence">94.7%</div>
+            <div class="rd-conf-label">High Confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Probability Distribution -->
+      <div class="rd-section">
+        <div class="rd-section-title">Class Probability Distribution</div>
+        <div class="prob-list">
+          <div class="prob-item-row"><div class="prob-name">Glioma</div><div class="prob-track"><div class="prob-fill" style="width:94.7%;background:var(--teal)"></div></div><div class="prob-pct" style="color:var(--teal)">94.7%</div></div>
+          <div class="prob-item-row"><div class="prob-name">Meningioma</div><div class="prob-track"><div class="prob-fill" style="width:3.1%;background:var(--blue)"></div></div><div class="prob-pct" style="color:var(--text-muted)">3.1%</div></div>
+          <div class="prob-item-row"><div class="prob-name">No Tumor</div><div class="prob-track"><div class="prob-fill" style="width:1.4%;background:var(--violet)"></div></div><div class="prob-pct" style="color:var(--text-muted)">1.4%</div></div>
+          <div class="prob-item-row"><div class="prob-name">Pituitary</div><div class="prob-track"><div class="prob-fill" style="width:0.8%;background:var(--text-dim)"></div></div><div class="prob-pct" style="color:var(--text-muted)">0.8%</div></div>
+        </div>
+      </div>
+
+      <!-- Grad-CAM -->
+      <div class="rd-section">
+        <div class="rd-section-title">Grad-CAM Heatmap Visualization</div>
+        <div class="heatmap-area">
+          <div class="heatmap-blob"></div>
+          <div class="hm-overlay-label">Grad-CAM Overlay · Tumor Region Highlighted · CASE-2026-024</div>
+        </div>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:10px;font-family:var(--font-mono)">High-intensity regions (green overlay) indicate areas most relevant to the Glioma classification. Generated via gradient-weighted class activation mapping through the final CNN convolutional layer.</p>
+      </div>
+
+      <!-- Clinical Notes -->
+      <div class="rd-section">
+        <div class="rd-section-title">Clinical Disclaimer</div>
+        <div class="clinical-note"><strong>⚠ Important:</strong> This report is generated by an experimental AI model (X-HViT v1.0) for academic research purposes only. It must NOT be used as a substitute for professional medical diagnosis. All findings must be reviewed and confirmed by a qualified radiologist or medical professional before clinical action is taken.</div>
+      </div>
+
+      <!-- Model Info -->
+      <div class="rd-section">
+        <div class="rd-section-title">Model Information</div>
+        <div class="model-info-grid">
+          <div class="mi-item"><div class="mi-lbl">Model</div><div class="mi-val">X-HViT v1.0</div></div>
+          <div class="mi-item"><div class="mi-lbl">Architecture</div><div class="mi-val">CNN + ViT</div></div>
+          <div class="mi-item"><div class="mi-lbl">Training Images</div><div class="mi-val">28,023+</div></div>
+          <div class="mi-item"><div class="mi-lbl">Val. Accuracy</div><div class="mi-val">95.2%</div></div>
+          <div class="mi-item"><div class="mi-lbl">XAI Method</div><div class="mi-val">Grad-CAM</div></div>
+          <div class="mi-item"><div class="mi-lbl">Framework</div><div class="mi-val">PyTorch</div></div>
+          <div class="mi-item"><div class="mi-lbl">Inference Time</div><div class="mi-val">2,143 ms</div></div>
+          <div class="mi-item"><div class="mi-lbl">Institution</div><div class="mi-val">UTC / PU</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer><script src="shared.js"></script>
+</body></html>

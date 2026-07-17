@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | About</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.about-page{padding:100px 0 80px;position:relative;z-index:1;}
+.about-hero-section{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:80px;}
+.about-hero-text h1{font-family:var(--font-head);font-size:clamp(36px,5vw,58px);font-weight:800;letter-spacing:-2.5px;line-height:1.05;margin-bottom:20px;}
+.about-hero-text p{font-size:15px;color:var(--text-muted);line-height:1.8;margin-bottom:14px;}
+.about-hero-text .btn-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.about-stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.as-item{text-align:center;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);}
+.as-val{font-family:var(--font-head);font-size:36px;font-weight:800;letter-spacing:-2px;}
+.as-lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-top:5px;}
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:56px 0;}
+.pillar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:24px;display:flex;gap:16px;transition:border-color 0.2s;}
+.pillar:hover{border-color:rgba(0,229,176,0.2);}
+.p-icon{font-size:28px;flex-shrink:0;}
+.p-title{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px;}
+.p-desc{font-size:13px;color:var(--text-muted);line-height:1.65;}
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;margin-top:40px;}
+.timeline::before{content:'';position:absolute;left:23px;top:0;bottom:0;width:1px;background:var(--border);}
+.tl-item{display:flex;gap:28px;padding-bottom:32px;}
+.tl-num{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;flex-shrink:0;z-index:1;border:1px solid;}
+.tl-content{}
+.tl-date{font-family:var(--font-mono);font-size:11px;color:var(--teal);margin-bottom:6px;}
+.tl-content h4{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px;}
+.tl-content p{font-size:13.5px;color:var(--text-muted);line-height:1.65;}
+@media(max-width:900px){.about-hero-section{grid-template-columns:1fr;} .pillars{grid-template-columns:1fr;}}
+</style>
+</head><body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="active">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="about-page"><div class="container">
+  <div class="about-hero-section reveal">
+    <div class="about-hero-text">
+      <div class="section-tag">About</div>
+      <h1>About <span style="color:var(--teal)">X-HViT</span></h1>
+      <p>X-HViT (Explainable Hybrid Vision Transformer) is an academic research project built as the final year BCE project at United Technical College, affiliated to Pokhara University, Nepal.</p>
+      <p>The goal is to bridge the gap between high-accuracy medical AI and clinical interpretability — providing both powerful predictions and transparent visual explanations that clinicians can trust.</p>
+      <div class="btn-row"><a href="diagnose.html" class="btn btn-primary btn-lg">🧠 Try Demo</a><a href="team.html" class="btn btn-ghost btn-lg">Meet the Team</a><a href="research.html" class="btn btn-outline btn-lg">View Research</a></div>
+    </div>
+    <div class="about-stat-box">
+      <div class="as-item"><div class="as-val" style="color:var(--teal)">28K+</div><div class="as-lbl">Training Images</div></div>
+      <div class="as-item"><div class="as-val" style="color:var(--blue)">95%+</div><div class="as-lbl">Accuracy</div></div>
+      <div class="as-item"><div class="as-val" style="color:var(--violet)">4</div><div class="as-lbl">Modalities</div></div>
+      <div class="as-item"><div class="as-val" style="color:var(--yellow)">2x</div><div class="as-lbl">XAI Layers</div></div>
+    </div>
+  </div>
+  <div class="section-divider"></div>
+  <div style="margin:60px 0">
+    <div class="reveal"><div class="section-tag">Mission</div><h2 class="section-title">Why We Built <span class="teal">X-HViT</span></h2></div>
+    <div class="pillars">
+      <div class="pillar reveal"><div class="p-icon">🔍</div><div><div class="p-title">Explainability First</div><div class="p-desc">Every prediction includes Grad-CAM and transformer attention maps so clinicians can understand and verify the model's reasoning.</div></div></div>
+      <div class="pillar reveal reveal-d1"><div class="p-icon">🌐</div><div><div class="p-title">Multi-Modal Scope</div><div class="p-desc">One unified framework handles CT, MRI, X-ray, and Microscopic imaging without needing modality-specific models.</div></div></div>
+      <div class="pillar reveal"><div class="p-icon">⚡</div><div><div class="p-title">Deployable Design</div><div class="p-desc">Optimized architecture enables deployment in resource-constrained clinical environments without expensive GPU infrastructure.</div></div></div>
+      <div class="pillar reveal reveal-d1"><div class="p-icon">📖</div><div><div class="p-title">Open Research</div><div class="p-desc">Built on open-source tools and trained on publicly available datasets to encourage reproducibility and further research.</div></div></div>
+    </div>
+  </div>
+  <div class="section-divider"></div>
+  <div style="margin-top:60px">
+    <div class="reveal"><div class="section-tag">Journey</div><h2 class="section-title">Project <span class="teal">Timeline</span></h2></div>
+    <div class="timeline">
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(0,229,176,0.1);color:var(--teal);border-color:rgba(0,229,176,0.25)">01</div><div class="tl-content"><div class="tl-date">September 2025</div><h4>Project Proposal</h4><p>Initial proposal submitted to the Department of Computer Engineering. Scope, objectives, and dataset selection finalized.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(58,155,255,0.1);color:var(--blue);border-color:rgba(58,155,255,0.25)">02</div><div class="tl-content"><div class="tl-date">October 2025</div><h4>Dataset Collection</h4><p>28,000+ medical images curated from Mendeley Data. Preprocessing pipeline developed with OpenCV.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(124,106,255,0.1);color:var(--violet);border-color:rgba(124,106,255,0.25)">03</div><div class="tl-content"><div class="tl-date">November 2025</div><h4>Architecture Design</h4><p>Hybrid CNN-ViT architecture designed and implemented in PyTorch with patch embedding and MHSA modules.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(255,201,71,0.1);color:var(--yellow);border-color:rgba(255,201,71,0.25)">04</div><div class="tl-content"><div class="tl-date">December 2025</div><h4>Training & XAI</h4><p>Model trained on Google Colab GPU. Grad-CAM and transformer attention map modules integrated.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(255,85,117,0.1);color:var(--red);border-color:rgba(255,85,117,0.25)">05</div><div class="tl-content"><div class="tl-date">January 2026</div><h4>Evaluation & Web UI</h4><p>K-fold cross-validation completed. Django backend and clinical web interface built with full report generation.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-num" style="background:rgba(0,229,176,0.15);color:var(--teal);border-color:rgba(0,229,176,0.3)">06</div><div class="tl-content"><div class="tl-date">February 2026</div><h4>Final Submission</h4><p>Project submitted to the Department of Computer Engineering, United Technical College. Thesis, demo, and documentation delivered.</p></div></div>
+    </div>
+  </div>
+</div></div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer><script src="shared.js"></script>
+</body></html>

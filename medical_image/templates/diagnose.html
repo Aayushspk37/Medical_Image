@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Diagnose</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.diag-page { padding: 110px 0 80px; position: relative; z-index: 1; }
+.diag-page-header { margin-bottom: 48px; }
+
+/* Step indicator */
+.steps-bar {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 6px;
+}
+.step-btn {
+  flex: 1; display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; border-radius: var(--r-md);
+  cursor: pointer; transition: all 0.25s;
+  border: none; background: none; color: var(--text-muted);
+  font-family: var(--font-body); text-align: left;
+}
+.step-btn.active {
+  background: var(--bg3); color: var(--text);
+  border: 1px solid rgba(0,229,176,0.2);
+}
+.step-btn-num {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--bg3); color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+.step-btn.active .step-btn-num { background: rgba(0,229,176,0.12); color: var(--teal); border-color: rgba(0,229,176,0.3); }
+.step-btn-label { font-size: 13px; font-weight: 500; }
+.step-btn-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; font-family: var(--font-mono); }
+.step-btn.active .step-btn-sub { color: var(--text-muted); }
+.step-sep { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+
+/* Layout */
+.diag-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; }
+
+/* Panels */
+.panel {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.panel-head {
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-head-left { display: flex; align-items: center; gap: 10px; }
+.panel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.panel-head h3 { font-family: var(--font-head); font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+.panel-badge {
+  font-family: var(--font-mono); font-size: 10px; padding: 3px 10px;
+  border-radius: 100px; border: 1px solid var(--border); color: var(--text-dim);
+}
+.panel-body { padding: 28px; }
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed rgba(0,229,176,0.2); border-radius: var(--r-md);
+  padding: 52px 32px; text-align: center; cursor: pointer;
+  transition: all 0.25s; background: rgba(0,229,176,0.02);
+  position: relative;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: rgba(0,229,176,0.55); background: rgba(0,229,176,0.04);
+}
+.uz-icon { font-size: 52px; margin-bottom: 16px; opacity: 0.7; }
+.uz-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.uz-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.uz-types { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.uz-chip {
+  font-family: var(--font-mono); font-size: 10px; padding: 3px 9px;
+  border-radius: 100px; background: var(--bg); color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.upload-zone.has-file { border-color: rgba(0,229,176,0.5); background: rgba(0,229,176,0.04); }
+.uz-preview {
+  display: none; align-items: center; gap: 16px;
+  background: var(--bg3); border-radius: var(--r-sm); padding: 16px;
+  margin-top: 16px; text-align: left;
+}
+.uz-preview.show { display: flex; }
+.uz-file-icon { font-size: 28px; }
+.uz-file-name { font-family: var(--font-mono); font-size: 12px; color: var(--text); }
+.uz-file-size { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+/* Form controls */
+.form-group { margin-top: 20px; }
+.form-label {
+  display: block; font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.form-select, .form-input {
+  width: 100%; padding: 11px 16px; border-radius: var(--r-sm);
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-body); font-size: 14px;
+  appearance: none; cursor: pointer; outline: none; transition: border-color 0.2s;
+}
+.form-select:focus, .form-input:focus { border-color: rgba(0,229,176,0.4); }
+.form-select option { background: var(--bg2); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.analyze-btn {
+  width: 100%; margin-top: 24px; padding: 15px;
+  background: var(--teal); color: var(--bg);
+  border: none; border-radius: var(--r-md);
+  font-family: var(--font-head); font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; letter-spacing: -0.2px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.analyze-btn:hover { background: var(--teal-dim); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,229,176,0.25); }
+.analyze-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Result panel */
+.result-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 380px; gap: 14px; text-align: center;
+}
+.rp-icon { font-size: 56px; opacity: 0.2; }
+.rp-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--text-dim); }
+.rp-sub { font-size: 13px; color: var(--text-dim); }
+
+.result-body { display: none; flex-direction: column; gap: 20px; }
+.result-body.show { display: flex; }
+
+/* Diagnosis header */
+.diag-result-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; background: rgba(0,229,176,0.06);
+  border: 1px solid rgba(0,229,176,0.15); border-radius: var(--r-sm);
+}
+.diag-disease { font-family: var(--font-head); font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.diag-conf {
+  font-family: var(--font-mono); font-size: 22px; color: var(--teal); font-weight: 700;
+}
+.diag-subtitle { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
+
+/* Prob bars */
+.prob-section-label {
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+}
+.prob-list { display: flex; flex-direction: column; gap: 10px; }
+.prob-item {}
+.prob-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.prob-name { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+.prob-pct { font-size: 12px; color: var(--text); font-family: var(--font-mono); }
+.prob-bar { height: 5px; background: var(--bg3); border-radius: 10px; overflow: hidden; }
+.prob-fill { height: 100%; border-radius: 10px; transition: width 1.2s ease; }
+
+/* Heatmap */
+.heatmap-box {
+  border-radius: var(--r-sm); overflow: hidden;
+  border: 1px solid var(--border); position: relative;
+}
+.heatmap-visual {
+  height: 150px;
+  background: linear-gradient(135deg, #0d1f3a 0%, #0a3020 40%, #1a0d2e 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.heatmap-blob {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,176,0.65) 0%, rgba(0,229,176,0.25) 40%, transparent 70%);
+  filter: blur(14px);
+  animation: hblob 3.5s ease-in-out infinite alternate;
+}
+@keyframes hblob { 0%{transform:scale(1) translate(0,0)} 100%{transform:scale(1.4) translate(12px,-10px)} }
+.heatmap-footer {
+  padding: 10px 14px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 10px;
+}
+.hm-label { color: var(--text-dim); }
+.hm-status { color: var(--teal); }
+
+/* Action buttons */
+.result-actions { display: flex; gap: 10px; }
+.result-actions .btn { flex: 1; justify-content: center; font-size: 13px; padding: 11px 16px; }
+
+/* Processing overlay */
+.processing-overlay {
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 380px; gap: 20px; text-align: center;
+}
+.processing-overlay.show { display: flex; }
+.proc-spinner {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 2px solid var(--border);
+  border-top-color: var(--teal);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.proc-label { font-family: var(--font-mono); font-size: 12px; color: var(--teal); }
+.proc-steps { display: flex; flex-direction: column; gap: 8px; width: 240px; }
+.proc-step { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+.proc-step.done { color: var(--teal); }
+.proc-step.active { color: var(--text); }
+.proc-step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+.proc-step.done .proc-step-dot { background: var(--teal); }
+.proc-step.active .proc-step-dot { background: var(--text); animation: pulse 1s infinite; }
+
+/* Model info sidebar */
+.model-info { margin-top: 28px; }
+.model-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 14px 16px;
+}
+.mi-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.mi-value { font-family: var(--font-mono); font-size: 14px; color: var(--text); }
+
+@media(max-width:1024px) {
+  .diag-grid { grid-template-columns: 1fr; }
+  .steps-bar { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="active">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="diag-page">
+  <div class="container">
+    <div class="diag-page-header reveal">
+      <div class="section-tag">Interface</div>
+      <h1 class="section-title">Run a <span class="teal">Diagnosis</span></h1>
+      <p class="section-desc">Upload a medical image and receive AI-assisted classification with visual explainability overlays.</p>
+    </div>
+
+    <!-- Step bar -->
+    <div class="steps-bar reveal">
+      <button class="step-btn active" onclick="setStep(0)">
+        <div class="step-btn-num">01</div>
+        <div><div class="step-btn-label">Upload</div><div class="step-btn-sub">Select image</div></div>
+      </button>
+      <div class="step-sep"></div>
+      <button class="step-btn" onclick="setStep(1)">
+        <div class="step-btn-num">02</div>
+        <div><div class="step-btn-label">Configure</div><div class="step-btn-sub">Set modality</div></div>
+      </button>
+      <div class="step-sep"></div>
+      <button class="step-btn" onclick="setStep(2)">
+        <div class="step-btn-num">03</div>
+        <div><div class="step-btn-label">Analyze</div><div class="step-btn-sub">AI inference</div></div>
+      </button>
+      <div class="step-sep"></div>
+      <button class="step-btn" onclick="setStep(3)">
+        <div class="step-btn-num">04</div>
+        <div><div class="step-btn-label">Results</div><div class="step-btn-sub">View &amp; export</div></div>
+      </button>
+    </div>
+
+    <div class="diag-grid">
+      <!-- Left: Upload + Config -->
+      <div>
+        <div class="panel reveal">
+          <div class="panel-head">
+            <div class="panel-head-left"><div class="panel-dot"></div><h3>Upload Medical Image</h3></div>
+            <span class="panel-badge">Step 1–2</span>
+          </div>
+          <div class="panel-body">
+            <div class="upload-zone" id="uploadZone">
+              <div class="uz-icon">🏥</div>
+              <div class="uz-title">Drop image here or click to browse</div>
+              <div class="uz-sub">Supports JPEG, PNG, DICOM, TIFF formats</div>
+              <div class="uz-types">
+                <span class="uz-chip">.jpg</span><span class="uz-chip">.png</span>
+                <span class="uz-chip">.dcm</span><span class="uz-chip">.tiff</span>
+              </div>
+            </div>
+            <div class="uz-preview" id="uzPreview">
+              <div class="uz-file-icon">🖼️</div>
+              <div><div class="uz-file-name" id="uzFileName">image.png</div><div class="uz-file-size" id="uzFileSize">0 KB</div></div>
+            </div>
+
+            <div class="form-row" style="margin-top:20px">
+              <div class="form-group" style="margin-top:0">
+                <label class="form-label">Imaging Modality</label>
+                <select class="form-select" id="modalitySelect">
+                  <option value="">Select modality…</option>
+                  <option value="ct">CT Scan</option>
+                  <option value="mri">MRI</option>
+                  <option value="xray">X-ray</option>
+                  <option value="micro">Microscopic</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-top:0">
+                <label class="form-label">Disease Category</label>
+                <select class="form-select" id="diseaseSelect">
+                  <option value="">Auto-detect</option>
+                  <option value="tumor">Brain Tumor</option>
+                  <option value="fracture">Bone Fracture</option>
+                  <option value="lung">Lung Disease</option>
+                  <option value="skin">Skin Lesion</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">XAI Output Mode</label>
+              <select class="form-select" id="xaiSelect">
+                <option value="both">Grad-CAM + Attention Map</option>
+                <option value="gradcam">Grad-CAM Only</option>
+                <option value="attention">Attention Map Only</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Patient / Case ID (optional)</label>
+              <input class="form-input" id="patientId" type="text" placeholder="e.g. CASE-2026-001"/>
+            </div>
+
+            <button class="analyze-btn" id="analyzeBtn" onclick="runDiagnosis()">
+              <span id="analyzeBtnIcon">⚡</span> <span id="analyzeBtnText">Analyze Image</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Model info -->
+        <div class="model-info reveal">
+          <div class="model-info-grid">
+            <div class="mi-card"><div class="mi-label">Model</div><div class="mi-value">X-HViT v1.0</div></div>
+            <div class="mi-card"><div class="mi-label">Architecture</div><div class="mi-value">CNN + ViT</div></div>
+            <div class="mi-card"><div class="mi-label">Input Size</div><div class="mi-value">224 × 224</div></div>
+            <div class="mi-card"><div class="mi-label">XAI Method</div><div class="mi-value">Grad-CAM</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Result -->
+      <div class="panel reveal reveal-delay-1">
+        <div class="panel-head">
+          <div class="panel-head-left"><div class="panel-dot"></div><h3>Diagnostic Result</h3></div>
+          <span class="panel-badge" id="resultBadge">Awaiting</span>
+        </div>
+        <div class="panel-body">
+
+          <!-- Placeholder -->
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="rp-icon">🔍</div>
+            <div class="rp-title">No Analysis Yet</div>
+            <div class="rp-sub">Upload an image and click Analyze to view results</div>
+          </div>
+
+          <!-- Processing -->
+          <div class="processing-overlay" id="processingOverlay">
+            <div class="proc-spinner"></div>
+            <div class="proc-label" id="procLabel">Running inference...</div>
+            <div class="proc-steps">
+              <div class="proc-step" id="ps1"><div class="proc-step-dot"></div>Preprocessing image</div>
+              <div class="proc-step" id="ps2"><div class="proc-step-dot"></div>CNN feature extraction</div>
+              <div class="proc-step" id="ps3"><div class="proc-step-dot"></div>Transformer attention</div>
+              <div class="proc-step" id="ps4"><div class="proc-step-dot"></div>Generating Grad-CAM</div>
+              <div class="proc-step" id="ps5"><div class="proc-step-dot"></div>Classification &amp; scoring</div>
+            </div>
+          </div>
+
+          <!-- Result body -->
+          <div class="result-body" id="resultBody">
+            <div class="diag-result-header">
+              <div>
+                <div class="diag-subtitle">PRIMARY DIAGNOSIS</div>
+                <div class="diag-disease" id="rDisease">—</div>
+              </div>
+              <div style="text-align:right">
+                <div class="diag-subtitle">CONFIDENCE</div>
+                <div class="diag-conf" id="rConf">—</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="prob-section-label">Class Probabilities</div>
+              <div class="prob-list" id="probList"></div>
+            </div>
+
+            <div>
+              <div class="prob-section-label">Grad-CAM Heatmap</div>
+              <div class="heatmap-box">
+                <div class="heatmap-visual"><div class="heatmap-blob"></div></div>
+                <div class="heatmap-footer">
+                  <span class="hm-label">Grad-CAM · Tumor Region Highlighted</span>
+                  <span class="hm-status">✓ Generated</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-actions">
+              <a href="report.html" class="btn btn-outline">📄 Full Report</a>
+              <a href="history.html" class="btn btn-ghost">📁 Save to History</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer>
+<script src="auth.js"></script>
+<script src="shared.js"></script>
+<script>
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('click', () => {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*,.dcm';
+  inp.onchange = e => handleFile(e.target.files[0]);
+  inp.click();
+});
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+
+function handleFile(file) {
+  if (!file) return;
+  uploadZone.classList.add('has-file');
+  uploadZone.querySelector('.uz-icon').textContent = '✅';
+  document.getElementById('uzFileName').textContent = file.name;
+  document.getElementById('uzFileSize').textContent = (file.size/1024).toFixed(1) + ' KB · Ready';
+  document.getElementById('uzPreview').classList.add('show');
+}
+
+const diseases = {
+  ct:    { name:'Lung Adenocarcinoma', conf:'91.3%', probs:[['Adenocarcinoma',91.3,'teal'],['Large Cell',5.2,'blue'],['Squamous Cell',2.1,'violet'],['Normal',1.4,'#3d4f6a']] },
+  mri:   { name:'Glioma Tumor', conf:'94.7%', probs:[['Glioma',94.7,'teal'],['Meningioma',3.1,'blue'],['No Tumor',1.4,'violet'],['Pituitary',0.8,'#3d4f6a']] },
+  xray:  { name:'Pneumonia', conf:'88.6%', probs:[['Pneumonia',88.6,'teal'],['Tuberculosis',7.4,'blue'],['Normal',4.0,'#3d4f6a']] },
+  micro: { name:'Malignant Melanoma', conf:'96.1%', probs:[['Malignant',96.1,'teal'],['Benign',2.8,'blue'],['Normal',1.1,'#3d4f6a']] }
+};
+
+function runDiagnosis() {
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  document.getElementById('resultPlaceholder').style.display = 'none';
+  document.getElementById('resultBody').classList.remove('show');
+  document.getElementById('processingOverlay').classList.add('show');
+  document.getElementById('resultBadge').textContent = 'Processing…';
+
+  const steps = ['ps1','ps2','ps3','ps4','ps5'];
+  const labels = ['Preprocessing image…','CNN feature extraction…','Transformer attention…','Generating Grad-CAM…','Classification & scoring…'];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) document.getElementById(steps[i-1]).classList.remove('active');
+    if (i < steps.length) {
+      document.getElementById(steps[i]).classList.add('active');
+      document.getElementById('procLabel').textContent = labels[i];
+      i++;
+    } else {
+      clearInterval(interval);
+      steps.forEach(s => { document.getElementById(s).classList.remove('active'); document.getElementById(s).classList.add('done'); });
+      setTimeout(showResult, 400);
+    }
+  }, 420);
+}
+
+function showResult() {
+  const mod = document.getElementById('modalitySelect').value || 'mri';
+  const d = diseases[mod] || diseases.mri;
+  document.getElementById('rDisease').textContent = d.name;
+  document.getElementById('rConf').textContent = d.conf;
+  const probList = document.getElementById('probList');
+  probList.innerHTML = '';
+  d.probs.forEach(([name, pct, color]) => {
+    probList.innerHTML += `<div class="prob-item">
+      <div class="prob-header"><span class="prob-name">${name}</span><span class="prob-pct">${pct}%</span></div>
+      <div class="prob-bar"><div class="prob-fill" style="width:0%;background:${color}" data-w="${pct}"></div></div>
+    </div>`;
+  });
+  document.getElementById('processingOverlay').classList.remove('show');
+  document.getElementById('resultBody').classList.add('show');
+  document.getElementById('resultBadge').textContent = 'Complete';
+  document.getElementById('analyzeBtn').disabled = false;
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  }, 100);
+}
+
+function setStep(n) {
+  document.querySelectorAll('.step-btn').forEach((b,i) => b.classList.toggle('active', i === n));
+}
+</script>
+</body>
+</html>

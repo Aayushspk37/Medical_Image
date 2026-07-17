@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | History</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.history-page{padding:100px 0 80px;position:relative;z-index:1;}
+.htoolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;transition:border-color 0.2s;}
+.search-bar:focus-within{border-color:rgba(0,229,176,0.4);}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:14px;width:200px;}
+.search-bar input::placeholder{color:var(--text-dim);}
+.fselect{padding:10px 14px;border-radius:var(--r-sm);background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:13px;appearance:none;outline:none;cursor:pointer;}
+.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.hstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 18px;display:flex;align-items:center;gap:12px;}
+.hstat-icon{font-size:22px;}
+.hstat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px;}
+.hstat-val{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-1px;}
+.htable-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.htable-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg3);border-bottom:1px solid var(--border);}
+thead th{text-align:left;padding:12px 18px;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;font-weight:400;}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+tbody tr:last-child{border-bottom:none;}
+tbody td{padding:14px 18px;font-size:13.5px;vertical-align:middle;}
+.td-case{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+.td-conf-hi{font-family:var(--font-mono);font-size:13px;color:var(--teal);}
+.td-conf-md{font-family:var(--font-mono);font-size:13px;color:var(--yellow);}
+.td-date{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+.td-acts{display:flex;gap:6px;}
+.td-btn{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:13px;transition:all 0.2s;text-decoration:none;}
+.td-btn:hover{border-color:rgba(0,229,176,0.3);background:rgba(0,229,176,0.06);}
+.hpager{padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+.page-btns{display:flex;gap:5px;}
+.pg-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:12px;transition:all 0.2s;}
+.pg-btn.active,.pg-btn:hover{background:var(--bg3);color:var(--teal);border-color:rgba(0,229,176,0.3);}
+@media(max-width:900px){.hstats{grid-template-columns:repeat(2,1fr);} table{display:block;overflow-x:auto;}}
+</style>
+</head><body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="history-page"><div class="container">
+  <div class="reveal" style="margin-bottom:36px">
+    <div class="section-tag">Records</div>
+    <h1 class="section-title">Diagnosis <span class="teal">History</span></h1>
+    <p class="section-desc">Browse, search, filter and export all previous diagnostic analyses and reports.</p>
+  </div>
+  <div class="hstats reveal">
+    <div class="hstat"><div class="hstat-icon">🧪</div><div><div class="hstat-lbl">Total Analyses</div><div class="hstat-val" style="color:var(--teal)">24</div></div></div>
+    <div class="hstat"><div class="hstat-icon">✅</div><div><div class="hstat-lbl">Completed</div><div class="hstat-val" style="color:var(--blue)">21</div></div></div>
+    <div class="hstat"><div class="hstat-icon">📄</div><div><div class="hstat-lbl">Reports</div><div class="hstat-val" style="color:var(--violet)">18</div></div></div>
+    <div class="hstat"><div class="hstat-icon">📅</div><div><div class="hstat-lbl">This Month</div><div class="hstat-val" style="color:var(--yellow)">7</div></div></div>
+  </div>
+  <div class="htoolbar reveal">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div class="search-bar"><span style="color:var(--text-dim)">🔍</span><input type="text" id="hSearch" placeholder="Search case, diagnosis…" oninput="renderH()"/></div>
+      <select class="fselect" id="hMod" onchange="renderH()"><option value="">All Modalities</option><option>MRI</option><option>CT</option><option>X-ray</option><option>Micro</option></select>
+      <select class="fselect" id="hStat" onchange="renderH()"><option value="">All Status</option><option>Complete</option><option>Review</option></select>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost btn-sm" onclick="if(confirm('Clear all history?'))document.getElementById('tableBody').innerHTML=''">🗑 Clear</button>
+      <a href="diagnose.html" class="btn btn-primary btn-sm">+ New</a>
+    </div>
+  </div>
+  <div class="htable-wrap reveal">
+    <div class="htable-head"><span id="hCount">Showing 10 of 24 records</span><span>Sorted by: Date ↓</span></div>
+    <table><thead><tr><th>Case ID</th><th>Modality</th><th>Diagnosis</th><th>Confidence</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="tableBody"></tbody></table>
+    <div class="hpager"><span id="hPage">Page 1 of 3</span><div class="page-btns"><div class="pg-btn active">1</div><div class="pg-btn">2</div><div class="pg-btn">3</div><div class="pg-btn">›</div></div></div>
+  </div>
+</div></div>
+<script>
+const HR=[
+  {id:'CASE-2026-024',mod:'MRI',mc:'badge-blue',dis:'Glioma Tumor',conf:94.7,date:'2026-02-14',stat:'Complete'},
+  {id:'CASE-2026-023',mod:'CT',mc:'badge-teal',dis:'Lung Adenocarcinoma',conf:91.3,date:'2026-02-13',stat:'Complete'},
+  {id:'CASE-2026-022',mod:'X-ray',mc:'badge-violet',dis:'Pneumonia',conf:88.6,date:'2026-02-12',stat:'Review'},
+  {id:'CASE-2026-021',mod:'Micro',mc:'badge-yellow',dis:'Malignant Melanoma',conf:96.1,date:'2026-02-11',stat:'Complete'},
+  {id:'CASE-2026-020',mod:'MRI',mc:'badge-blue',dis:'Meningioma',conf:82.4,date:'2026-02-10',stat:'Complete'},
+  {id:'CASE-2026-019',mod:'CT',mc:'badge-teal',dis:'Squamous Cell Carcinoma',conf:78.9,date:'2026-02-09',stat:'Review'},
+  {id:'CASE-2026-018',mod:'X-ray',mc:'badge-violet',dis:'Tuberculosis',conf:90.2,date:'2026-02-08',stat:'Complete'},
+  {id:'CASE-2026-017',mod:'Micro',mc:'badge-yellow',dis:'Malaria (Positive)',conf:97.3,date:'2026-02-07',stat:'Complete'},
+  {id:'CASE-2026-016',mod:'MRI',mc:'badge-blue',dis:'No Tumor',conf:99.1,date:'2026-02-06',stat:'Complete'},
+  {id:'CASE-2026-015',mod:'CT',mc:'badge-teal',dis:'Normal',conf:85.7,date:'2026-02-05',stat:'Complete'},
+];
+function renderH(){
+  const q=document.getElementById('hSearch').value.toLowerCase();
+  const m=document.getElementById('hMod').value;
+  const s=document.getElementById('hStat').value;
+  const f=HR.filter(r=>(r.id.toLowerCase().includes(q)||r.dis.toLowerCase().includes(q))&&(!m||r.mod===m)&&(!s||r.stat===s));
+  document.getElementById('hCount').textContent='Showing '+f.length+' of '+HR.length+' records';
+  document.getElementById('tableBody').innerHTML=f.map(r=>`
+    <tr>
+      <td class="td-case">${r.id}</td>
+      <td><span class="badge ${r.mc}">${r.mod}</span></td>
+      <td>${r.dis}</td>
+      <td class="${r.conf>=90?'td-conf-hi':'td-conf-md'}">${r.conf}%</td>
+      <td class="td-date">${r.date}</td>
+      <td><span class="badge ${r.stat==='Complete'?'badge-teal':'badge-yellow'}">${r.stat==='Complete'?'✓':' '} ${r.stat}</span></td>
+      <td><div class="td-acts"><a href="report_detail.html" class="td-btn" title="View">📄</a><a href="diagnose.html" class="td-btn" title="Re-run">🔄</a><a href="report_detail.html" class="td-btn" title="PDF">⬇</a></div></td>
+    </tr>`).join('');
+}
+renderH();
+</script>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer><script src="auth.js"></script>
+<script src="shared.js"></script>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.doc-layout{display:grid;grid-template-columns:260px 1fr;gap:48px;padding:100px 0 80px;align-items:start;position:relative;z-index:1;}
+.doc-sidebar{position:sticky;top:90px;}
+.doc-nav-section{margin-bottom:24px;}
+.dns-label{font-family:var(--font-mono);font-size:9px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;padding:0 4px;}
+.dns-links{display:flex;flex-direction:column;gap:2px;}
+.dns-link{display:block;padding:8px 12px;border-radius:6px;font-size:13px;color:var(--text-muted);transition:all 0.2s;border-left:2px solid transparent;}
+.dns-link:hover,.dns-link.active{color:var(--teal);border-left-color:var(--teal);background:rgba(0,229,176,0.05);}
+.doc-content{}
+.doc-section{margin-bottom:60px;scroll-margin-top:90px;}
+.doc-section h1{font-family:var(--font-head);font-size:32px;font-weight:800;letter-spacing:-1.5px;margin-bottom:16px;}
+.doc-section h2{font-family:var(--font-head);font-size:22px;font-weight:700;letter-spacing:-0.7px;margin:32px 0 12px;border-top:1px solid var(--border);padding-top:24px;}
+.doc-section h3{font-family:var(--font-head);font-size:16px;font-weight:700;margin:20px 0 8px;color:var(--text);}
+.doc-section p{font-size:14.5px;color:var(--text-muted);line-height:1.8;margin-bottom:12px;}
+.doc-section ul{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:7px;}
+.doc-section ul li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);}
+.doc-section ul li::before{content:'→';color:var(--teal);font-family:var(--font-mono);font-size:12px;margin-top:2px;flex-shrink:0;}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:18px 20px;font-family:var(--font-mono);font-size:12.5px;color:var(--teal);line-height:1.7;overflow-x:auto;margin:14px 0;}
+.code-block .comment{color:var(--text-dim);}
+.callout{background:rgba(0,229,176,0.05);border:1px solid rgba(0,229,176,0.15);border-radius:var(--r-sm);padding:14px 18px;font-size:14px;color:var(--text-muted);margin:14px 0;}
+.callout strong{color:var(--teal);}
+.api-table{width:100%;border-collapse:collapse;margin:16px 0;}
+.api-table th{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;padding:10px 14px;text-align:left;background:var(--bg3);border-bottom:1px solid var(--border);}
+.api-table td{padding:11px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.api-table td:first-child{font-family:var(--font-mono);font-size:12px;color:var(--teal);}
+@media(max-width:900px){.doc-layout{grid-template-columns:1fr;} .doc-sidebar{display:none;}}
+</style>
+</head><body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="container">
+<div class="doc-layout">
+  <aside class="doc-sidebar">
+    <div class="doc-nav-section"><div class="dns-label">Getting Started</div><div class="dns-links"><a href="#intro" class="dns-link active">Introduction</a><a href="#install" class="dns-link">Installation</a><a href="#quickstart" class="dns-link">Quick Start</a></div></div>
+    <div class="doc-nav-section"><div class="dns-label">Core Features</div><div class="dns-links"><a href="#diagnose" class="dns-link">Diagnosis API</a><a href="#xai" class="dns-link">XAI & Grad-CAM</a><a href="#reports" class="dns-link">Report Generation</a></div></div>
+    <div class="doc-nav-section"><div class="dns-label">Architecture</div><div class="dns-links"><a href="#cnn" class="dns-link">CNN Backbone</a><a href="#vit" class="dns-link">Vision Transformer</a><a href="#hybrid" class="dns-link">Hybrid Pipeline</a></div></div>
+    <div class="doc-nav-section"><div class="dns-label">Reference</div><div class="dns-links"><a href="#api" class="dns-link">API Reference</a><a href="#metrics" class="dns-link">Metrics</a></div></div>
+  </aside>
+  <div class="doc-content">
+    <div class="doc-section" id="intro">
+      <h1>X-HViT Documentation</h1>
+      <p>Welcome to the official documentation for X-HViT — Explainable Hybrid Vision Transformer for medical image classification. This guide covers architecture, API usage, and integration.</p>
+      <div class="callout"><strong>Version:</strong> X-HViT v1.0 · February 2026 · BCE Final Year Project · United Technical College</div>
+      <h2>What is X-HViT?</h2>
+      <p>X-HViT is a hybrid deep learning model that combines Convolutional Neural Networks (CNN) for local spatial feature extraction with Vision Transformers (ViT) for global context modeling, trained on 28,000+ medical images across four imaging modalities.</p>
+      <ul><li>Multi-modal: CT, MRI, X-ray, Microscopic imaging</li><li>Dual XAI: Grad-CAM + Transformer Attention Maps</li><li>Django REST API backend with PDF report generation</li><li>95%+ target classification accuracy via K-fold validation</li></ul>
+    </div>
+    <div class="doc-section" id="install">
+      <h2>Installation</h2>
+      <div class="code-block"><span class="comment"># Clone the repository</span>
+git clone https://github.com/utc/xhvit.git
+cd xhvit
+
+<span class="comment"># Create virtual environment</span>
+python -m venv venv
+source venv/bin/activate  <span class="comment"># Windows: venv\Scriptsctivate</span>
+
+<span class="comment"># Install dependencies</span>
+pip install -r requirements.txt
+
+<span class="comment"># Run migrations</span>
+python manage.py migrate
+
+<span class="comment"># Start development server</span>
+python manage.py runserver</div>
+    </div>
+    <div class="doc-section" id="quickstart">
+      <h2>Quick Start</h2>
+      <p>Run a diagnosis programmatically using the Python client:</p>
+      <div class="code-block"><span class="comment"># Basic usage</span>
+from xhvit import XHViTModel
+
+model = XHViTModel.load_pretrained('xhvit-v1.0')
+result = model.predict('brain_scan.jpg', modality='mri')
+
+print(result.disease)      <span class="comment"># "Glioma Tumor"</span>
+print(result.confidence)   <span class="comment"># 0.947</span>
+print(result.probabilities) <span class="comment"># {'Glioma': 0.947, 'Meningioma': 0.031, ...}</span>
+result.gradcam.save('heatmap.png')</div>
+    </div>
+    <div class="doc-section" id="api">
+      <h2>API Reference</h2>
+      <h3>POST /api/diagnose/</h3>
+      <p>Run inference on a medical image and return predictions with XAI outputs.</p>
+      <table class="api-table">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>image</td><td>File</td><td>Yes</td><td>Medical image file (JPG, PNG, DICOM)</td></tr>
+          <tr><td>modality</td><td>string</td><td>No</td><td>ct | mri | xray | micro (auto-detected if omitted)</td></tr>
+          <tr><td>xai_mode</td><td>string</td><td>No</td><td>both | gradcam | attention (default: both)</td></tr>
+        </tbody>
+      </table>
+      <div class="code-block"><span class="comment"># Response example</span>
+{
+  "case_id": "CASE-2026-024",
+  "disease": "Glioma Tumor",
+  "confidence": 0.947,
+  "probabilities": {
+    "Glioma": 0.947,
+    "Meningioma": 0.031,
+    "No Tumor": 0.014,
+    "Pituitary": 0.008
+  },
+  "gradcam_url": "/media/gradcam/CASE-2026-024.png",
+  "attention_url": "/media/attention/CASE-2026-024.png",
+  "inference_time_ms": 2143
+}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer · BCE Final Year Project · United Technical College.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer><script src="shared.js"></script>
+</body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.reports-page{padding:100px 0 80px;position:relative;z-index:1;}
+.reports-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;transition:border-color 0.2s;}
+.search-bar:focus-within{border-color:rgba(0,229,176,0.4);}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:14px;width:220px;}
+.search-bar input::placeholder{color:var(--text-dim);}
+.filter-select{padding:10px 14px;border-radius:var(--r-sm);background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:13px;appearance:none;outline:none;cursor:pointer;}
+.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.report-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:all 0.3s;}
+.report-card:hover{border-color:rgba(0,229,176,0.2);transform:translateY(-4px);}
+.rc-preview{height:140px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.rc-preview-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;opacity:0.6;}
+.rc-scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);animation:scanAnim 3s linear infinite;opacity:0.5;}
+@keyframes scanAnim{0%{top:0}100%{top:100%}}
+.rc-body{padding:20px;}
+.rc-case{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-bottom:6px;}
+.rc-disease{font-family:var(--font-head);font-size:17px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px;}
+.rc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.rc-conf{font-family:var(--font-mono);font-size:12px;color:var(--teal);}
+.rc-date{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+.rc-actions{display:flex;gap:8px;}
+.rc-actions .btn{flex:1;font-size:12px;padding:8px 12px;justify-content:center;}
+.empty-reports{text-align:center;padding:80px 32px;grid-column:1/-1;}
+.empty-icon{font-size:60px;opacity:0.15;margin-bottom:16px;}
+.empty-title{font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text-dim);margin-bottom:8px;}
+.empty-sub{font-size:14px;color:var(--text-dim);}
+.reports-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.rstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;display:flex;align-items:center;gap:12px;}
+.rstat-icon{font-size:22px;}
+.rstat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px;}
+.rstat-val{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-1px;}
+@media(max-width:900px){.reports-grid{grid-template-columns:repeat(2,1fr);} .reports-stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.reports-grid{grid-template-columns:1fr;} .reports-stats{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="modalities.html">Modalities</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html" class="active">Reports</a></li><li><a href="research.html">Research</a></li><li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="reports-page">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:36px">
+      <div class="section-tag">Records</div>
+      <h1 class="section-title">Diagnostic <span class="teal">Reports</span></h1>
+      <p class="section-desc">All generated diagnostic reports with Grad-CAM heatmaps, confidence scores, and downloadable PDFs.</p>
+    </div>
+    <div class="reports-stats reveal">
+      <div class="rstat"><div class="rstat-icon">📄</div><div><div class="rstat-lbl">Total Reports</div><div class="rstat-val" style="color:var(--teal)">18</div></div></div>
+      <div class="rstat"><div class="rstat-icon">🧪</div><div><div class="rstat-lbl">Analyses Run</div><div class="rstat-val" style="color:var(--blue)">24</div></div></div>
+      <div class="rstat"><div class="rstat-icon">⬇️</div><div><div class="rstat-lbl">PDFs Downloaded</div><div class="rstat-val" style="color:var(--violet)">12</div></div></div>
+      <div class="rstat"><div class="rstat-icon">📅</div><div><div class="rstat-lbl">This Month</div><div class="rstat-val" style="color:var(--yellow)">7</div></div></div>
+    </div>
+    <div class="reports-toolbar reveal">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div class="search-bar"><span style="color:var(--text-dim)">🔍</span><input type="text" id="searchRep" placeholder="Search diagnosis, case ID…" oninput="filterCards()"/></div>
+        <select class="filter-select" id="modRep" onchange="filterCards()"><option value="">All Modalities</option><option>MRI</option><option>CT</option><option>X-ray</option><option>Micro</option></select>
+      </div>
+      <a href="diagnose.html" class="btn btn-primary">+ New Diagnosis</a>
+    </div>
+    <div class="reports-grid" id="reportsGrid"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis.</p></div>
+      <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li></ul></div>
+      <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span></div></div>
+  </div>
+</footer>
+<script src="auth.js"></script>
+<script src="shared.js"></script>
+<script>
+const rdata = [
+  {id:'CASE-2026-024',mod:'MRI',modCls:'badge-blue',disease:'Glioma Tumor',conf:94.7,date:'Feb 14, 2026',icon:'🧠',bg:'rgba(58,155,255,0.06)'},
+  {id:'CASE-2026-023',mod:'CT',modCls:'badge-teal',disease:'Lung Adenocarcinoma',conf:91.3,date:'Feb 13, 2026',icon:'🫁',bg:'rgba(0,229,176,0.06)'},
+  {id:'CASE-2026-022',mod:'X-ray',modCls:'badge-violet',disease:'Pneumonia',conf:88.6,date:'Feb 12, 2026',icon:'🩻',bg:'rgba(124,106,255,0.06)'},
+  {id:'CASE-2026-021',mod:'Micro',modCls:'badge-yellow',disease:'Malignant Melanoma',conf:96.1,date:'Feb 11, 2026',icon:'🔭',bg:'rgba(255,201,71,0.06)'},
+  {id:'CASE-2026-020',mod:'MRI',modCls:'badge-blue',disease:'Meningioma',conf:82.4,date:'Feb 10, 2026',icon:'🧠',bg:'rgba(58,155,255,0.06)'},
+  {id:'CASE-2026-018',mod:'X-ray',modCls:'badge-violet',disease:'Tuberculosis',conf:90.2,date:'Feb 8, 2026',icon:'🩻',bg:'rgba(124,106,255,0.06)'},
+];
+let filtered = [...rdata];
+function renderCards(){
+  const g = document.getElementById('reportsGrid');
+  if(!filtered.length){g.innerHTML=`<div class="empty-reports"><div class="empty-icon">📂</div><div class="empty-title">No Reports Found</div><div class="empty-sub">Try adjusting your search.</div></div>`;return;}
+  g.innerHTML = filtered.map(r=>`
+    <div class="report-card">
+      <div class="rc-preview" style="background:${r.bg}">
+        <div class="rc-preview-inner">${r.icon}</div>
+        <div class="rc-scan-line"></div>
+      </div>
+      <div class="rc-body">
+        <div class="rc-case">${r.id}</div>
+        <div class="rc-disease">${r.disease}</div>
+        <div class="rc-meta">
+          <span class="badge ${r.modCls}">${r.mod}</span>
+          <span class="rc-conf">✓ ${r.conf}%</span>
+          <span class="rc-date">${r.date}</span>
+        </div>
+        <div class="rc-actions">
+          <a href="report_detail.html" class="btn btn-outline">👁 View</a>
+          <a href="report_detail.html" class="btn btn-ghost">⬇ PDF</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function filterCards(){
+  const q=document.getElementById('searchRep').value.toLowerCase();
+  const m=document.getElementById('modRep').value;
+  filtered=rdata.filter(r=>(r.id.toLowerCase().includes(q)||r.disease.toLowerCase().includes(q))&&(!m||r.mod===m));
+  renderCards();
+}
+renderCards();
+</script>
+</body>
+</html>

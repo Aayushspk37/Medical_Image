@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.services-hero {
+  padding: 160px 32px 80px; position: relative; z-index:1;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(58,155,255,0.08) 0%, transparent 70%);
+}
+
+/* Main services */
+#main-services { padding: 90px 0; position: relative; z-index:1; }
+.services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
+.service-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+  transition: all 0.3s;
+}
+.service-card:hover { border-color: rgba(0,229,176,0.2); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.sc-top {
+  padding: 32px 28px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.sc-icon { font-size: 40px; margin-bottom: 18px; }
+.sc-title { font-family: var(--font-head); font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+.sc-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+.sc-features { padding: 22px 28px; display: flex; flex-direction: column; gap: 10px; }
+.sc-feat {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--text-muted);
+}
+.sc-feat::before { content: '✓'; color: var(--teal); font-family: var(--font-mono); font-size: 12px; flex-shrink:0; }
+.sc-footer { padding: 16px 28px; border-top: 1px solid var(--border); }
+.sc-tag { font-family: var(--font-mono); font-size: 10px; color: var(--teal); letter-spacing: 0.5px; }
+
+/* Process */
+#process { padding: 90px 0; background: var(--bg2); position: relative; z-index:1; }
+.process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 60px; position: relative; }
+.process-steps::before {
+  content: ''; position: absolute;
+  top: 30px; left: 12.5%; right: 12.5%;
+  height: 1px; background: linear-gradient(90deg, var(--teal), var(--blue), var(--violet), var(--yellow));
+  opacity: 0.3;
+}
+.proc-step {
+  text-align: center; padding: 0 16px;
+  position: relative;
+}
+.proc-step-circle {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px; font-family: var(--font-mono); font-size: 16px;
+  position: relative; z-index:1; border: 2px solid;
+}
+.proc-step h4 { font-family: var(--font-head); font-size: 16px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px; }
+.proc-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* Comparison table */
+#comparison { padding: 90px 0; position: relative; z-index:1; }
+.comp-table-wrap {
+  margin-top: 56px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.comp-table { width: 100%; border-collapse: collapse; }
+.comp-table th {
+  padding: 18px 24px; background: var(--bg3);
+  font-family: var(--font-head); font-size: 14px; font-weight: 700;
+  letter-spacing: -0.2px; text-align: center; border-bottom: 1px solid var(--border);
+}
+.comp-table th:first-child { text-align: left; }
+.comp-table th.highlight { color: var(--teal); background: rgba(0,229,176,0.05); border-left: 1px solid rgba(0,229,176,0.2); border-right: 1px solid rgba(0,229,176,0.2); }
+.comp-table td {
+  padding: 16px 24px; font-size: 13.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+}
+.comp-table td:first-child { text-align: left; color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }
+.comp-table td.highlight { background: rgba(0,229,176,0.03); border-left: 1px solid rgba(0,229,176,0.1); border-right: 1px solid rgba(0,229,176,0.1); }
+.comp-table tr:last-child td { border-bottom: none; }
+.check { color: var(--teal); font-size: 16px; }
+.cross { color: var(--text-dim); font-size: 16px; }
+.partial { color: var(--yellow); font-size: 14px; }
+
+/* CTA */
+#services-cta { padding: 90px 0; background: var(--bg2); position: relative; z-index:1; text-align:center; }
+#services-cta::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,229,176,0.05) 0%, transparent 70%);
+}
+
+@media(max-width:1024px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: repeat(2,1fr); gap: 32px; }
+  .process-steps::before { display: none; }
+}
+@media(max-width:640px) {
+  .process-steps { grid-template-columns: 1fr; }
+  .comp-table { font-size: 12px; }
+  .comp-table th, .comp-table td { padding: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="services-hero">
+  <div class="container">
+    <div style="animation:fadeUp 0.6s ease both">
+      <div class="section-tag">Services</div>
+      <h1 style="font-family:var(--font-head);font-size:clamp(38px,6vw,68px);font-weight:800;letter-spacing:-3px;margin-bottom:18px">What X-HViT <span style="color:var(--teal)">Offers</span></h1>
+      <p style="font-size:17px;color:var(--text-muted);max-width:580px;line-height:1.75">A complete suite of AI-powered medical imaging services: from multi-modal diagnosis and explainability visualization to report generation and diagnostic history management.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<section id="main-services">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Core Services</div>
+      <h2 class="section-title">Platform <span class="teal">Capabilities</span></h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="sc-top">
+          <div class="sc-icon">🧠</div>
+          <div class="sc-title">AI Diagnosis</div>
+          <div class="sc-desc">Upload medical images and receive instant AI-powered classification with multi-class probability distributions across supported disease categories.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Multi-modal: CT, MRI, X-ray, Microscopic</div>
+          <div class="sc-feat">Real-time inference pipeline</div>
+          <div class="sc-feat">Multi-class probability scores</div>
+          <div class="sc-feat">95%+ target classification accuracy</div>
+          <div class="sc-feat">Auto-modality detection</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">CNN + Vision Transformer</div></div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <div class="sc-top">
+          <div class="sc-icon">🔬</div>
+          <div class="sc-title">XAI Visualization</div>
+          <div class="sc-desc">Understand why the model made its prediction through dual explainability: Grad-CAM heatmaps for localized CNN regions and transformer attention maps for global context.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Grad-CAM localized heatmaps</div>
+          <div class="sc-feat">Transformer attention map overlay</div>
+          <div class="sc-feat">Side-by-side comparison mode</div>
+          <div class="sc-feat">Color-coded region importance</div>
+          <div class="sc-feat">Downloadable overlay images</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">Grad-CAM + Attention</div></div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <div class="sc-top">
+          <div class="sc-icon">📄</div>
+          <div class="sc-title">Report Generation</div>
+          <div class="sc-desc">Generate structured diagnostic reports including disease classification, confidence scores, probability tables, heatmap overlays, and model metadata — exportable as PDF.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Structured PDF diagnostic reports</div>
+          <div class="sc-feat">Embedded Grad-CAM heatmaps</div>
+          <div class="sc-feat">Probability distribution table</div>
+          <div class="sc-feat">Model metadata &amp; timestamp</div>
+          <div class="sc-feat">Case ID and modality tracking</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">PDF Export</div></div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="sc-top">
+          <div class="sc-icon">📁</div>
+          <div class="sc-title">Diagnosis History</div>
+          <div class="sc-desc">Track all previous diagnostic analyses in a searchable, filterable history log. Re-analyze cases, download reports, and monitor diagnostic patterns over time.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Searchable case records</div>
+          <div class="sc-feat">Filter by modality and status</div>
+          <div class="sc-feat">Re-run previous analyses</div>
+          <div class="sc-feat">Batch report download</div>
+          <div class="sc-feat">Export to CSV</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">Session Storage</div></div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <div class="sc-top">
+          <div class="sc-icon">📊</div>
+          <div class="sc-title">Performance Metrics</div>
+          <div class="sc-desc">Full evaluation dashboard with accuracy, precision, recall, and F1-score metrics. K-fold cross-validation results and per-class performance breakdown available.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Accuracy, Precision, Recall, F1</div>
+          <div class="sc-feat">K-fold cross-validation results</div>
+          <div class="sc-feat">Per-class performance tables</div>
+          <div class="sc-feat">Training/validation loss curves</div>
+          <div class="sc-feat">Confusion matrix visualization</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">Scikit-learn Evaluation</div></div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <div class="sc-top">
+          <div class="sc-icon">🏥</div>
+          <div class="sc-title">Clinical Interface</div>
+          <div class="sc-desc">A clinician-friendly web interface with drag-and-drop upload, modality selection, XAI mode configuration, and one-click report export — no technical expertise required.</div>
+        </div>
+        <div class="sc-features">
+          <div class="sc-feat">Drag-and-drop image upload</div>
+          <div class="sc-feat">DICOM / PNG / JPEG support</div>
+          <div class="sc-feat">Real-time processing feedback</div>
+          <div class="sc-feat">Mobile-responsive layout</div>
+          <div class="sc-feat">Django REST API backend</div>
+        </div>
+        <div class="sc-footer"><div class="sc-tag">Django + REST API</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="process">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-tag">Workflow</div>
+      <h2 class="section-title">How It <span class="teal">Works</span></h2>
+      <p class="section-desc" style="margin:16px auto 0">Four steps from image upload to clinical-grade diagnostic report.</p>
+    </div>
+    <div class="process-steps">
+      <div class="proc-step reveal">
+        <div class="proc-step-circle" style="background:rgba(0,229,176,0.1);color:var(--teal);border-color:rgba(0,229,176,0.3)">📤</div>
+        <h4>Upload Image</h4>
+        <p>Drag-and-drop or browse to upload CT, MRI, X-ray, or microscopic image. Select modality and disease category.</p>
+      </div>
+      <div class="proc-step reveal reveal-delay-1">
+        <div class="proc-step-circle" style="background:rgba(58,155,255,0.1);color:var(--blue);border-color:rgba(58,155,255,0.3)">⚡</div>
+        <h4>AI Inference</h4>
+        <p>X-HViT processes the image through CNN feature extraction, patch embedding, and transformer attention in &lt;3 seconds.</p>
+      </div>
+      <div class="proc-step reveal reveal-delay-2">
+        <div class="proc-step-circle" style="background:rgba(124,106,255,0.1);color:var(--violet);border-color:rgba(124,106,255,0.3)">🔬</div>
+        <h4>XAI Overlay</h4>
+        <p>Grad-CAM heatmaps and attention maps generated to highlight the regions driving the classification decision.</p>
+      </div>
+      <div class="proc-step reveal reveal-delay-3">
+        <div class="proc-step-circle" style="background:rgba(255,201,71,0.1);color:var(--yellow);border-color:rgba(255,201,71,0.3)">📄</div>
+        <h4>Export Report</h4>
+        <p>Download a structured PDF diagnostic report with results, heatmaps, confidence scores, and case metadata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="comparison">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Comparison</div>
+      <h2 class="section-title">X-HViT vs <span class="teal">Alternatives</span></h2>
+      <p class="section-desc">How X-HViT stacks up against traditional CNN-only and ViT-only approaches.</p>
+    </div>
+    <div class="comp-table-wrap reveal">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>CNN-Only</th>
+            <th class="highlight">X-HViT (Ours)</th>
+            <th>ViT-Only</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Multi-modal support</td><td><span class="partial">⚠ Limited</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">⚠ Limited</span></td></tr>
+          <tr><td>Local feature extraction</td><td><span class="check">✓</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Global context modeling</td><td><span class="cross">✗</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Grad-CAM explainability</td><td><span class="check">✓</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Attention map visualization</td><td><span class="cross">✗</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Dual XAI outputs</td><td><span class="cross">✗</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>PDF report generation</td><td><span class="cross">✗</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Clinical web interface</td><td><span class="partial">⚠ Varies</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">⚠ Varies</span></td></tr>
+          <tr><td>Low GPU requirement</td><td><span class="check">✓</span></td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="services-cta">
+  <div class="container" style="position:relative;z-index:1;text-align:center">
+    <div class="reveal">
+      <div class="section-tag" style="justify-content:center">Get Started</div>
+      <h2 class="section-title">Experience the <span class="teal">Platform</span></h2>
+      <p class="section-desc" style="margin:16px auto 32px">Try X-HViT's full diagnostic service — no registration required.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="diagnose.html" class="btn btn-primary btn-lg">🧠 Run Diagnosis</a>
+        <a href="report.html" class="btn btn-ghost btn-lg">📄 View Sample Report</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer>
+<script src="auth.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

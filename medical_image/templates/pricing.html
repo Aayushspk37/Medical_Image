@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.pricing-page{padding:100px 0 80px;position:relative;z-index:1;}
+.pricing-toggle{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:48px;font-size:14px;color:var(--text-muted);}
+.toggle-switch{width:48px;height:26px;background:rgba(0,229,176,0.15);border-radius:100px;position:relative;cursor:pointer;border:1px solid rgba(0,229,176,0.3);}
+.toggle-knob{width:20px;height:20px;background:var(--teal);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.25s;}
+.toggle-switch.on .toggle-knob{left:24px;}
+.save-badge{background:rgba(0,229,176,0.1);color:var(--teal);border:1px solid rgba(0,229,176,0.2);font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:100px;}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto;}
+.plan{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:all 0.3s;}
+.plan:hover{transform:translateY(-6px);}
+.plan.featured{border-color:rgba(0,229,176,0.3);box-shadow:0 0 40px rgba(0,229,176,0.08);position:relative;}
+.plan-popular{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--bg);font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 16px;border-radius:0 0 10px 10px;letter-spacing:0.5px;}
+.plan-top{padding:30px 28px 24px;border-bottom:1px solid var(--border);}
+.plan-name{font-family:var(--font-mono);font-size:11px;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.plan-price{font-family:var(--font-head);font-size:48px;font-weight:800;letter-spacing:-3px;line-height:1;}
+.plan-price span{font-size:18px;letter-spacing:-0.5px;color:var(--text-muted);font-weight:400;}
+.plan-desc{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.65;}
+.plan-feats{padding:24px 28px;display:flex;flex-direction:column;gap:10px;}
+.pf{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--text-muted);}
+.pf::before{content:'✓';color:var(--teal);font-family:var(--font-mono);font-size:12px;flex-shrink:0;}
+.pf.no{color:var(--text-dim);}
+.pf.no::before{content:'–';color:var(--text-dim);}
+.plan-footer{padding:20px 28px;border-top:1px solid var(--border);}
+.compare-note{text-align:center;margin-top:48px;font-size:14px;color:var(--text-muted);}
+.compare-note a{color:var(--teal);}
+@media(max-width:800px){.plans-grid{grid-template-columns:1fr;max-width:400px;}}
+</style>
+</head><body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="pricing-page">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:40px">
+      <div class="section-tag">Pricing</div>
+      <h1 class="section-title">Simple, Transparent <span class="teal">Pricing</span></h1>
+      <p class="section-desc" style="margin:14px auto 0">Free for academic research. Tiered plans for clinical deployment when the platform expands.</p>
+    </div>
+    <div class="pricing-toggle reveal">
+      <span>Monthly</span>
+      <div class="toggle-switch on" id="billingToggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      <span>Yearly</span>
+      <span class="save-badge">Save 20%</span>
+    </div>
+    <div class="plans-grid">
+      <div class="plan reveal">
+        <div class="plan-top">
+          <div class="plan-name">Research</div>
+          <div class="plan-price">Free<span>/mo</span></div>
+          <div class="plan-desc">For academic research, students, and individual developers exploring the platform.</div>
+        </div>
+        <div class="plan-feats">
+          <div class="pf">10 diagnoses/month</div>
+          <div class="pf">CT, MRI, X-ray, Microscopic</div>
+          <div class="pf">Grad-CAM heatmaps</div>
+          <div class="pf">Basic PDF reports</div>
+          <div class="pf">Diagnosis history (30 days)</div>
+          <div class="pf no">Attention map overlays</div>
+          <div class="pf no">Batch processing</div>
+          <div class="pf no">API access</div>
+        </div>
+        <div class="plan-footer"><a href="register.html" class="btn btn-ghost btn-block">Get Started Free</a></div>
+      </div>
+      <div class="plan featured reveal reveal-d1">
+        <div class="plan-popular">MOST POPULAR</div>
+        <div class="plan-top">
+          <div class="plan-name">Clinical</div>
+          <div class="plan-price">$49<span>/mo</span></div>
+          <div class="plan-desc">For medical institutions, clinics, and research teams needing higher volume and advanced XAI.</div>
+        </div>
+        <div class="plan-feats">
+          <div class="pf">500 diagnoses/month</div>
+          <div class="pf">All modalities</div>
+          <div class="pf">Grad-CAM + Attention Maps</div>
+          <div class="pf">Full structured PDF reports</div>
+          <div class="pf">Unlimited history</div>
+          <div class="pf">Batch processing (up to 50)</div>
+          <div class="pf">Priority support</div>
+          <div class="pf no">Custom model fine-tuning</div>
+        </div>
+        <div class="plan-footer"><a href="register.html" class="btn btn-primary btn-block">Start Clinical Plan</a></div>
+      </div>
+      <div class="plan reveal reveal-d2">
+        <div class="plan-top">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price" style="font-size:36px;letter-spacing:-2px">Custom</div>
+          <div class="plan-desc">For hospitals, pharmaceutical companies, and large-scale research deployments with custom requirements.</div>
+        </div>
+        <div class="plan-feats">
+          <div class="pf">Unlimited diagnoses</div>
+          <div class="pf">All modalities + custom</div>
+          <div class="pf">Full dual XAI outputs</div>
+          <div class="pf">Branded reports</div>
+          <div class="pf">Unlimited history + export</div>
+          <div class="pf">Unlimited batch processing</div>
+          <div class="pf">REST API access</div>
+          <div class="pf">Custom model fine-tuning</div>
+        </div>
+        <div class="plan-footer"><a href="contact.html" class="btn btn-outline btn-block">Contact for Pricing</a></div>
+      </div>
+    </div>
+    <p class="compare-note reveal">All plans include a 14-day free trial. No credit card required for Research plan. <a href="faq.html">Read FAQ →</a></p>
+  </div>
+</div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer · BCE Final Year Project · United Technical College.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer><script src="shared.js"></script>
+</body></html>

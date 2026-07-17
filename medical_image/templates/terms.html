@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Terms & Conditions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.terms-hero {
+  padding: 160px 32px 60px;
+  position: relative; z-index: 1;
+  border-bottom: 1px solid var(--border);
+}
+.terms-hero-inner {
+  max-width: 760px;
+}
+.terms-hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--teal);
+  letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+}
+.terms-hero-tag::before { content: '//'; opacity: 0.5; }
+.terms-hero h1 {
+  font-family: var(--font-head); font-size: clamp(36px,5vw,58px);
+  font-weight: 800; letter-spacing: -2.5px; line-height: 1.05;
+  margin-bottom: 16px;
+}
+.terms-hero h1 .teal { color: var(--teal); }
+.terms-hero p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+.terms-meta {
+  display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap;
+}
+.terms-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+}
+.terms-meta-item span { color: var(--text-muted); }
+
+/* Layout */
+.terms-layout {
+  display: grid; grid-template-columns: 260px 1fr;
+  gap: 60px; padding: 60px 0 100px;
+  align-items: start;
+  position: relative; z-index: 1;
+}
+/* Sidebar TOC */
+.terms-toc {
+  position: sticky; top: 90px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.toc-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 10px; color: var(--teal);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.toc-list { list-style: none; padding: 12px 0; }
+.toc-list li a {
+  display: block; padding: 9px 20px;
+  font-size: 13px; color: var(--text-muted);
+  transition: all 0.2s; border-left: 2px solid transparent;
+}
+.toc-list li a:hover { color: var(--teal); border-left-color: var(--teal); background: rgba(0,229,176,0.04); }
+.toc-list li a.active { color: var(--teal); border-left-color: var(--teal); background: rgba(0,229,176,0.05); }
+
+/* Content */
+.terms-content {}
+.terms-section {
+  margin-bottom: 56px;
+  scroll-margin-top: 90px;
+}
+.terms-section-num {
+  font-family: var(--font-mono); font-size: 10px; color: var(--teal);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+}
+.terms-section h2 {
+  font-family: var(--font-head); font-size: 24px; font-weight: 800;
+  letter-spacing: -0.8px; margin-bottom: 16px;
+}
+.terms-section p {
+  font-size: 14.5px; color: var(--text-muted); line-height: 1.8;
+  margin-bottom: 14px;
+}
+.terms-section ul {
+  list-style: none; display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 14px;
+}
+.terms-section ul li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; color: var(--text-muted); line-height: 1.7;
+}
+.terms-section ul li::before {
+  content: '→'; color: var(--teal); flex-shrink: 0; margin-top: 2px;
+  font-family: var(--font-mono); font-size: 12px;
+}
+.terms-section .callout {
+  background: rgba(0,229,176,0.05); border: 1px solid rgba(0,229,176,0.15);
+  border-radius: var(--r-sm); padding: 16px 20px;
+  font-size: 14px; color: var(--text-muted); line-height: 1.7;
+  margin: 16px 0;
+}
+.terms-section .callout strong { color: var(--teal); font-weight: 600; }
+.terms-section .warn-callout {
+  background: rgba(255,201,71,0.05); border: 1px solid rgba(255,201,71,0.2);
+  border-radius: var(--r-sm); padding: 16px 20px;
+  font-size: 14px; color: var(--text-muted); line-height: 1.7;
+  margin: 16px 0;
+}
+.terms-section .warn-callout strong { color: var(--yellow); }
+.section-divider-sm { height: 1px; background: var(--border); margin: 48px 0; }
+
+@media(max-width:900px) {
+  .terms-layout { grid-template-columns: 1fr; }
+  .terms-toc { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
+  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
+    <li><a href="diagnose.html" class="">Diagnose</a></li>
+    <li><a href="modalities.html" class="">Modalities</a></li>
+    <li><a href="dashboard.html" class="">Dashboard</a></li>
+    <li><a href="reports.html" class="">Reports</a></li>
+    <li><a href="research.html" class="">Research</a></li>
+    <li><a href="about.html" class="">About</a></li></ul>
+  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="terms-hero">
+  <div class="container">
+    <div class="terms-hero-inner">
+      <div class="terms-hero-tag">Legal</div>
+      <h1>Terms &amp; <span class="teal">Conditions</span></h1>
+      <p>Please read these terms carefully before using the X-HViT medical imaging AI platform. By accessing or using the system, you agree to be bound by the following terms.</p>
+      <div class="terms-meta">
+        <div class="terms-meta-item">📅 <span>Effective: February 2026</span></div>
+        <div class="terms-meta-item">🏫 <span>United Technical College</span></div>
+        <div class="terms-meta-item">📖 <span>Academic Project · Research Use</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="terms-layout">
+    <!-- Sidebar -->
+    <aside class="terms-toc">
+      <div class="toc-header">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#s1" class="active">1. Overview</a></li>
+        <li><a href="#s2">2. Medical Disclaimer</a></li>
+        <li><a href="#s3">3. Permitted Use</a></li>
+        <li><a href="#s4">4. Data &amp; Privacy</a></li>
+        <li><a href="#s5">5. Intellectual Property</a></li>
+        <li><a href="#s6">6. Limitations</a></li>
+        <li><a href="#s7">7. User Obligations</a></li>
+        <li><a href="#s8">8. Research Ethics</a></li>
+        <li><a href="#s9">9. Modifications</a></li>
+        <li><a href="#s10">10. Contact</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content -->
+    <div class="terms-content">
+
+      <div class="terms-section reveal" id="s1">
+        <div class="terms-section-num">// 01</div>
+        <h2>Overview</h2>
+        <p>X-HViT (Explainable Hybrid Vision Transformer) is an academic research project developed by students of the Bachelor of Computer Engineering program at United Technical College, affiliated to Pokhara University, Nepal.</p>
+        <p>This platform is provided solely for educational and research demonstration purposes. It is not a certified or approved clinical medical device and must not be used as a substitute for professional medical diagnosis, treatment, or advice.</p>
+        <div class="callout"><strong>Note:</strong> By using this platform, you acknowledge that you have read, understood, and agree to these Terms &amp; Conditions in full.</div>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s2">
+        <div class="terms-section-num">// 02</div>
+        <h2>Medical Disclaimer</h2>
+        <div class="warn-callout"><strong>⚠ Important:</strong> X-HViT outputs are NOT medical diagnoses. All results are AI-generated predictions for research and educational purposes only.</div>
+        <p>The AI predictions produced by X-HViT, including disease classifications, confidence scores, Grad-CAM heatmaps, and attention maps, are experimental outputs generated by a machine learning model trained on publicly available datasets.</p>
+        <ul>
+          <li>Results must not be used to make clinical decisions regarding patient care.</li>
+          <li>All medical images should be reviewed by qualified medical professionals.</li>
+          <li>The platform does not establish any doctor-patient relationship.</li>
+          <li>Developers are not liable for any clinical decisions made based on these outputs.</li>
+        </ul>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s3">
+        <div class="terms-section-num">// 03</div>
+        <h2>Permitted Use</h2>
+        <p>Use of the X-HViT platform is permitted under the following conditions:</p>
+        <ul>
+          <li>Academic research and educational demonstration of AI-assisted medical imaging.</li>
+          <li>Testing and evaluation of the hybrid CNN-ViT model architecture.</li>
+          <li>Reviewing explainability outputs (Grad-CAM, attention maps) for learning purposes.</li>
+          <li>Student and faculty research within United Technical College and affiliated institutions.</li>
+        </ul>
+        <p>The following uses are strictly prohibited:</p>
+        <ul>
+          <li>Clinical deployment or use in actual patient diagnosis workflows.</li>
+          <li>Commercial distribution or resale of the platform or its outputs.</li>
+          <li>Uploading patient data without proper anonymization and ethical clearance.</li>
+          <li>Reverse engineering the model for competing commercial products.</li>
+        </ul>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s4">
+        <div class="terms-section-num">// 04</div>
+        <h2>Data &amp; Privacy</h2>
+        <p>X-HViT processes images uploaded by users during the demonstration session. The following data practices apply:</p>
+        <ul>
+          <li>Uploaded images are processed in-session and not permanently stored on any server.</li>
+          <li>No personally identifiable information (PII) is collected through the platform.</li>
+          <li>Users must not upload identifiable patient data without proper de-identification.</li>
+          <li>Session data may be logged in aggregate for performance monitoring and research improvement.</li>
+        </ul>
+        <div class="callout"><strong>Best Practice:</strong> Always anonymize medical images before uploading. Remove DICOM metadata containing patient names, IDs, or dates of birth.</div>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s5">
+        <div class="terms-section-num">// 05</div>
+        <h2>Intellectual Property</h2>
+        <p>All code, model weights, architecture designs, UI elements, and documentation associated with X-HViT are the intellectual property of the development team at United Technical College.</p>
+        <ul>
+          <li>The model architecture is based on open-source components (PyTorch, Hugging Face Transformers) governed by their respective licenses.</li>
+          <li>Training data is sourced from Mendeley Data under open-access research agreements.</li>
+          <li>The X-HViT brand, logo, and UI design are original works of the project team.</li>
+          <li>Academic citations of this work must reference the project and affiliated institution.</li>
+        </ul>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s6">
+        <div class="terms-section-num">// 06</div>
+        <h2>Limitations of Liability</h2>
+        <p>To the maximum extent permitted by applicable law, the developers and United Technical College shall not be liable for:</p>
+        <ul>
+          <li>Any direct or indirect damages arising from use or inability to use the platform.</li>
+          <li>Misinterpretation of AI outputs as clinical medical advice.</li>
+          <li>Data loss, system downtime, or service interruptions.</li>
+          <li>Third-party actions resulting from platform outputs.</li>
+        </ul>
+        <div class="warn-callout"><strong>Limitation:</strong> The platform is provided "as is" without warranties of any kind, express or implied, including but not limited to merchantability or fitness for a particular purpose.</div>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s7">
+        <div class="terms-section-num">// 07</div>
+        <h2>User Obligations</h2>
+        <p>By using X-HViT, you agree to:</p>
+        <ul>
+          <li>Use the platform solely for lawful, educational, or research purposes.</li>
+          <li>Respect the privacy and confidentiality of any medical data uploaded.</li>
+          <li>Not attempt to exploit, hack, or disrupt the platform's operation.</li>
+          <li>Provide accurate information when reporting issues or requesting support.</li>
+          <li>Acknowledge AI limitations in all presentations or publications involving this work.</li>
+        </ul>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s8">
+        <div class="terms-section-num">// 08</div>
+        <h2>Research Ethics</h2>
+        <p>X-HViT is developed in accordance with responsible AI research principles:</p>
+        <ul>
+          <li>Training data was sourced from publicly available, ethically approved datasets.</li>
+          <li>The model includes explainability features to prevent "black box" decision-making.</li>
+          <li>Bias evaluation across demographic and imaging subgroups is an ongoing research priority.</li>
+          <li>The project follows Pokhara University's research ethics guidelines.</li>
+        </ul>
+        <div class="callout"><strong>Responsible AI:</strong> We are committed to transparent, explainable, and fair AI development. Dual XAI outputs (Grad-CAM + attention maps) are provided to support clinical trust and accountability.</div>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s9">
+        <div class="terms-section-num">// 09</div>
+        <h2>Modifications to Terms</h2>
+        <p>The X-HViT project team reserves the right to update these Terms &amp; Conditions at any time. Changes will be reflected with an updated effective date. Continued use of the platform after changes constitutes acceptance of the revised terms.</p>
+        <p>Major changes will be communicated through the platform's notification system and the project's academic documentation.</p>
+      </div>
+
+      <div class="section-divider-sm"></div>
+
+      <div class="terms-section reveal" id="s10">
+        <div class="terms-section-num">// 10</div>
+        <h2>Contact</h2>
+        <p>For questions, concerns, or clarifications regarding these terms, please contact:</p>
+        <div class="callout">
+          <strong>Department of Computer Engineering</strong><br/>
+          United Technical College, Pokhara University<br/>
+          Nepal · Academic Year 2025–2026<br/><br/>
+          📧 Project Team: <strong>xhvit@utc.edu.np</strong>
+        </div>
+        <p>For technical support or bug reports, please visit the <a href="support.html" style="color:var(--teal)">Support page</a>.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
+    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
+</div></footer>
+<script src="shared.js"></script>
+<script>
+// Highlight active TOC on scroll
+const sections = document.querySelectorAll('.terms-section');
+const tocLinks = document.querySelectorAll('.toc-list a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  tocLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
