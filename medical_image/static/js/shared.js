@@ -29,3 +29,4 @@ if (hamburger) {
     } else { s[0].style.transform=s[2].style.transform=''; s[1].style.opacity=''; }
   });
 }
+

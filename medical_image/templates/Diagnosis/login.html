@@ -1,10 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>X-HViT | Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="{% static 'css/shared.css' %}">
 <style>
 .auth-page {
   min-height: 100vh;
@@ -116,7 +118,7 @@
     <div class="logo-icon">X⚡</div>
     <div class="logo-text"><span>X-HViT</span> Medical</div>
   </a>
-  <div style="font-size:13px;color:var(--text-muted)">Don't have an account? <a href="register.html" style="color:var(--teal);font-weight:500">Sign up free →</a></div>
+  <div style="font-size:13px;color:var(--text-muted)">Don't have an account? <a href="/register" style="color:var(--teal);font-weight:500">Sign up free →</a></div>
 </nav>
 
 <div class="auth-page">
@@ -181,13 +183,14 @@
         <span id="loginBtnText">Sign In</span>
       </button>
 
-      <div class="auth-footer">Don't have an account? <a href="register.html">Create one free →</a></div>
-      <div class="auth-footer" style="margin-top:10px"><a href="index.html" style="color:var(--text-dim)">← Back to home</a></div>
+      <div class="auth-footer">Don't have an account? <a href="/register">Create one free →</a></div>
+      <div class="auth-footer" style="margin-top:10px"><a href="/index" style="color:var(--text-dim)">← Back to home</a></div>
     </div>
   </div>
 </div>
 
-<script src="auth.js"></script>
+<script src="{% static 'js/auth.js' %}"></script>
+
 <script>
 // Override guard — login page should always be accessible
 function guardPage() {}
@@ -223,7 +226,7 @@ function handleLogin() {
     } else {
       btn.disabled = false;
       document.getElementById('loginBtnText').textContent = 'Sign In';
-      err.textContent = '⚠ Password must be at least 4 characters.';
+      err.textContent = '⚠ Password must be at least 8 characters.';
       err.classList.add('show');
     }
   }, 1200);

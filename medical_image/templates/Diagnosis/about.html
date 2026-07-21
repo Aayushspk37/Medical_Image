@@ -1,0 +1,618 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>X-HViT | About</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/shared.css' %}">
+  <style>
+    .about-page {
+      padding: 100px 0 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-hero-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .about-hero-text h1 {
+      font-family: var(--font-head);
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .about-hero-text p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .about-hero-text .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .about-stat-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .as-item {
+      text-align: center;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .as-val {
+      font-family: var(--font-head);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    .as-lbl {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .pillar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .pillar:hover {
+      border-color: rgba(0, 229, 176, 0.2);
+    }
+
+    .p-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .p-title {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+
+    .p-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Mission section styles - Toggleable only */
+    .mission-statement {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 48px;
+      margin: 40px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-statement::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--blue), var(--violet));
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .mission-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .mission-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 229, 176, 0.05), rgba(58, 155, 255, 0.05));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: var(--r-md);
+    }
+
+    .mission-card:hover::after {
+      opacity: 1;
+    }
+
+    .mission-card:hover {
+      border-color: rgba(0, 229, 176, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .mission-card.active {
+      border-color: var(--teal);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0, 229, 176, 0.15);
+    }
+
+    .mission-card.active::after {
+      opacity: 1;
+    }
+
+    .mission-card .mission-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .mission-card .mission-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .mission-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+      transition: transform 0.4s ease;
+    }
+
+    .mission-card.active .mission-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    .mission-card h4 {
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+      flex: 1;
+    }
+
+    .mission-card .mission-expand-icon {
+      font-size: 18px;
+      transition: transform 0.4s ease;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .mission-card.active .mission-expand-icon {
+      transform: rotate(180deg);
+      color: var(--teal);
+    }
+
+    .mission-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin: 0;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mission-card.active p {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 12px;
+    }
+
+    .mission-card .mission-toggle-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.5px;
+      opacity: 0.6;
+      margin-top: 10px;
+      display: inline-block;
+      transition: opacity 0.3s ease;
+    }
+
+    .mission-card.active .mission-toggle-hint {
+      opacity: 0;
+    }
+
+    /* Footer styles */
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      text-decoration: none;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .social-link:hover {
+      border-color: var(--teal);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 16px rgba(0, 229, 176, 0.2);
+    }
+
+    .social-link img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: grayscale(0.3);
+      transition: filter 0.3s;
+    }
+
+    .social-link:hover img {
+      filter: grayscale(0);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-bottom-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.3s;
+      letter-spacing: 0.3px;
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--teal);
+    }
+
+    @media(max-width:900px) {
+      .about-hero-section {
+        grid-template-columns: 1fr;
+      }
+
+      .pillars {
+        grid-template-columns: 1fr;
+      }
+
+      .mission-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-bg"></div>
+  <nav>
+    <div class="nav-logo"><a href="/index" style="display:flex;align-items:center;gap:12px">
+        <div class="logo-icon">X⚡</div>
+        <div class="logo-text"><span>X-HViT</span> Medical</div>
+      </a></div>
+    <ul class="nav-links">
+      <li><a href="/index" class="">Home</a></li>
+      <li><a href="/diagnose" class="">Diagnose</a></li>
+      <li><a href="/modalities" class="">Modalities</a></li>
+      <li><a href="/dashboard" class="">Dashboard</a></li>
+      <li><a href="/reports" class="">Reports</a></li>
+      <li><a href="/research" class="">Research</a></li>
+      <li><a href="/about" class="active">About</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="/login" class="btn btn-ghost">Login</a>
+      <a href="/register" class="btn btn-primary">Get Started</a>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="about-page">
+    <div class="container">
+      <div class="about-hero-section reveal">
+        <div class="about-hero-text">
+          <div class="section-tag">About</div>
+          <h1>About <span style="color:var(--teal)">X-HViT</span></h1>
+          <p>X-HViT (Explainable Hybrid Vision Transformer) is an academic research project built as the final year BCE
+            project at United Technical College, affiliated to Pokhara University, Nepal.</p>
+          <p>The goal is to bridge the gap between high-accuracy medical AI and clinical interpretability — providing
+            both powerful predictions and transparent visual explanations that clinicians can trust.</p>
+          <div class="btn-row"><a href="/diagnose" class="btn btn-primary btn-lg">🧠 Try Demo</a><a href="/team"
+              class="btn btn-ghost btn-lg">Meet the Team</a><a href="/research" class="btn btn-outline btn-lg">View
+              Research</a></div>
+        </div>
+        <div class="about-stat-box">
+          <div class="as-item">
+            <div class="as-val" style="color:var(--teal)">28K+</div>
+            <div class="as-lbl">Training Images</div>
+          </div>
+          <div class="as-item">
+            <div class="as-val" style="color:var(--blue)">95%+</div>
+            <div class="as-lbl">Accuracy</div>
+          </div>
+          <div class="as-item">
+            <div class="as-val" style="color:var(--violet)">4</div>
+            <div class="as-lbl">Modalities</div>
+          </div>
+          <div class="as-item">
+            <div class="as-val" style="color:var(--yellow)">2x</div>
+            <div class="as-lbl">XAI Layers</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <!-- Mission Section -->
+      <div style="margin:60px 0">
+        <div class="reveal">
+          <div class="section-tag">Mission</div>
+          <h2 class="section-title">Our <span class="teal">Mission</span></h2>
+          <p style="font-size:15px;color:var(--text-muted);margin-top:8px;">Click on any card to learn more about our core values</p>
+        </div>
+
+        <div class="mission-statement reveal">
+          <p style="font-size:18px;font-weight:500;margin-bottom:20px;line-height:1.6;">To democratize AI-assisted
+            medical diagnosis by building transparent, interpretable, and clinically-deployable deep learning systems
+            that empower healthcare professionals.</p>
+          <div class="mission-grid">
+            <div class="mission-card" onclick="toggleMissionCard(this)">
+              <div class="mission-content">
+                <div class="mission-header">
+                  <span class="mission-icon">🎯</span>
+                  <h4>Accuracy with Trust</h4>
+                  <span class="mission-expand-icon">▼</span>
+                </div>
+                <p>We believe AI in healthcare must be both highly accurate and fully explainable. Every diagnosis comes
+                  with visual explanations that clinicians can verify and trust.</p>
+                <span class="mission-toggle-hint">Click to expand</span>
+              </div>
+            </div>
+            <div class="mission-card" onclick="toggleMissionCard(this)">
+              <div class="mission-content">
+                <div class="mission-header">
+                  <span class="mission-icon">🌍</span>
+                  <h4>Accessibility</h4>
+                  <span class="mission-expand-icon">▼</span>
+                </div>
+                <p>Our optimized architecture works in resource-constrained environments, making advanced medical AI
+                  accessible to clinics and hospitals beyond major tech hubs.</p>
+                <span class="mission-toggle-hint">Click to expand</span>
+              </div>
+            </div>
+            <div class="mission-card" onclick="toggleMissionCard(this)">
+              <div class="mission-content">
+                <div class="mission-header">
+                  <span class="mission-icon">🔬</span>
+                  <h4>Research-Driven</h4>
+                  <span class="mission-expand-icon">▼</span>
+                </div>
+                <p>Built on open-source tools and publicly available datasets, we commit to transparency and
+                  reproducibility to accelerate medical AI research globally.</p>
+                <span class="mission-toggle-hint">Click to expand</span>
+              </div>
+            </div>
+            <div class="mission-card" onclick="toggleMissionCard(this)">
+              <div class="mission-content">
+                <div class="mission-header">
+                  <span class="mission-icon">🤝</span>
+                  <h4>Human-Centric</h4>
+                  <span class="mission-expand-icon">▼</span>
+                </div>
+                <p>AI assists, not replaces, medical professionals. Our tools are designed to augment clinical
+                  decision-making and reduce diagnostic errors.</p>
+                <span class="mission-toggle-hint">Click to expand</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:8px;">
+            <div class="logo-icon" style="width:32px;height:32px;font-size:12px;">X⚡</div>
+            <div class="logo-text" style="font-size:15px;"><span>X-HViT</span> Medical</div>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Explainable Hybrid
+            Vision Transformer for AI-assisted medical image diagnosis.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">
+              <img src="{% static 'images/diagnosis/facebook.png' %}" alt="Facebook" onerror="this.style.display='none'">
+            </a>
+            <a href="#" class="social-link" aria-label="Instagram">
+              <img src="{% static 'images/diagnosis/instagram.png' %}" alt="Instagram" onerror="this.style.display='none'">
+            </a>
+            <a href="#" class="social-link" aria-label="GitHub">
+              <img src="{% static 'images/diagnosis/github.png' %}" alt="GitHub" onerror="this.style.display='none'">
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="/index">Home</a></li>
+            <li><a href="/diagnose">Diagnose</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/reports">Reports</a></li>
+            <li><a href="/research">Research</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="/modalities">Modalities</a></li>
+            <li><a href="/documentation">Documentation</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/team">Team</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/service">Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Explainable HViT for Medical Imaging. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="/terms">Terms</a>
+          <a href="/privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle function for mission cards - Click to expand/collapse
+    function toggleMissionCard(element) {
+      // Remove active class from all other cards
+      const allCards = document.querySelectorAll('.mission-card');
+      allCards.forEach(card => {
+        if (card !== element) {
+          card.classList.remove('active');
+        }
+      });
+      
+      // Toggle active class on clicked card
+      element.classList.toggle('active');
+    }
+
+    // Close cards when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.mission-card')) {
+        const allCards = document.querySelectorAll('.mission-card');
+        allCards.forEach(card => {
+          card.classList.remove('active');
+        });
+      }
+    });
+
+    // Keyboard accessibility - Enter/Space to toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.mission-card');
+      cards.forEach(card => {
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-expanded', 'false');
+        
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleMissionCard(this);
+            
+            // Update aria-expanded
+            const isActive = this.classList.contains('active');
+            this.setAttribute('aria-expanded', isActive);
+          }
+        });
+        
+        // Update aria-expanded when toggled by click
+        card.addEventListener('click', function() {
+          const isActive = this.classList.contains('active');
+          this.setAttribute('aria-expanded', isActive);
+        });
+      });
+    });
+  </script>
+  <script src="{% static 'js/shared.js' %}"></script>
+</body>
+
+</html>

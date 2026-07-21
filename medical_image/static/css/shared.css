@@ -175,3 +175,6 @@ footer { border-top:1px solid var(--border); padding:50px 0 30px; background:var
   .footer-bottom { flex-direction:column; text-align:center; }
 }
 @media(max-width:480px) { .footer-grid { grid-template-columns:1fr; } }
+
+
+
