@@ -368,26 +368,7 @@
 
 <body>
   <div class="grid-bg"></div>
-  <nav>
-    <div class="nav-logo"><a href="/index" style="display:flex;align-items:center;gap:12px">
-        <div class="logo-icon">X⚡</div>
-        <div class="logo-text"><span>X-HViT</span> Medical</div>
-      </a></div>
-    <ul class="nav-links">
-      <li><a href="/index" class="">Home</a></li>
-      <li><a href="/diagnose" class="">Diagnose</a></li>
-      <li><a href="/modalities" class="">Modalities</a></li>
-      <li><a href="/dashboard" class="">Dashboard</a></li>
-      <li><a href="/reports" class="">Reports</a></li>
-      <li><a href="/research" class="">Research</a></li>
-      <li><a href="/about" class="active">About</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="/login" class="btn btn-ghost">Login</a>
-      <a href="/register" class="btn btn-primary">Get Started</a>
-    </div>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-  </nav>
+  {% include 'includes/nav.html' %}
 
   <div class="about-page">
     <div class="container">
