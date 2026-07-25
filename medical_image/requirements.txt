@@ -20,6 +20,8 @@ scipy==1.14.1
 matplotlib==3.9.2
 seaborn==0.13.2
 
+psycopg2-binary==2.9.10
+
 # Image Processing - FIXED (removed the incorrect version)
 opencv-python==4.10.0.84
 opencv-python-headless==4.10.0.84
