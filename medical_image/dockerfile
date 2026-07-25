@@ -1,0 +1,49 @@
+# Use Python 3.11 as base image
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=XHVIT.settings
+
+# Set work directory inside container
+WORKDIR /app
+
+# Install system dependencies for ML libraries
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file first (for better caching)
+COPY medical_image/requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire project
+COPY medical_image/ /app/
+
+# Copy static and other directories
+COPY static/ /app/static/
+COPY templates/ /app/templates/
+COPY models/ /app/models/
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Create a non-root user for security
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Expose port 8000
+EXPOSE 8000
+
+# Start the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120", "XHVIT.wsgi:application"]
