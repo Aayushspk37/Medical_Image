@@ -207,3 +207,14 @@ XHVIT_MODEL_CONFIG = {
         'color': '#e74c3c'
     }
 }
+
+# settings.py
+
+# Login URL - where users are redirected when they need to log in
+LOGIN_URL = '/login/'  # or 'Diagnosis:login'
+
+# Login redirect URL - where users go after successful login
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+# Logout redirect URL - where users go after logout
+LOGOUT_REDIRECT_URL = '/'

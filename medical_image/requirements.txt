@@ -10,8 +10,6 @@ django-filter==24.3
 whitenoise==6.7.0
 gunicorn==23.0.0
 
-
-
 # Core ML Libraries
 torch==2.5.1
 torchvision==0.20.1
@@ -22,9 +20,10 @@ scipy==1.14.1
 matplotlib==3.9.2
 seaborn==0.13.2
 
-# Image Processing
-opencv-python-headless==4.10.0.84
+# Image Processing - FIXED (removed the incorrect version)
 opencv-python==4.10.0.84
+opencv-python-headless==4.10.0.84
+
 Pillow==10.4.0
 
 # Deep Learning Libraries
