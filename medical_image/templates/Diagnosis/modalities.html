@@ -1,305 +1,770 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>X-HViT | Modalities</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="shared.css"/>
-<style>
-.page-hero { background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,229,176,0.07) 0%, transparent 70%); }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>X-HViT | Imaging Modalities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/shared.css' %}"/>
+    <style>
+        /* ============================================
+           MODALITIES PAGE STYLES
+           ============================================ */
+        .modalities-page {
+            padding: 120px 0 80px;
+            position: relative;
+            z-index: 1;
+        }
 
-/* Modality cards */
-.mod-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin-top: 60px; }
-.mod-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden;
-  transition: all 0.35s;
-}
-.mod-card:hover { border-color: rgba(0,229,176,0.25); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.mod-card-top {
-  padding: 36px 36px 28px;
-  display: flex; align-items: flex-start; gap: 24px;
-}
-.mod-icon-wrap {
-  width: 80px; height: 80px; flex-shrink: 0;
-  border-radius: 20px; display: flex; align-items: center; justify-content: center;
-  font-size: 38px; background: var(--bg3); border: 1px solid var(--border);
-}
-.mod-card-info {}
-.mod-card-info h2 { font-family: var(--font-head); font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-.mod-card-info p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
-.mod-card-body { padding: 0 36px 28px; }
-.mod-stat-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-.mod-stat {
-  flex: 1; min-width: 100px;
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: var(--r-sm); padding: 14px 16px;
-}
-.mod-stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
-.mod-stat-value { font-family: var(--font-mono); font-size: 16px; color: var(--text); font-weight: 500; }
-.mod-card-footer {
-  border-top: 1px solid var(--border); padding: 18px 36px;
-  display: flex; gap: 8px; flex-wrap: wrap;
-}
-.disease-chip {
-  font-family: var(--font-mono); font-size: 11px; padding: 5px 12px;
-  border-radius: 100px; background: rgba(0,229,176,0.06); color: var(--teal);
-  border: 1px solid rgba(0,229,176,0.15);
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-/* Dataset info */
-#dataset { padding: 100px 0; background: var(--bg2); }
-.dataset-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 56px; }
-.dataset-text h3 { font-family: var(--font-head); font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
-.dataset-text p { color: var(--text-muted); font-size: 15px; line-height: 1.75; margin-bottom: 12px; }
-.dataset-visual {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden;
-}
-.dv-header { padding: 14px 20px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
-.dv-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-.dv-row { display: flex; flex-direction: column; gap: 6px; }
-.dv-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; }
-.dv-label span:first-child { color: var(--text-muted); }
-.dv-label span:last-child { color: var(--text); }
-.dv-bar { height: 6px; background: var(--bg); border-radius: 10px; overflow: hidden; }
-.dv-fill { height: 100%; border-radius: 10px; }
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
 
-/* Augmentation */
-#augmentation { padding: 100px 0; }
-.aug-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
-.aug-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-md); padding: 28px;
-  display: flex; align-items: flex-start; gap: 16px;
-  transition: border-color 0.2s;
-}
-.aug-card:hover { border-color: rgba(0,229,176,0.2); }
-.aug-num {
-  width: 36px; height: 36px; flex-shrink: 0;
-  border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 13px;
-  background: rgba(0,229,176,0.08); color: var(--teal);
-  border: 1px solid rgba(0,229,176,0.15);
-}
-.aug-card h4 { font-family: var(--font-head); font-size: 16px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
-.aug-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--teal);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 16px;
+            background: rgba(0, 229, 176, 0.06);
+            border: 1px solid rgba(0, 229, 176, 0.1);
+            border-radius: 100px;
+            margin-bottom: 12px;
+        }
 
-@media(max-width:1024px) {
-  .mod-grid { grid-template-columns: 1fr; }
-  .dataset-inner { grid-template-columns: 1fr; }
-  .aug-grid { grid-template-columns: repeat(2,1fr); }
-}
-@media(max-width:640px) {
-  .aug-grid { grid-template-columns: 1fr; }
-  .mod-card-top { flex-direction: column; }
-}
-</style>
+        .section-tag .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+
+        .page-title {
+            font-family: var(--font-head);
+            font-size: clamp(36px, 4vw, 48px);
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+
+        .page-title .gradient-text {
+            background: linear-gradient(135deg, var(--teal), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 48px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .stat-number {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--teal);
+            letter-spacing: -1px;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* Modality Grid */
+        .modality-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .modality-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .modality-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 229, 176, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modality-card.featured {
+            border-color: rgba(0, 229, 176, 0.3);
+            box-shadow: 0 0 40px rgba(0, 229, 176, 0.05);
+        }
+
+        .modality-card.featured:hover {
+            border-color: rgba(0, 229, 176, 0.5);
+            box-shadow: 0 12px 50px rgba(0, 229, 176, 0.1);
+        }
+
+        .modality-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-family: var(--font-mono);
+            font-size: 8px;
+            color: var(--teal);
+            background: rgba(0, 229, 176, 0.08);
+            padding: 2px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(0, 229, 176, 0.1);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .modality-card .modality-icon {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            background: linear-gradient(135deg, rgba(0, 229, 176, 0.04), rgba(58, 155, 255, 0.04));
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modality-card .modality-icon .icon-bg {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            opacity: 0.05;
+            filter: blur(40px);
+        }
+
+        .modality-card .modality-icon .icon-bg.green {
+            background: var(--teal);
+        }
+        .modality-card .modality-icon .icon-bg.blue {
+            background: var(--blue);
+        }
+        .modality-card .modality-icon .icon-bg.violet {
+            background: var(--violet);
+        }
+        .modality-card .modality-icon .icon-bg.yellow {
+            background: var(--yellow);
+        }
+
+        .modality-content {
+            padding: 24px;
+        }
+
+        .modality-name {
+            font-family: var(--font-head);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .modality-sub {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--teal);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .modality-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .modality-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .modality-tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-muted);
+            padding: 3px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg3);
+            transition: all 0.3s ease;
+        }
+
+        .modality-tag:hover {
+            border-color: rgba(0, 229, 176, 0.2);
+            color: var(--text);
+        }
+
+        .modality-tag .tag-icon {
+            margin-right: 4px;
+        }
+
+        .modality-accuracy {
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: var(--bg3);
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+        }
+
+        .accuracy-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .accuracy-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+        }
+
+        .accuracy-track {
+            flex: 1;
+            height: 4px;
+            background: var(--bg2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1.2s ease;
+            width: 0%;
+        }
+
+        .accuracy-fill.green { background: var(--teal); }
+        .accuracy-fill.blue { background: var(--blue); }
+        .accuracy-fill.violet { background: var(--violet); }
+        .accuracy-fill.yellow { background: var(--yellow); }
+
+        .accuracy-pct {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            min-width: 45px;
+            text-align: right;
+        }
+
+        /* Modality Specific Features */
+        .modality-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .modality-feature {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .modality-feature .check {
+            color: var(--teal);
+            font-weight: 700;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            margin-top: 60px;
+            padding: 48px;
+            background: linear-gradient(135deg, rgba(0, 229, 176, 0.06), rgba(0, 229, 176, 0.01));
+            border: 1px solid rgba(0, 229, 176, 0.15);
+            border-radius: var(--r-lg);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .cta-section p {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: var(--r-sm);
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0, 229, 176, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg3);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(0, 229, 176, 0.2);
+            color: var(--teal);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 176, 0.06);
+            border-color: rgba(0, 229, 176, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .modality-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modalities-page {
+                padding: 100px 0 60px;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .modality-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .modality-card .modality-icon {
+                height: 120px;
+                font-size: 40px;
+            }
+
+            .cta-section {
+                padding: 32px 20px;
+            }
+
+            .cta-section h2 {
+                font-size: 22px;
+            }
+
+            .modality-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 8px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .cta-buttons .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Animation for stats */
+        .stat-number {
+            animation: countUp 1.2s ease forwards;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        .accuracy-fill {
+            animation: fillBar 1.2s ease forwards;
+        }
+
+        @keyframes fillBar {
+            from { width: 0%; }
+            to { width: attr(data-width); }
+        }
+    </style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<nav>
-  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
-  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
-    <li><a href="diagnose.html" class="">Diagnose</a></li>
-    <li><a href="modalities.html" class="active">Modalities</a></li>
-    <li><a href="dashboard.html" class="">Dashboard</a></li>
-    <li><a href="reports.html" class="">Reports</a></li>
-    <li><a href="research.html" class="">Research</a></li>
-    <li><a href="about.html" class="">About</a></li></ul>
-  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-</nav>
+    <div class="grid-bg"></div>
 
-<div class="page-hero">
-  <div class="container">
-    <div class="page-hero-tag">Data</div>
-    <h1 class="animation: fadeUp 0.6s ease both" style="font-family:var(--font-head);font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;animation:fadeUp 0.6s ease both">Supported <span class="teal">Modalities</span></h1>
-    <p style="animation:fadeUp 0.6s 0.15s ease both;opacity:0;animation-fill-mode:both">28,000+ labeled medical images across four imaging types sourced from Mendeley Data, covering diverse pathologies for robust multi-class classification.</p>
-  </div>
-</div>
+    <!-- Navigation -->
+    {% include 'includes/nav.html' %}
 
-<section style="padding:0 0 100px;position:relative;z-index:1">
-  <div class="container">
-    <div class="mod-grid">
+    <!-- Modalities Page -->
+    <div class="modalities-page">
+        <div class="container">
 
-      <div class="mod-card reveal">
-        <div class="mod-card-top">
-          <div class="mod-icon-wrap">🫁</div>
-          <div class="mod-card-info">
-            <h2>CT Scans</h2>
-            <p>Computed Tomography provides high-resolution cross-sectional imaging of internal organs. X-HViT uses CT data to detect pulmonary nodules, tumors, and soft-tissue abnormalities with precise spatial localization via Grad-CAM overlays.</p>
-          </div>
-        </div>
-        <div class="mod-card-body">
-          <div class="mod-stat-row">
-            <div class="mod-stat"><div class="mod-stat-label">Images</div><div class="mod-stat-value">7,200+</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Classes</div><div class="mod-stat-value">4</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Input Size</div><div class="mod-stat-value">224×224</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Acc. Target</div><div class="mod-stat-value">93%+</div></div>
-          </div>
-        </div>
-        <div class="mod-card-footer">
-          <span class="disease-chip">Lung Cancer</span>
-          <span class="disease-chip">Adenocarcinoma</span>
-          <span class="disease-chip">Organ Lesions</span>
-          <span class="disease-chip">Nodules</span>
-        </div>
-      </div>
+            <!-- Page Header -->
+            <div class="page-header reveal">
+                <div class="section-tag">
+                    <span class="pulse-dot"></span>
+                    Imaging Modalities
+                </div>
+                <h1 class="page-title">Supported <span class="gradient-text">Modalities</span></h1>
+                <p class="page-desc">X-HViT supports multiple imaging modalities, each with specialized AI models trained for accurate diagnosis.</p>
+            </div>
 
-      <div class="mod-card reveal reveal-delay-1">
-        <div class="mod-card-top">
-          <div class="mod-icon-wrap">🧠</div>
-          <div class="mod-card-info">
-            <h2>MRI Images</h2>
-            <p>Magnetic Resonance Imaging offers exceptional soft-tissue contrast, ideal for neurological analysis. The model distinguishes between tumor types using attention maps that highlight diagnostically critical regions in brain scans.</p>
-          </div>
-        </div>
-        <div class="mod-card-body">
-          <div class="mod-stat-row">
-            <div class="mod-stat"><div class="mod-stat-label">Images</div><div class="mod-stat-value">7,023</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Classes</div><div class="mod-stat-value">4</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Input Size</div><div class="mod-stat-value">224×224</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Acc. Target</div><div class="mod-stat-value">95%+</div></div>
-          </div>
-        </div>
-        <div class="mod-card-footer">
-          <span class="disease-chip">Glioma</span>
-          <span class="disease-chip">Meningioma</span>
-          <span class="disease-chip">Pituitary Tumor</span>
-          <span class="disease-chip">No Tumor</span>
-        </div>
-      </div>
+            <!-- Stats Bar -->
+            <div class="stats-bar reveal reveal-delay-1">
+                <div class="stat-item">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Imaging Modalities</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">AI Models</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">28K+</div>
+                    <div class="stat-label">Training Images</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%+</div>
+                    <div class="stat-label">Avg. Accuracy</div>
+                </div>
+            </div>
 
-      <div class="mod-card reveal">
-        <div class="mod-card-top">
-          <div class="mod-icon-wrap">🩻</div>
-          <div class="mod-card-info">
-            <h2>X-ray Images</h2>
-            <p>Chest X-rays are the most accessible screening modality globally. X-HViT classifies pulmonary and skeletal conditions, with Grad-CAM overlays highlighting specific infiltrate patterns and fracture locations for radiologist review.</p>
-          </div>
-        </div>
-        <div class="mod-card-body">
-          <div class="mod-stat-row">
-            <div class="mod-stat"><div class="mod-stat-label">Images</div><div class="mod-stat-value">6,800+</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Classes</div><div class="mod-stat-value">3</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Input Size</div><div class="mod-stat-value">224×224</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Acc. Target</div><div class="mod-stat-value">91%+</div></div>
-          </div>
-        </div>
-        <div class="mod-card-footer">
-          <span class="disease-chip">Pneumonia</span>
-          <span class="disease-chip">Tuberculosis</span>
-          <span class="disease-chip">Bone Fractures</span>
-          <span class="disease-chip">Normal</span>
-        </div>
-      </div>
+            <!-- Modality Grid -->
+            <div class="modality-grid">
 
-      <div class="mod-card reveal reveal-delay-1">
-        <div class="mod-card-top">
-          <div class="mod-icon-wrap">🔭</div>
-          <div class="mod-card-info">
-            <h2>Microscopic Imaging</h2>
-            <p>Histopathological and cell-level imagery require recognition of subtle morphological differences. X-HViT's transformer attention captures cellular-level global context while CNN extracts texture features for accurate malignancy detection.</p>
-          </div>
+                <!-- MRI -->
+                <div class="modality-card featured reveal reveal-delay-1">
+                    <span class="modality-badge">⭐ Most Used</span>
+                    <div class="modality-icon">
+                        <div class="icon-bg blue"></div>
+                        🧠
+                    </div>
+                    <div class="modality-content">
+                        <div class="modality-name">MRI</div>
+                        <div class="modality-sub">Magnetic Resonance Imaging</div>
+                        <p class="modality-desc">
+                            High-resolution brain imaging for tumor detection, stroke assessment, and neurological disorders.
+                        </p>
+                        <div class="modality-tags">
+                            <span class="modality-tag"><span class="tag-icon">🔬</span> Brain</span>
+                            <span class="modality-tag"><span class="tag-icon">🧪</span> Tumor</span>
+                            <span class="modality-tag"><span class="tag-icon">⚡</span> High Detail</span>
+                        </div>
+                        <div class="modality-features">
+                            <div class="modality-feature"><span class="check">✓</span> Brain Tumor</div>
+                            <div class="modality-feature"><span class="check">✓</span> Glioma</div>
+                            <div class="modality-feature"><span class="check">✓</span> Meningioma</div>
+                            <div class="modality-feature"><span class="check">✓</span> Pituitary</div>
+                        </div>
+                        <div class="modality-accuracy">
+                            <div class="accuracy-bar">
+                                <span class="accuracy-label">Accuracy</span>
+                                <div class="accuracy-track">
+                                    <div class="accuracy-fill blue" style="width: 96.2%;"></div>
+                                </div>
+                                <span class="accuracy-pct">96.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CT Scan -->
+                <div class="modality-card reveal reveal-delay-2">
+                    <div class="modality-icon">
+                        <div class="icon-bg green"></div>
+                        🫁
+                    </div>
+                    <div class="modality-content">
+                        <div class="modality-name">CT Scan</div>
+                        <div class="modality-sub">Computed Tomography</div>
+                        <p class="modality-desc">
+                            Cross-sectional imaging for chest, abdomen, and bone fracture detection with fast acquisition.
+                        </p>
+                        <div class="modality-tags">
+                            <span class="modality-tag"><span class="tag-icon">🫁</span> Chest</span>
+                            <span class="modality-tag"><span class="tag-icon">🦴</span> Bones</span>
+                            <span class="modality-tag"><span class="tag-icon">⚡</span> Fast</span>
+                        </div>
+                        <div class="modality-features">
+                            <div class="modality-feature"><span class="check">✓</span> Pneumonia</div>
+                            <div class="modality-feature"><span class="check">✓</span> Tuberculosis</div>
+                            <div class="modality-feature"><span class="check">✓</span> Fractures</div>
+                            <div class="modality-feature"><span class="check">✓</span> Lung Nodules</div>
+                        </div>
+                        <div class="modality-accuracy">
+                            <div class="accuracy-bar">
+                                <span class="accuracy-label">Accuracy</span>
+                                <div class="accuracy-track">
+                                    <div class="accuracy-fill green" style="width: 94.8%;"></div>
+                                </div>
+                                <span class="accuracy-pct">94.8%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- X-ray -->
+                <div class="modality-card reveal reveal-delay-3">
+                    <div class="modality-icon">
+                        <div class="icon-bg violet"></div>
+                        🩻
+                    </div>
+                    <div class="modality-content">
+                        <div class="modality-name">X-ray</div>
+                        <div class="modality-sub">Radiography</div>
+                        <p class="modality-desc">
+                            Traditional 2D imaging for bone fractures, chest conditions, and dental examinations with wide availability.
+                        </p>
+                        <div class="modality-tags">
+                            <span class="modality-tag"><span class="tag-icon">🦴</span> Bones</span>
+                            <span class="modality-tag"><span class="tag-icon">🫁</span> Chest</span>
+                            <span class="modality-tag"><span class="tag-icon">🦷</span> Dental</span>
+                        </div>
+                        <div class="modality-features">
+                            <div class="modality-feature"><span class="check">✓</span> Bone Fractures</div>
+                            <div class="modality-feature"><span class="check">✓</span> Pneumonia</div>
+                            <div class="modality-feature"><span class="check">✓</span> TB Detection</div>
+                            <div class="modality-feature"><span class="check">✓</span> Joint Disorders</div>
+                        </div>
+                        <div class="modality-accuracy">
+                            <div class="accuracy-bar">
+                                <span class="accuracy-label">Accuracy</span>
+                                <div class="accuracy-track">
+                                    <div class="accuracy-fill violet" style="width: 93.5%;"></div>
+                                </div>
+                                <span class="accuracy-pct">93.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Microscopic -->
+                <div class="modality-card reveal reveal-delay-4">
+                    <div class="modality-icon">
+                        <div class="icon-bg yellow"></div>
+                        🔬
+                    </div>
+                    <div class="modality-content">
+                        <div class="modality-name">Microscopic</div>
+                        <div class="modality-sub">Histopathology / Cytology</div>
+                        <p class="modality-desc">
+                            High-magnification imaging for cellular analysis, cancer detection, and tissue pathology assessment.
+                        </p>
+                        <div class="modality-tags">
+                            <span class="modality-tag"><span class="tag-icon">🧬</span> Cells</span>
+                            <span class="modality-tag"><span class="tag-icon">🔬</span> Pathology</span>
+                            <span class="modality-tag"><span class="tag-icon">🦠</span> Micro</span>
+                        </div>
+                        <div class="modality-features">
+                            <div class="modality-feature"><span class="check">✓</span> Skin Cancer</div>
+                            <div class="modality-feature"><span class="check">✓</span> Diabetic Retinopathy</div>
+                            <div class="modality-feature"><span class="check">✓</span> Cell Classification</div>
+                            <div class="modality-feature"><span class="check">✓</span> Lesion Analysis</div>
+                        </div>
+                        <div class="modality-accuracy">
+                            <div class="accuracy-bar">
+                                <span class="accuracy-label">Accuracy</span>
+                                <div class="accuracy-track">
+                                    <div class="accuracy-fill yellow" style="width: 95.7%;"></div>
+                                </div>
+                                <span class="accuracy-pct">95.7%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section reveal">
+                <h2>Ready to <span class="gradient-text">Diagnose</span>?</h2>
+                <p>Choose your imaging modality and start your first AI-assisted diagnosis with X-HViT.</p>
+                <div class="cta-buttons">
+                    <a href="{% url 'Diagnosis:diagnose' %}" class="btn btn-primary">
+                        Start Diagnosis
+                    </a>
+                    <a href="{% url 'Diagnosis:pricing' %}" class="btn btn-outline">
+                        View Pricing
+                    </a>
+                    <a href="{% url 'Diagnosis:documentation' %}" class="btn btn-ghost">
+                         Documentation
+                    </a>
+                </div>
+            </div>
+
         </div>
-        <div class="mod-card-body">
-          <div class="mod-stat-row">
-            <div class="mod-stat"><div class="mod-stat-label">Images</div><div class="mod-stat-value">7,000+</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Classes</div><div class="mod-stat-value">3</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Input Size</div><div class="mod-stat-value">224×224</div></div>
-            <div class="mod-stat"><div class="mod-stat-label">Acc. Target</div><div class="mod-stat-value">96%+</div></div>
-          </div>
-        </div>
-        <div class="mod-card-footer">
-          <span class="disease-chip">Malignant Cells</span>
-          <span class="disease-chip">Malaria</span>
-          <span class="disease-chip">Skin Lesions</span>
-          <span class="disease-chip">Benign</span>
-        </div>
-      </div>
     </div>
-  </div>
-</section>
 
-<div class="section-divider"></div>
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
 
-<section id="dataset">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-tag">Source</div>
-      <h2 class="section-title">Dataset <span class="teal">Breakdown</span></h2>
-    </div>
-    <div class="dataset-inner">
-      <div class="dataset-text reveal">
-        <h3>Mendeley Data Repository</h3>
-        <p>All training data is sourced from Mendeley Data, a curated open-access repository for research datasets. Images span four distinct imaging modalities with class-balanced distributions for unbiased model training.</p>
-        <p>Data preprocessing includes resizing to 224×224, min-max normalization, Gaussian noise filtering, and augmentation strategies to maximize generalization.</p>
-        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
-          <span style="font-family:var(--font-mono);font-size:11px;padding:6px 14px;border-radius:100px;border:1px solid rgba(0,229,176,0.25);color:var(--teal);background:rgba(0,229,176,0.06)">28,023+ Total Images</span>
-          <span style="font-family:var(--font-mono);font-size:11px;padding:6px 14px;border-radius:100px;border:1px solid var(--border);color:var(--text-muted)">Mendeley Data</span>
-          <span style="font-family:var(--font-mono);font-size:11px;padding:6px 14px;border-radius:100px;border:1px solid var(--border);color:var(--text-muted)">Open Access</span>
-        </div>
-      </div>
-      <div class="dataset-visual reveal reveal-delay-1">
-        <div class="dv-header">Dataset Distribution</div>
-        <div class="dv-body">
-          <div class="dv-row">
-            <div class="dv-label"><span>🫁 CT Scans</span><span>7,200 images</span></div>
-            <div class="dv-bar"><div class="dv-fill" style="width:100%;background:var(--teal)"></div></div>
-          </div>
-          <div class="dv-row">
-            <div class="dv-label"><span>🧠 MRI</span><span>7,023 images</span></div>
-            <div class="dv-bar"><div class="dv-fill" style="width:97%;background:var(--blue)"></div></div>
-          </div>
-          <div class="dv-row">
-            <div class="dv-label"><span>🩻 X-ray</span><span>6,800 images</span></div>
-            <div class="dv-bar"><div class="dv-fill" style="width:94%;background:var(--violet)"></div></div>
-          </div>
-          <div class="dv-row">
-            <div class="dv-label"><span>🔭 Microscopic</span><span>7,000 images</span></div>
-            <div class="dv-bar"><div class="dv-fill" style="width:97%;background:var(--yellow)"></div></div>
-          </div>
-          <div style="margin-top:8px;padding-top:16px;border-top:1px solid var(--border)">
-            <div class="dv-label"><span style="color:var(--text-muted)">Total</span><span style="color:var(--teal);font-weight:500">28,023+ images</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <script src="{% static 'js/shared.js' %}"></script>
 
-<div class="section-divider"></div>
+    <script>
+        // ============================================
+        // REVEAL ANIMATIONS
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveals = document.querySelectorAll('.reveal');
 
-<section id="augmentation">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-tag">Preprocessing</div>
-      <h2 class="section-title">Data <span class="teal">Augmentation</span></h2>
-      <p class="section-desc">Comprehensive augmentation pipeline ensures the model generalizes beyond training distribution.</p>
-    </div>
-    <div class="aug-grid">
-      <div class="aug-card reveal"><div class="aug-num">01</div><div><h4>Resize & Normalize</h4><p>All images resized to 224×224px and pixel values min-max normalized to [0,1] range for stable gradient flow.</p></div></div>
-      <div class="aug-card reveal reveal-delay-1"><div class="aug-num">02</div><div><h4>Gaussian Noise Filter</h4><p>Gaussian smoothing reduces acquisition noise common in clinical imaging equipment, improving feature clarity.</p></div></div>
-      <div class="aug-card reveal reveal-delay-2"><div class="aug-num">03</div><div><h4>Random Rotation</h4><p>Images are rotated ±30° during training to enforce rotational invariance for varied patient orientations.</p></div></div>
-      <div class="aug-card reveal"><div class="aug-num">04</div><div><h4>Horizontal Flip</h4><p>Random horizontal flipping doubles effective dataset size and prevents directional bias in anatomical features.</p></div></div>
-      <div class="aug-card reveal reveal-delay-1"><div class="aug-num">05</div><div><h4>Zoom & Crop</h4><p>Random zoom (0.8–1.2×) and center cropping simulate different scanner distances and field-of-view settings.</p></div></div>
-      <div class="aug-card reveal reveal-delay-2"><div class="aug-num">06</div><div><h4>Brightness / Contrast</h4><p>Random brightness and contrast jitter of ±20% simulates different imaging conditions across clinical sites.</p></div></div>
-    </div>
-  </div>
-</section>
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
 
-<footer><div class="container">
-  <div class="footer-grid">
-    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
-    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
-    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
-    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
-    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
-</div></footer>
-<script src="shared.js"></script>
+            reveals.forEach(el => revealObserver.observe(el));
+
+            // Animate stat numbers
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.15}s`;
+            });
+
+            // Animate accuracy bars
+            const accuracyFills = document.querySelectorAll('.accuracy-fill');
+            accuracyFills.forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 400);
+            });
+        });
+
+        console.log('Modalities page loaded');
+    </script>
+
 </body>
 </html>

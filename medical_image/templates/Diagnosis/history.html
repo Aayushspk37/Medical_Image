@@ -1,132 +1,1120 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>X-HViT | History</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="shared.css"/>
-<style>
-.history-page{padding:100px 0 80px;position:relative;z-index:1;}
-.htoolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
-.search-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;transition:border-color 0.2s;}
-.search-bar:focus-within{border-color:rgba(0,229,176,0.4);}
-.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:14px;width:200px;}
-.search-bar input::placeholder{color:var(--text-dim);}
-.fselect{padding:10px 14px;border-radius:var(--r-sm);background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:13px;appearance:none;outline:none;cursor:pointer;}
-.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.hstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 18px;display:flex;align-items:center;gap:12px;}
-.hstat-icon{font-size:22px;}
-.hstat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px;}
-.hstat-val{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-1px;}
-.htable-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
-.htable-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
-table{width:100%;border-collapse:collapse;}
-thead tr{background:var(--bg3);border-bottom:1px solid var(--border);}
-thead th{text-align:left;padding:12px 18px;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;font-weight:400;}
-tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
-tbody tr:hover{background:rgba(255,255,255,0.02);}
-tbody tr:last-child{border-bottom:none;}
-tbody td{padding:14px 18px;font-size:13.5px;vertical-align:middle;}
-.td-case{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
-.td-conf-hi{font-family:var(--font-mono);font-size:13px;color:var(--teal);}
-.td-conf-md{font-family:var(--font-mono);font-size:13px;color:var(--yellow);}
-.td-date{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
-.td-acts{display:flex;gap:6px;}
-.td-btn{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:13px;transition:all 0.2s;text-decoration:none;}
-.td-btn:hover{border-color:rgba(0,229,176,0.3);background:rgba(0,229,176,0.06);}
-.hpager{padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
-.page-btns{display:flex;gap:5px;}
-.pg-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:12px;transition:all 0.2s;}
-.pg-btn.active,.pg-btn:hover{background:var(--bg3);color:var(--teal);border-color:rgba(0,229,176,0.3);}
-@media(max-width:900px){.hstats{grid-template-columns:repeat(2,1fr);} table{display:block;overflow-x:auto;}}
-</style>
-</head><body>
-<div class="grid-bg"></div>
-<nav>
-  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
-  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
-    <li><a href="diagnose.html" class="">Diagnose</a></li>
-    <li><a href="modalities.html" class="">Modalities</a></li>
-    <li><a href="dashboard.html" class="">Dashboard</a></li>
-    <li><a href="reports.html" class="">Reports</a></li>
-    <li><a href="research.html" class="">Research</a></li>
-    <li><a href="about.html" class="">About</a></li></ul>
-  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-</nav>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>X-HViT | History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/shared.css' %}"/>
+    <style>
+        /* ============================================
+           HISTORY PAGE STYLES
+           ============================================ */
+        .history-page {
+            padding: 120px 0 60px;
+            position: relative;
+            z-index: 1;
+        }
 
-<div class="history-page"><div class="container">
-  <div class="reveal" style="margin-bottom:36px">
-    <div class="section-tag">Records</div>
-    <h1 class="section-title">Diagnosis <span class="teal">History</span></h1>
-    <p class="section-desc">Browse, search, filter and export all previous diagnostic analyses and reports.</p>
-  </div>
-  <div class="hstats reveal">
-    <div class="hstat"><div class="hstat-icon">🧪</div><div><div class="hstat-lbl">Total Analyses</div><div class="hstat-val" style="color:var(--teal)">24</div></div></div>
-    <div class="hstat"><div class="hstat-icon">✅</div><div><div class="hstat-lbl">Completed</div><div class="hstat-val" style="color:var(--blue)">21</div></div></div>
-    <div class="hstat"><div class="hstat-icon">📄</div><div><div class="hstat-lbl">Reports</div><div class="hstat-val" style="color:var(--violet)">18</div></div></div>
-    <div class="hstat"><div class="hstat-icon">📅</div><div><div class="hstat-lbl">This Month</div><div class="hstat-val" style="color:var(--yellow)">7</div></div></div>
-  </div>
-  <div class="htoolbar reveal">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <div class="search-bar"><span style="color:var(--text-dim)">🔍</span><input type="text" id="hSearch" placeholder="Search case, diagnosis…" oninput="renderH()"/></div>
-      <select class="fselect" id="hMod" onchange="renderH()"><option value="">All Modalities</option><option>MRI</option><option>CT</option><option>X-ray</option><option>Micro</option></select>
-      <select class="fselect" id="hStat" onchange="renderH()"><option value="">All Status</option><option>Complete</option><option>Review</option></select>
-    </div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-ghost btn-sm" onclick="if(confirm('Clear all history?'))document.getElementById('tableBody').innerHTML=''">🗑 Clear</button>
-      <a href="diagnose.html" class="btn btn-primary btn-sm">+ New</a>
-    </div>
-  </div>
-  <div class="htable-wrap reveal">
-    <div class="htable-head"><span id="hCount">Showing 10 of 24 records</span><span>Sorted by: Date ↓</span></div>
-    <table><thead><tr><th>Case ID</th><th>Modality</th><th>Diagnosis</th><th>Confidence</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody id="tableBody"></tbody></table>
-    <div class="hpager"><span id="hPage">Page 1 of 3</span><div class="page-btns"><div class="pg-btn active">1</div><div class="pg-btn">2</div><div class="pg-btn">3</div><div class="pg-btn">›</div></div></div>
-  </div>
-</div></div>
-<script>
-const HR=[
-  {id:'CASE-2026-024',mod:'MRI',mc:'badge-blue',dis:'Glioma Tumor',conf:94.7,date:'2026-02-14',stat:'Complete'},
-  {id:'CASE-2026-023',mod:'CT',mc:'badge-teal',dis:'Lung Adenocarcinoma',conf:91.3,date:'2026-02-13',stat:'Complete'},
-  {id:'CASE-2026-022',mod:'X-ray',mc:'badge-violet',dis:'Pneumonia',conf:88.6,date:'2026-02-12',stat:'Review'},
-  {id:'CASE-2026-021',mod:'Micro',mc:'badge-yellow',dis:'Malignant Melanoma',conf:96.1,date:'2026-02-11',stat:'Complete'},
-  {id:'CASE-2026-020',mod:'MRI',mc:'badge-blue',dis:'Meningioma',conf:82.4,date:'2026-02-10',stat:'Complete'},
-  {id:'CASE-2026-019',mod:'CT',mc:'badge-teal',dis:'Squamous Cell Carcinoma',conf:78.9,date:'2026-02-09',stat:'Review'},
-  {id:'CASE-2026-018',mod:'X-ray',mc:'badge-violet',dis:'Tuberculosis',conf:90.2,date:'2026-02-08',stat:'Complete'},
-  {id:'CASE-2026-017',mod:'Micro',mc:'badge-yellow',dis:'Malaria (Positive)',conf:97.3,date:'2026-02-07',stat:'Complete'},
-  {id:'CASE-2026-016',mod:'MRI',mc:'badge-blue',dis:'No Tumor',conf:99.1,date:'2026-02-06',stat:'Complete'},
-  {id:'CASE-2026-015',mod:'CT',mc:'badge-teal',dis:'Normal',conf:85.7,date:'2026-02-05',stat:'Complete'},
-];
-function renderH(){
-  const q=document.getElementById('hSearch').value.toLowerCase();
-  const m=document.getElementById('hMod').value;
-  const s=document.getElementById('hStat').value;
-  const f=HR.filter(r=>(r.id.toLowerCase().includes(q)||r.dis.toLowerCase().includes(q))&&(!m||r.mod===m)&&(!s||r.stat===s));
-  document.getElementById('hCount').textContent='Showing '+f.length+' of '+HR.length+' records';
-  document.getElementById('tableBody').innerHTML=f.map(r=>`
-    <tr>
-      <td class="td-case">${r.id}</td>
-      <td><span class="badge ${r.mc}">${r.mod}</span></td>
-      <td>${r.dis}</td>
-      <td class="${r.conf>=90?'td-conf-hi':'td-conf-md'}">${r.conf}%</td>
-      <td class="td-date">${r.date}</td>
-      <td><span class="badge ${r.stat==='Complete'?'badge-teal':'badge-yellow'}">${r.stat==='Complete'?'✓':' '} ${r.stat}</span></td>
-      <td><div class="td-acts"><a href="report_detail.html" class="td-btn" title="View">📄</a><a href="diagnose.html" class="td-btn" title="Re-run">🔄</a><a href="report_detail.html" class="td-btn" title="PDF">⬇</a></div></td>
-    </tr>`).join('');
-}
-renderH();
-</script>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-<footer><div class="container">
-  <div class="footer-grid">
-    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
-    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
-    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
-    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
-    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
-</div></footer><script src="auth.js"></script>
-<script src="shared.js"></script>
-</body></html>
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .page-header .header-left h1 {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .page-header .header-left h1 .gradient-text {
+            background: linear-gradient(135deg, var(--teal), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header .header-left p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .page-header .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--teal);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 16px;
+            background: rgba(0, 229, 176, 0.06);
+            border: 1px solid rgba(0, 229, 176, 0.1);
+            border-radius: 100px;
+            margin-bottom: 4px;
+        }
+
+        .section-tag .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+
+        /* Stats */
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .history-stat {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-md);
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .history-stat .stat-number {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--teal);
+        }
+
+        .history-stat .stat-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* Toolbar */
+        .history-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 10px 16px;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-bar:focus-within {
+            border-color: rgba(0, 229, 176, 0.3);
+            box-shadow: 0 0 0 4px rgba(0, 229, 176, 0.05);
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .search-bar .search-icon {
+            color: var(--text-dim);
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border-radius: var(--r-sm);
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 13px;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            border-color: rgba(0, 229, 176, 0.3);
+        }
+
+        .filter-select option {
+            background: var(--bg2);
+            color: var(--text);
+        }
+
+        /* History Grid */
+        .history-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .history-item {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            border-color: rgba(0, 229, 176, 0.15);
+        }
+
+        .history-item .hi-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .history-item .hi-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .history-item .hi-header .hi-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .history-item .hi-header .hi-left .hi-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .history-item .hi-header .hi-left .hi-status.completed {
+            background: var(--teal);
+        }
+        .history-item .hi-header .hi-left .hi-status.review {
+            background: var(--yellow);
+        }
+        .history-item .hi-header .hi-left .hi-status.failed {
+            background: var(--red);
+        }
+        .history-item .hi-header .hi-left .hi-status.processing {
+            background: var(--blue);
+        }
+
+        .history-item .hi-header .hi-left .hi-case {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .history-item .hi-header .hi-left .hi-diagnosis {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .history-item .hi-header .hi-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .history-item .hi-header .hi-right .hi-confidence {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--teal);
+        }
+
+        .history-item .hi-header .hi-right .hi-date {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .history-item .hi-header .hi-right .hi-toggle {
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .history-item .hi-header .hi-right .hi-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .history-item .hi-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .history-item .hi-body.open {
+            max-height: 600px;
+            padding: 0 20px 20px;
+        }
+
+        .history-item .hi-body .hi-details {
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+
+        .history-item .hi-body .hi-details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .history-item .hi-body .hi-detail-item {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 12px 14px;
+        }
+
+        .history-item .hi-body .hi-detail-item .hdl {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .history-item .hi-body .hi-detail-item .hdv {
+            font-size: 13px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .history-item .hi-body .hi-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .history-item .hi-body .hi-actions .btn {
+            font-size: 12px;
+            padding: 6px 14px;
+        }
+
+        /* Probability Bars in History */
+        .hi-prob-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .hi-prob-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hi-prob-item .hp-name {
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .hi-prob-item .hp-track {
+            flex: 1;
+            height: 4px;
+            background: var(--bg3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .hi-prob-item .hp-track .hp-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            width: 0%;
+        }
+
+        .hi-prob-item .hp-pct {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            width: 40px;
+            text-align: right;
+            flex-shrink: 0;
+            color: var(--text-muted);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 60px;
+            opacity: 0.15;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-head);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 14px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .empty-state .btn {
+            margin-top: 16px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .pagination .page-btn {
+            padding: 8px 14px;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .pagination .page-btn:hover {
+            border-color: rgba(0, 229, 176, 0.2);
+            color: var(--text);
+        }
+
+        .pagination .page-btn.active {
+            background: rgba(0, 229, 176, 0.08);
+            border-color: rgba(0, 229, 176, 0.2);
+            color: var(--teal);
+        }
+
+        .pagination .page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--r-sm);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0, 229, 176, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg3);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(0, 229, 176, 0.2);
+            color: var(--teal);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 176, 0.06);
+            border-color: rgba(0, 229, 176, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e6455a;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .badge-blue { background: rgba(58, 155, 255, 0.15); color: var(--blue); }
+        .badge-teal { background: rgba(0, 229, 176, 0.15); color: var(--teal); }
+        .badge-violet { background: rgba(124, 106, 255, 0.15); color: var(--violet); }
+        .badge-yellow { background: rgba(255, 201, 71, 0.15); color: var(--yellow); }
+        .badge-red { background: rgba(255, 85, 117, 0.15); color: var(--red); }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+        }
+
+        .toast {
+            padding: 12px 16px;
+            border-radius: var(--r-sm);
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--info);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success { border-left-color: var(--teal); }
+        .toast-error { border-left-color: var(--red); }
+        .toast-warning { border-left-color: var(--yellow); }
+        .toast-info { border-left-color: var(--blue); }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .history-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .history-page {
+                padding: 100px 0 40px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-header .header-actions {
+                width: 100%;
+            }
+
+            .page-header .header-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .history-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar {
+                max-width: 100%;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .history-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .history-item .hi-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .history-item .hi-header .hi-left {
+                width: 100%;
+            }
+
+            .history-item .hi-header .hi-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .history-item .hi-body .hi-details-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .history-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .page-header .header-left h1 {
+                font-size: 22px;
+            }
+
+            .history-item .hi-body .hi-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-item .hi-header .hi-left {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .history-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .history-item .hi-body .hi-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-item {
+            animation: fadeIn 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .history-item:nth-child(1) { animation-delay: 0.05s; }
+        .history-item:nth-child(2) { animation-delay: 0.10s; }
+        .history-item:nth-child(3) { animation-delay: 0.15s; }
+        .history-item:nth-child(4) { animation-delay: 0.20s; }
+        .history-item:nth-child(5) { animation-delay: 0.25s; }
+        .history-item:nth-child(6) { animation-delay: 0.30s; }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <!-- Navigation -->
+    {% include 'includes/nav.html' %}
+
+    <!-- History Page -->
+    <div class="history-page">
+        <div class="container">
+
+            <!-- Header -->
+            <div class="page-header reveal">
+                <div class="header-left">
+                    <div class="section-tag">
+                        <span class="pulse-dot"></span>
+                        History
+                    </div>
+                    <h1>Diagnosis <span class="gradient-text">History</span></h1>
+                    <p>View and manage all your past diagnostic records.</p>
+                </div>
+                <div class="header-actions">
+                    <a href="{% url 'Diagnosis:diagnose' %}" class="btn btn-primary">+ New Diagnosis</a>
+                    <a href="{% url 'Diagnosis:reports' %}" class="btn btn-ghost">📄 Reports</a>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="history-stats reveal reveal-delay-1">
+                <div class="history-stat">
+                    <div class="stat-number">{{ total_records|default:0 }}</div>
+                    <div class="stat-label">Total Diagnoses</div>
+                </div>
+                <div class="history-stat">
+                    <div class="stat-number" style="color:var(--teal);">{{ completed_count|default:0 }}</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="history-stat">
+                    <div class="stat-number" style="color:var(--yellow);">{{ review_count|default:0 }}</div>
+                    <div class="stat-label">Under Review</div>
+                </div>
+                <div class="history-stat">
+                    <div class="stat-number" style="color:var(--blue);">{{ positive_count|default:0 }}</div>
+                    <div class="stat-label">Positive Results</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="history-toolbar reveal reveal-delay-2">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchHistory" placeholder="Search by case ID, diagnosis..." oninput="filterHistory()"/>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <select class="filter-select" id="filterModality" onchange="filterHistory()">
+                        <option value="">All Modalities</option>
+                        <option value="MRI">MRI</option>
+                        <option value="CT">CT</option>
+                        <option value="X-ray">X-ray</option>
+                        <option value="Micro">Microscopic</option>
+                    </select>
+                    <select class="filter-select" id="filterStatus" onchange="filterHistory()">
+                        <option value="">All Status</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Review">Review</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <button class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </div>
+
+            <!-- History List -->
+            <div class="history-grid" id="historyGrid">
+                {% if records %}
+                    {% for record in records %}
+                    <div class="history-item" 
+                         data-case="{{ record.case_id }}" 
+                         data-diagnosis="{{ record.diagnosis }}" 
+                         data-modality="{{ record.modality }}" 
+                         data-status="{{ record.status }}"
+                         data-id="{{ record.id }}">
+                        <div class="hi-header" onclick="toggleHistory(this)">
+                            <div class="hi-left">
+                                <span class="hi-status {{ record.status|lower }}"></span>
+                                <span class="hi-case">{{ record.case_id }}</span>
+                                <span class="hi-diagnosis">{{ record.diagnosis|default:"Unknown" }}</span>
+                                <span class="badge badge-blue">{{ record.modality|default:"Unknown" }}</span>
+                            </div>
+                            <div class="hi-right">
+                                <span class="hi-confidence">{{ record.confidence|floatformat:1 }}%</span>
+                                <span class="hi-date">{{ record.created_at|date:"M d, Y" }}</span>
+                                <span class="hi-toggle">▼</span>
+                            </div>
+                        </div>
+                        <div class="hi-body">
+                            <div class="hi-details">
+                                <div class="hi-details-grid">
+                                    <div class="hi-detail-item">
+                                        <div class="hdl">Case ID</div>
+                                        <div class="hdv">{{ record.case_id }}</div>
+                                    </div>
+                                    <div class="hi-detail-item">
+                                        <div class="hdl">Modality</div>
+                                        <div class="hdv">{{ record.modality|default:"Not specified" }}</div>
+                                    </div>
+                                    <div class="hi-detail-item">
+                                        <div class="hdl">Status</div>
+                                        <div class="hdv">
+                                            <span class="badge 
+                                                {% if record.status == 'Completed' %}badge-teal
+                                                {% elif record.status == 'Review' %}badge-yellow
+                                                {% elif record.status == 'Processing' %}badge-blue
+                                                {% else %}badge-red{% endif %}">
+                                                {{ record.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="hi-detail-item">
+                                        <div class="hdl">XAI Mode</div>
+                                        <div class="hdv">{{ record.xai_mode|default:"Grad-CAM + Attention" }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Probabilities -->
+                                {% if record.probabilities %}
+                                <div style="margin-top:12px;">
+                                    <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Probability Distribution</div>
+                                    <div class="hi-prob-list">
+                                        {% for prob in record.probabilities %}
+                                            <div class="hi-prob-item">
+                                                <span class="hp-name">{{ prob.0 }}</span>
+                                                <div class="hp-track">
+                                                    <div class="hp-fill" style="width:{{ prob.1 }}%;background:{{ prob.2|default:'var(--teal)' }};"></div>
+                                                </div>
+                                                <span class="hp-pct">{{ prob.1 }}%</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <!-- Actions -->
+                                <div class="hi-actions">
+                                    <a href="{% url 'Diagnosis:report_detail' record.id %}" class="btn btn-outline btn-sm">👁 View Report</a>
+                                    <a href="{% url 'Diagnosis:download_report' record.id %}" class="btn btn-ghost btn-sm">⬇ Download PDF</a>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteRecord({{ record.id }})">🗑️ Delete</button>
+                                </div>
+
+                                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-top:8px;">
+                                    Created: {{ record.created_at|date:"F j, Y - h:i A" }}
+                                    {% if record.inference_time %}· Inference: {{ record.inference_time }} ms{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        {% if records.has_previous %}
+                            <a href="?page={{ records.previous_page_number }}" class="page-btn">← Previous</a>
+                        {% else %}
+                            <span class="page-btn disabled">← Previous</span>
+                        {% endif %}
+
+                        {% for num in records.paginator.page_range %}
+                            {% if records.number == num %}
+                                <span class="page-btn active">{{ num }}</span>
+                            {% else %}
+                                <a href="?page={{ num }}" class="page-btn">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if records.has_next %}
+                            <a href="?page={{ records.next_page_number }}" class="page-btn">Next →</a>
+                        {% else %}
+                            <span class="page-btn disabled">Next →</span>
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <div class="empty-state">
+                        <span class="empty-icon">📋</span>
+                        <h3>No Diagnosis History</h3>
+                        <p>You haven't performed any diagnoses yet. Start your first medical image analysis using the X-HViT diagnostic platform.</p>
+                        <a href="{% url 'Diagnosis:diagnose' %}" class="btn btn-primary">Start Diagnosis →</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="{% static 'js/shared.js' %}"></script>
+
+    <script>
+        // ============================================
+        // TOGGLE HISTORY EXPAND
+        // ============================================
+        function toggleHistory(header) {
+            const item = header.closest('.history-item');
+            const body = item.querySelector('.hi-body');
+            const toggle = header.querySelector('.hi-toggle');
+            
+            body.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        // ============================================
+        // FILTER HISTORY
+        // ============================================
+        function filterHistory() {
+            const query = document.getElementById('searchHistory').value.toLowerCase();
+            const modality = document.getElementById('filterModality').value;
+            const status = document.getElementById('filterStatus').value;
+            
+            const items = document.querySelectorAll('.history-item');
+            let visibleCount = 0;
+            
+            items.forEach(item => {
+                const caseId = item.dataset.case.toLowerCase();
+                const diagnosis = item.dataset.diagnosis.toLowerCase();
+                const itemModality = item.dataset.modality;
+                const itemStatus = item.dataset.status;
+                
+                const matchSearch = caseId.includes(query) || diagnosis.includes(query);
+                const matchModality = !modality || itemModality === modality;
+                const matchStatus = !status || itemStatus === status;
+                
+                if (matchSearch && matchModality && matchStatus) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show empty state if no results
+            const grid = document.getElementById('historyGrid');
+            const existingEmpty = grid.querySelector('.no-results-empty');
+            
+            if (visibleCount === 0 && items.length > 0) {
+                if (!existingEmpty) {
+                    const empty = document.createElement('div');
+                    empty.className = 'empty-state no-results-empty';
+                    empty.style.gridColumn = '1 / -1';
+                    empty.innerHTML = `
+                        <span class="empty-icon">🔍</span>
+                        <h3>No matching records</h3>
+                        <p>Try adjusting your search or filters to find what you're looking for.</p>
+                        <button class="btn btn-ghost" onclick="clearFilters()">Clear Filters</button>
+                    `;
+                    grid.appendChild(empty);
+                }
+            } else {
+                if (existingEmpty) {
+                    existingEmpty.remove();
+                }
+            }
+        }
+
+        // ============================================
+        // CLEAR FILTERS
+        // ============================================
+        function clearFilters() {
+            document.getElementById('searchHistory').value = '';
+            document.getElementById('filterModality').value = '';
+            document.getElementById('filterStatus').value = '';
+            filterHistory();
+            showToast('Filters cleared', 'info');
+        }
+
+        // ============================================
+        // DELETE RECORD
+        // ============================================
+        function deleteRecord(recordId) {
+            if (!confirm('Are you sure you want to delete this record? This action cannot be undone.')) {
+                return;
+            }
+            
+            fetch(`/api/diagnosis/${recordId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCsrfToken(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const item = document.querySelector(`.history-item[data-id="${recordId}"]`);
+                    if (item) {
+                        item.style.transition = 'all 0.3s ease';
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateX(20px)';
+                        setTimeout(() => {
+                            item.remove();
+                            // Update stats
+                            updateStats();
+                            showToast('Record deleted successfully', 'success');
+                        }, 300);
+                    }
+                } else {
+                    showToast('Failed to delete record: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            });
+        }
+
+        // ============================================
+        // UPDATE STATS
+        // ============================================
+        function updateStats() {
+            const items = document.querySelectorAll('.history-item');
+            const total = items.length;
+            const completed = document.querySelectorAll('.history-item[data-status="Completed"]').length;
+            const review = document.querySelectorAll('.history-item[data-status="Review"]').length;
+            const positive = document.querySelectorAll('.history-item .hi-status.completed').length;
+            
+            const statNumbers = document.querySelectorAll('.stat-number');
+            if (statNumbers.length >= 4) {
+                statNumbers[0].textContent = total;
+                statNumbers[1].textContent = completed;
+                statNumbers[2].textContent = review;
+                statNumbers[3].textContent = positive;
+            }
+        }
+
+        // ============================================
+        // CSRF TOKEN HELPER
+        // ============================================
+        function getCsrfToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                   document.querySelector('input[name="csrfmiddlewaretoken"]')?.value;
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'var(--teal)',
+                error: 'var(--red)',
+                warning: 'var(--yellow)',
+                info: 'var(--blue)'
+            };
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <span style="font-size:18px;">${icons[type] || icons.info}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, duration);
+        }
+
+        // ============================================
+        // REVEAL ANIMATIONS
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(el => observer.observe(el));
+
+            // Auto-expand first item if it's the only one
+            const items = document.querySelectorAll('.history-item');
+            if (items.length === 1) {
+                const header = items[0].querySelector('.hi-header');
+                if (header) {
+                    setTimeout(() => {
+                        toggleHistory(header);
+                    }, 500);
+                }
+            }
+
+            console.log('History page loaded');
+        });
+    </script>
+</body>
+</html>

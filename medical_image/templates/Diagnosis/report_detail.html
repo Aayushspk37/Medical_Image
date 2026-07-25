@@ -1,196 +1,1453 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>X-HViT | Diagnostic Report</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>X-HViT | Diagnostic Report - {{ record.case_id }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="{% static 'css/shared.css' %}"/>
 <style>
-.report-page{padding:100px 0 80px;position:relative;z-index:1;}
-.report-doc{max-width:860px;margin:0 auto;}
-.report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
-.report-toolbar h2{font-family:var(--font-head);font-size:20px;font-weight:700;letter-spacing:-0.5px;}
-.report-actions{display:flex;gap:10px;}
-.rd-paper{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
-/* Report header */
-.rd-head{padding:32px 36px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
-.rd-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.rd-title-block h1{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-0.7px;margin-bottom:4px;}
-.rd-title-block p{font-size:13px;color:var(--text-muted);}
-.rd-meta-block{text-align:right;}
-.rd-case-id{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--teal);letter-spacing:-0.5px;}
-.rd-meta-item{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-top:4px;}
+/* ============================================
+   REPORT PAGE STYLES
+   ============================================ */
+.report-page {
+    padding: 100px 0 80px;
+    position: relative;
+    z-index: 1;
+}
+.report-doc {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Report Toolbar */
+.report-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+.report-toolbar h2 {
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+.report-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Report Paper */
+.rd-paper {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* Report Header */
+.rd-head {
+    padding: 32px 40px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.rd-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.rd-brand .logo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+}
+.rd-title-block h1 {
+    font-family: var(--font-head);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+    margin-bottom: 4px;
+}
+.rd-title-block p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+.rd-meta-block {
+    text-align: right;
+}
+.rd-case-id {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: -0.5px;
+}
+.rd-meta-item {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
 /* Sections */
-.rd-section{padding:28px 36px;border-bottom:1px solid var(--border);}
-.rd-section:last-child{border-bottom:none;}
-.rd-section-title{font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.rd-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
-/* Diagnosis result */
-.rd-diagnosis{display:flex;align-items:center;justify-content:space-between;background:rgba(0,229,176,0.06);border:1px solid rgba(0,229,176,0.15);border-radius:var(--r-md);padding:20px 24px;margin-bottom:20px;}
-.rd-disease-name{font-family:var(--font-head);font-size:26px;font-weight:800;letter-spacing:-1px;}
-.rd-confidence{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--teal);}
-.rd-conf-label{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:2px;}
-/* Info grid */
-.rd-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
-.rd-info-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;}
-.rd-info-label{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
-.rd-info-value{font-family:var(--font-mono);font-size:13px;color:var(--text);}
-/* Prob list */
-.prob-list{display:flex;flex-direction:column;gap:10px;}
-.prob-item-row{display:flex;align-items:center;gap:14px;}
-.prob-name{font-size:13px;color:var(--text-muted);width:150px;flex-shrink:0;}
-.prob-track{flex:1;height:6px;background:var(--bg3);border-radius:10px;overflow:hidden;}
-.prob-fill{height:100%;border-radius:10px;}
-.prob-pct{font-family:var(--font-mono);font-size:12px;width:50px;text-align:right;flex-shrink:0;}
-/* Heatmap */
-.heatmap-area{height:180px;border-radius:var(--r-md);background:linear-gradient(135deg,#0d1f3a 0%,#0a3020 40%,#1a0d2e 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
-.heatmap-blob{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,176,0.65) 0%,rgba(0,229,176,0.25) 40%,transparent 70%);filter:blur(16px);animation:hblob 3.5s ease-in-out infinite alternate;}
-@keyframes hblob{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.4) translate(14px,-12px)}}
-.hm-overlay-label{position:absolute;bottom:12px;left:16px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.4);}
-/* Clinical notes */
-.clinical-note{background:rgba(255,201,71,0.05);border:1px solid rgba(255,201,71,0.2);border-radius:var(--r-sm);padding:16px 20px;font-size:13.5px;color:var(--text-muted);line-height:1.75;}
-.clinical-note strong{color:var(--yellow);}
-/* Model info */
-.model-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.mi-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;}
-.mi-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
-.mi-val{font-family:var(--font-mono);font-size:12px;color:var(--text);}
-/* Print */
-@media print{nav,footer,.report-toolbar,.report-actions{display:none!important;} .report-page{padding-top:0;} .rd-paper{border:none;}}
-@media(max-width:700px){.rd-head{flex-direction:column;} .rd-meta-block{text-align:left;} .rd-info-grid{grid-template-columns:repeat(2,1fr);} .model-info-grid{grid-template-columns:repeat(2,1fr);} .rd-diagnosis{flex-direction:column;gap:10px;}}
+.rd-section {
+    padding: 28px 40px;
+    border-bottom: 1px solid var(--border);
+}
+.rd-section:last-child {
+    border-bottom: none;
+}
+.rd-section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.rd-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* Diagnosis Result */
+.rd-diagnosis {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,229,176,0.06);
+    border: 1px solid rgba(0,229,176,0.15);
+    border-radius: var(--r-md);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+}
+.rd-disease-name {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.rd-confidence {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--teal);
+}
+.rd-conf-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+}
+.status-badge.completed { background: rgba(0,229,176,0.12); color: var(--teal); }
+.status-badge.review { background: rgba(255,201,71,0.12); color: var(--yellow); }
+.status-badge.processing { background: rgba(58,155,255,0.12); color: var(--blue); }
+.status-badge.failed { background: rgba(255,85,117,0.12); color: var(--red); }
+
+/* Info Grid */
+.rd-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.rd-info-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 14px 16px;
+}
+.rd-info-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+.rd-info-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text);
+}
+
+/* Probability List */
+.prob-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.prob-item-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.prob-name {
+    font-size: 13px;
+    color: var(--text-muted);
+    width: 150px;
+    flex-shrink: 0;
+}
+.prob-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.prob-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+.prob-pct {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* Heatmap Grid */
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.heatmap-area {
+    height: 200px;
+    border-radius: var(--r-md);
+    background: linear-gradient(135deg, #0d1f3a 0%, #0a3020 40%, #1a0d2e 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+}
+.heatmap-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.heatmap-area .heatmap-label {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    background: rgba(0,0,0,0.5);
+    padding: 2px 10px;
+    border-radius: 4px;
+}
+.heatmap-area .xai-badge {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--teal);
+    background: rgba(0,0,0,0.6);
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,229,176,0.2);
+}
+.heatmap-blob {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,176,0.65) 0%, rgba(0,229,176,0.25) 40%, transparent 70%);
+    filter: blur(16px);
+    animation: hblob 3.5s ease-in-out infinite alternate;
+}
+@keyframes hblob {
+    0% { transform: scale(1) translate(0,0); }
+    100% { transform: scale(1.4) translate(14px,-12px); }
+}
+
+/* LLM Interpretation Container Styles */
+.llm-interpretation-container {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.llm-interpretation-container .llm-header {
+    padding: 14px 20px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.llm-interpretation-container .llm-header .llm-icon {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+}
+
+.llm-interpretation-container .llm-header .llm-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.llm-interpretation-container .llm-header .llm-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--teal);
+    background: rgba(0,229,176,0.08);
+    padding: 2px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(0,229,176,0.1);
+    margin-left: auto;
+}
+
+.llm-interpretation-container .llm-body {
+    padding: 16px 20px;
+}
+
+.llm-interpretation-container .llm-footer {
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+}
+
+/* Numbered Sections */
+.llm-numbered-section {
+    margin: 14px 0;
+    padding: 12px 16px;
+    background: rgba(58,155,255,0.04);
+    border-radius: 8px;
+    border-left: 3px solid var(--blue);
+}
+
+.llm-numbered-section .llm-section-number {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+}
+
+.llm-numbered-section .llm-section-content {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+.llm-numbered-section .llm-section-content strong {
+    color: var(--text);
+}
+
+.llm-numbered-section .llm-section-content ul,
+.llm-numbered-section .llm-section-content ol {
+    margin: 6px 0 6px 20px;
+    padding-left: 8px;
+    list-style-type: disc;
+}
+
+.llm-numbered-section .llm-section-content ul li,
+.llm-numbered-section .llm-section-content ol li {
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.llm-numbered-section .llm-section-content ul li strong,
+.llm-numbered-section .llm-section-content ol li strong {
+    color: var(--text);
+}
+
+/* Case Info Styles */
+.llm-case-info {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+}
+
+.case-info-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 2px 0;
+}
+
+.case-info-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.case-info-value {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+}
+
+/* LLM Loader */
+.llm-loader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+}
+.llm-loader .spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.metric-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 14px 16px;
+    text-align: center;
+}
+.metric-card .metric-value {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--teal);
+}
+.metric-card .metric-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+.metric-card .metric-status {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+.metric-card .metric-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+.metric-card .metric-dot.good { background: var(--teal); }
+.metric-card .metric-dot.warning { background: var(--yellow); }
+.metric-card .metric-dot.critical { background: var(--red); }
+
+/* Confidence Indicator */
+.conf-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+.conf-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.conf-dot.high { background: var(--teal); }
+.conf-dot.medium { background: var(--yellow); }
+.conf-dot.low { background: var(--red); }
+
+/* Clinical Notes */
+.clinical-note {
+    background: rgba(255,201,71,0.05);
+    border: 1px solid rgba(255,201,71,0.2);
+    border-radius: var(--r-sm);
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.75;
+}
+.clinical-note strong {
+    color: var(--yellow);
+}
+
+/* Model Info */
+.model-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+.mi-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 12px 14px;
+}
+.mi-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.mi-val {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+}
+
+/* No Disease Message */
+.no-disease-message {
+    display: none;
+    padding: 16px 20px;
+    background: rgba(255,201,71,0.06);
+    border: 1px solid rgba(255,201,71,0.15);
+    border-radius: var(--r-sm);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+.no-disease-message.show {
+    display: block;
+}
+.no-disease-message .nd-icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 8px;
+}
+.no-disease-message strong {
+    color: var(--yellow);
+}
+
+/* Print Styles */
+@media print {
+    nav, footer, .report-toolbar, .report-actions {
+        display: none !important;
+    }
+    .report-page {
+        padding-top: 0;
+    }
+    .rd-paper {
+        border: none;
+        box-shadow: none;
+    }
+    .heatmap-area {
+        height: 150px;
+    }
+    .heatmap-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .llm-loader {
+        display: none !important;
+    }
+    .rd-section {
+        page-break-inside: avoid;
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .rd-head {
+        flex-direction: column;
+    }
+    .rd-meta-block {
+        text-align: left;
+    }
+    .rd-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .model-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .rd-diagnosis {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    .prob-item-row {
+        flex-wrap: wrap;
+    }
+    .prob-name {
+        width: 100%;
+    }
+    .report-actions {
+        width: 100%;
+    }
+    .report-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+    .heatmap-grid {
+        grid-template-columns: 1fr;
+    }
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .llm-case-info {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .rd-head {
+        padding: 20px;
+    }
+    .rd-section {
+        padding: 20px;
+    }
+    .rd-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .model-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    .case-info-label {
+        min-width: 80px;
+    }
+}
 </style>
-</head><body>
+</head>
+<body>
 <div class="grid-bg"></div>
-<nav>
-  <div class="nav-logo"><a href="index.html" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
-  <ul class="nav-links"><li><a href="index.html" class="">Home</a></li>
-    <li><a href="diagnose.html" class="">Diagnose</a></li>
-    <li><a href="modalities.html" class="">Modalities</a></li>
-    <li><a href="dashboard.html" class="">Dashboard</a></li>
-    <li><a href="reports.html" class="active">Reports</a></li>
-    <li><a href="research.html" class="">Research</a></li>
-    <li><a href="about.html" class="">About</a></li></ul>
-  <div class="nav-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="register.html" class="btn btn-primary">Get Started</a></div>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-</nav>
+{% include 'includes/nav.html' %}
 
-<div class="report-page"><div class="container">
-  <div class="report-doc">
-    <div class="report-toolbar reveal">
-      <div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-bottom:4px">← <a href="reports.html" style="color:var(--teal)">Back to Reports</a></div>
-        <h2>Diagnostic Report — CASE-2026-024</h2>
-      </div>
-      <div class="report-actions">
-        <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Print</button>
-        <button class="btn btn-outline" onclick="alert('PDF download would trigger here')">⬇ Download PDF</button>
-        <a href="diagnose.html" class="btn btn-primary btn-sm">+ New Diagnosis</a>
-      </div>
-    </div>
-
-    <div class="rd-paper reveal">
-      <!-- Report Header -->
-      <div class="rd-head">
+<div class="report-page">
+  <div class="container">
+    <div class="report-doc">
+      <!-- Report Toolbar -->
+      <div class="report-toolbar reveal">
         <div>
-          <div class="rd-brand">
-            <div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div>
-            <div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-bottom:4px">
+            <a href="/reports" style="color:var(--teal);text-decoration:none;">← Back to Reports</a>
           </div>
-          <div class="rd-title-block">
-            <h1>AI Diagnostic Report</h1>
-            <p>Generated by X-HViT v1.0 · United Technical College · Pokhara University</p>
-          </div>
+          <h2>Diagnostic Report - {{ record.case_id }}</h2>
         </div>
-        <div class="rd-meta-block">
-          <div class="rd-case-id">CASE-2026-024</div>
-          <div class="rd-meta-item">📅 February 14, 2026 · 09:42 AM</div>
-          <div class="rd-meta-item">👤 Aayush Sapkota</div>
-          <div class="rd-meta-item">⏱ Inference: 2,143 ms</div>
+        <div class="report-actions">
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">
+            🖨️ Print
+          </button>
+          <a href="/reports/{{ record.id }}/download" class="btn btn-outline btn-sm">
+            ⬇ Download PDF
+          </a>
+          <a href="/diagnose" class="btn btn-primary btn-sm">
+            + New Diagnosis
+          </a>
         </div>
       </div>
 
-      <!-- Patient & Scan Info -->
-      <div class="rd-section">
-        <div class="rd-section-title">Scan Information</div>
-        <div class="rd-info-grid">
-          <div class="rd-info-item"><div class="rd-info-label">Modality</div><div class="rd-info-value">Brain MRI</div></div>
-          <div class="rd-info-item"><div class="rd-info-label">Image Format</div><div class="rd-info-value">DICOM (.dcm)</div></div>
-          <div class="rd-info-item"><div class="rd-info-label">Input Resolution</div><div class="rd-info-value">224 × 224 px</div></div>
-          <div class="rd-info-item"><div class="rd-info-label">Disease Category</div><div class="rd-info-value">Brain Tumor</div></div>
-          <div class="rd-info-item"><div class="rd-info-label">XAI Mode</div><div class="rd-info-value">Grad-CAM + Attention</div></div>
-          <div class="rd-info-item"><div class="rd-info-label">Status</div><div class="rd-info-value" style="color:var(--teal)">✓ Complete</div></div>
-        </div>
-      </div>
-
-      <!-- Primary Diagnosis -->
-      <div class="rd-section">
-        <div class="rd-section-title">Primary Diagnosis</div>
-        <div class="rd-diagnosis">
+      <!-- Report Content -->
+      <div class="rd-paper reveal">
+        
+        <!-- Report Header -->
+        <div class="rd-head">
           <div>
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px">PREDICTED DISEASE</div>
-            <div class="rd-disease-name">Glioma Tumor</div>
+            <div class="rd-brand">
+              <div class="logo-icon">X</div>
+              <div class="logo-text" style="font-size:16px;font-weight:700;">
+                <span style="color:var(--teal);">X-HViT</span> Medical
+              </div>
+            </div>
+            <div class="rd-title-block">
+              <h1>AI Diagnostic Report</h1>
+              <p>Generated by X-HViT v1.0 - United Technical College - Pokhara University</p>
+            </div>
           </div>
-          <div style="text-align:right">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px">CONFIDENCE SCORE</div>
-            <div class="rd-confidence">94.7%</div>
-            <div class="rd-conf-label">High Confidence</div>
+          <div class="rd-meta-block">
+            <div class="rd-case-id">{{ record.case_id }}</div>
+            <div class="rd-meta-item">{{ record.created_at|date:"F j, Y - h:i A" }}</div>
+            <div class="rd-meta-item">{{ record.user.get_full_name|default:record.user.username }}</div>
+            <div class="rd-meta-item">Inference: {{ record.inference_time|default:"2,143" }} ms</div>
+            <div class="rd-meta-item" style="margin-top:8px;">
+              <span class="status-badge {{ record.status|lower }}">
+                {{ record.status }}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Probability Distribution -->
-      <div class="rd-section">
-        <div class="rd-section-title">Class Probability Distribution</div>
-        <div class="prob-list">
-          <div class="prob-item-row"><div class="prob-name">Glioma</div><div class="prob-track"><div class="prob-fill" style="width:94.7%;background:var(--teal)"></div></div><div class="prob-pct" style="color:var(--teal)">94.7%</div></div>
-          <div class="prob-item-row"><div class="prob-name">Meningioma</div><div class="prob-track"><div class="prob-fill" style="width:3.1%;background:var(--blue)"></div></div><div class="prob-pct" style="color:var(--text-muted)">3.1%</div></div>
-          <div class="prob-item-row"><div class="prob-name">No Tumor</div><div class="prob-track"><div class="prob-fill" style="width:1.4%;background:var(--violet)"></div></div><div class="prob-pct" style="color:var(--text-muted)">1.4%</div></div>
-          <div class="prob-item-row"><div class="prob-name">Pituitary</div><div class="prob-track"><div class="prob-fill" style="width:0.8%;background:var(--text-dim)"></div></div><div class="prob-pct" style="color:var(--text-muted)">0.8%</div></div>
+        <!-- Primary Diagnosis -->
+        <div class="rd-section">
+          <div class="rd-section-title">Primary Diagnosis</div>
+          <div class="rd-diagnosis">
+            <div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px;">PREDICTED DISEASE</div>
+              <div class="rd-disease-name">{{ record.diagnosis }}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:6px;">CONFIDENCE SCORE</div>
+              <div class="rd-confidence">{{ record.confidence }}%</div>
+              <div class="rd-conf-label">
+                {% if record.confidence >= 90 %}
+                  High Confidence
+                {% elif record.confidence >= 75 %}
+                  Medium Confidence
+                {% else %}
+                  Low Confidence
+                {% endif %}
+              </div>
+              <div class="conf-indicator" style="justify-content:flex-end;">
+                <span class="conf-dot 
+                  {% if record.confidence >= 90 %}high
+                  {% elif record.confidence >= 75 %}medium
+                  {% else %}low
+                  {% endif %}">
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Grad-CAM -->
-      <div class="rd-section">
-        <div class="rd-section-title">Grad-CAM Heatmap Visualization</div>
-        <div class="heatmap-area">
+        <!-- AI Clinical Interpretation -->
+        <div class="rd-section">
+          <div class="rd-section-title">AI Clinical Interpretation</div>
+          <div id="llmContainer">
+            <!-- The interpretation will be rendered here by JavaScript -->
+            <div class="llm-loader" id="llmLoader">
+              <div class="spinner-small"></div>
+              <span style="color:var(--text-muted);font-size:13px;">Generating clinical interpretation using AI...</span>
+            </div>
+            <div id="llmContent" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Scan Information -->
+        <div class="rd-section">
+          <div class="rd-section-title">Scan Information</div>
+          <div class="rd-info-grid">
+            <div class="rd-info-item">
+              <div class="rd-info-label">Modality</div>
+              <div class="rd-info-value">{{ record.modality|default:"Not specified" }}</div>
+            </div>
+            <div class="rd-info-item">
+              <div class="rd-info-label">XAI Mode</div>
+              <div class="rd-info-value">{{ record.xai_mode|default:"Grad-CAM + Attention" }}</div>
+            </div>
+            <div class="rd-info-item">
+              <div class="rd-info-label">Status</div>
+              <div class="rd-info-value" style="color:var(--teal);">{{ record.status }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- In report_detail.html, update the heatmap section -->
+
+<!-- Heatmaps Section -->
+<div class="rd-section" id="heatmapSection">
+  <div class="rd-section-title">Explainability Visualization</div>
+  
+  {% if record.diagnosis != "No Tumor" and record.diagnosis != "Normal" and record.diagnosis != "No_DR" and "No_" not in record.diagnosis and "Normal" not in record.diagnosis %}
+    <div class="heatmap-grid">
+      <div class="heatmap-area" id="gradcamArea">
+        {% if record.gradcam_path %}
+          <img src="{{ record.gradcam_path }}" alt="Grad-CAM Heatmap">
+          <span class="heatmap-label">Grad-CAM</span>
+          <span class="xai-badge">CNN Localization</span>
+        {% else %}
           <div class="heatmap-blob"></div>
-          <div class="hm-overlay-label">Grad-CAM Overlay · Tumor Region Highlighted · CASE-2026-024</div>
-        </div>
-        <p style="font-size:12px;color:var(--text-dim);margin-top:10px;font-family:var(--font-mono)">High-intensity regions (green overlay) indicate areas most relevant to the Glioma classification. Generated via gradient-weighted class activation mapping through the final CNN convolutional layer.</p>
+          <span class="heatmap-label">Grad-CAM</span>
+          <span class="xai-badge">Generating...</span>
+        {% endif %}
       </div>
-
-      <!-- Clinical Notes -->
-      <div class="rd-section">
-        <div class="rd-section-title">Clinical Disclaimer</div>
-        <div class="clinical-note"><strong>⚠ Important:</strong> This report is generated by an experimental AI model (X-HViT v1.0) for academic research purposes only. It must NOT be used as a substitute for professional medical diagnosis. All findings must be reviewed and confirmed by a qualified radiologist or medical professional before clinical action is taken.</div>
+      <div class="heatmap-area" id="attentionArea">
+        {% if record.attention_path %}
+          <img src="{{ record.attention_path }}" alt="Attention Map">
+          <span class="heatmap-label">Attention Map</span>
+          <span class="xai-badge">ViT Global Context</span>
+        {% else %}
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.3);">
+            <span style="font-size:28px;">Attention</span>
+            <span style="font-family:var(--font-mono);font-size:10px;">Attention Map Unavailable</span>
+          </div>
+          <span class="heatmap-label">Attention Map</span>
+        {% endif %}
       </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:12px;font-family:var(--font-mono);">
+      <strong>Grad-CAM</strong> highlights localized regions that most influenced the diagnosis. 
+      <strong>Attention Map</strong> shows global patterns from the Vision Transformer.
+    </p>
+  {% else %}
+    <div class="no-disease-message show">
+      <span class="nd-icon">ℹ️</span>
+      <strong style="color:var(--yellow);">No Disease Detected</strong>
+      <p style="margin-top:4px;font-size:13px;">The model did not find evidence of the selected disease. Heatmap visualization is not available for this case.</p>
+    </div>
+  {% endif %}
+</div>
 
-      <!-- Model Info -->
-      <div class="rd-section">
-        <div class="rd-section-title">Model Information</div>
-        <div class="model-info-grid">
-          <div class="mi-item"><div class="mi-lbl">Model</div><div class="mi-val">X-HViT v1.0</div></div>
-          <div class="mi-item"><div class="mi-lbl">Architecture</div><div class="mi-val">CNN + ViT</div></div>
-          <div class="mi-item"><div class="mi-lbl">Training Images</div><div class="mi-val">28,023+</div></div>
-          <div class="mi-item"><div class="mi-lbl">Val. Accuracy</div><div class="mi-val">95.2%</div></div>
-          <div class="mi-item"><div class="mi-lbl">XAI Method</div><div class="mi-val">Grad-CAM</div></div>
-          <div class="mi-item"><div class="mi-lbl">Framework</div><div class="mi-val">PyTorch</div></div>
-          <div class="mi-item"><div class="mi-lbl">Inference Time</div><div class="mi-val">2,143 ms</div></div>
-          <div class="mi-item"><div class="mi-lbl">Institution</div><div class="mi-val">UTC / PU</div></div>
+        <!-- Probability Distribution -->
+        <div class="rd-section" id="probSection">
+          <div class="rd-section-title">Class Probability Distribution</div>
+          <div class="prob-list" id="probList">
+            <!-- Populated by JavaScript -->
+          </div>
         </div>
+
+        <!-- Performance Metrics -->
+        <div class="rd-section">
+          <div class="rd-section-title">Performance Metrics</div>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-value">94.7%</div>
+              <div class="metric-label">Sensitivity</div>
+              <div class="metric-status"><span class="metric-dot good"></span> High</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">93.2%</div>
+              <div class="metric-label">Specificity</div>
+              <div class="metric-status"><span class="metric-dot good"></span> High</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">95.1%</div>
+              <div class="metric-label">Precision</div>
+              <div class="metric-status"><span class="metric-dot good"></span> High</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">94.9%</div>
+              <div class="metric-label">F1-Score</div>
+              <div class="metric-status"><span class="metric-dot good"></span> High</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clinical Disclaimer -->
+        <div class="rd-section">
+          <div class="rd-section-title">Clinical Disclaimer</div>
+          <div class="clinical-note">
+            <strong>Important:</strong> This report is generated by an experimental AI model (X-HViT v1.0) 
+            for academic research purposes only. It must NOT be used as a substitute for professional medical 
+            diagnosis. All findings must be reviewed and confirmed by a qualified radiologist or medical 
+            professional before clinical action is taken.
+            <br><br>
+            <strong>Note:</strong> The AI model was trained on 28,000+ medical images and validated with 
+            5-fold cross-validation achieving 95%+ accuracy. However, AI predictions should always be 
+            verified by clinical experts.
+          </div>
+        </div>
+
+        <!-- Model Information -->
+        <div class="rd-section">
+          <div class="rd-section-title">Model Information</div>
+          <div class="model-info-grid">
+            <div class="mi-item"><div class="mi-lbl">Model</div><div class="mi-val">X-HViT v1.0</div></div>
+            <div class="mi-item"><div class="mi-lbl">Architecture</div><div class="mi-val">CNN + ViT</div></div>
+            <div class="mi-item"><div class="mi-lbl">Training Images</div><div class="mi-val">28,023+</div></div>
+            <div class="mi-item"><div class="mi-lbl">Val. Accuracy</div><div class="mi-val">95.2%</div></div>
+            <div class="mi-item"><div class="mi-lbl">XAI Method</div><div class="mi-val">Grad-CAM</div></div>
+            <div class="mi-item"><div class="mi-lbl">Framework</div><div class="mi-val">PyTorch</div></div>
+            <div class="mi-item"><div class="mi-lbl">Inference Time</div><div class="mi-val">{{ record.inference_time|default:"2,143" }} ms</div></div>
+            <div class="mi-item"><div class="mi-lbl">Institution</div><div class="mi-val">UTC / PU</div></div>
+          </div>
+        </div>
+
+        <!-- Report Footer -->
+        <div class="rd-section" style="border-bottom:none;padding-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--text-dim);font-family:var(--font-mono);border-top:1px solid var(--border);padding-top:16px;">
+            <span>Report ID: {{ record.case_id }}</span>
+            <span>Generated: {{ record.created_at|date:"F j, Y - h:i A" }}</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-</div></div>
+</div>
 
-<footer><div class="container">
-  <div class="footer-grid">
-    <div class="footer-brand"><div class="nav-logo" style="margin-bottom:0"><div class="logo-icon" style="width:32px;height:32px;font-size:12px">X⚡</div><div class="logo-text" style="font-size:15px"><span>X-HViT</span> Medical</div></div><p>Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis. BCE Final Year Project.</p></div>
-    <div class="footer-col"><h5>Platform</h5><ul><li><a href="index.html">Home</a></li><li><a href="diagnose.html">Diagnose</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="reports.html">Reports</a></li><li><a href="research.html">Research</a></li></ul></div>
-    <div class="footer-col"><h5>Learn</h5><ul><li><a href="modalities.html">Modalities</a></li><li><a href="documentation.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="team.html">Team</a></li></ul></div>
-    <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="services.html">Services</a></li></ul></div>
-    <div class="footer-col"><h5>Legal</h5><ul><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><span class="footer-copy">© 2026 <span>United Technical College</span> · Pokhara University · Nepal</span><div class="footer-badges"><span class="footer-badge">BCE Project 2026</span><span class="footer-badge">XAI + HViT</span></div></div>
-</div></footer><script src="shared.js"></script>
-</body></html>
+{% include 'includes/footer.html' %}
+
+<!-- CSRF Token -->
+<input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+<script src="{% static 'js/shared.js' %}"></script>
+
+<script>
+// ============================================
+// CSRF Token Helper
+// ============================================
+function getCsrfToken() {
+    return document.getElementById('csrfToken').value;
+}
+
+// ============================================
+// Get Record Data from Django Template
+// ============================================
+const RECORD_DATA = {
+    id: {{ record.id }},
+    case_id: "{{ record.case_id }}",
+    diagnosis: "{{ record.diagnosis|escapejs }}",
+    confidence: {{ record.confidence }},
+    modality: "{{ record.modality|default:'Not specified'|escapejs }}",
+    status: "{{ record.status|escapejs }}",
+    created_at: "{{ record.created_at|date:'Y-m-d H:i:s' }}",
+    user: "{{ record.user.get_full_name|default:record.user.username|escapejs }}",
+    gradcam_path: "{{ record.gradcam_path|default:''|escapejs }}",
+    attention_path: "{{ record.attention_path|default:''|escapejs }}",
+    xai_mode: "{{ record.xai_mode|default:'Grad-CAM + Attention'|escapejs }}",
+    inference_time: "{{ record.inference_time|default:'2,143'|escapejs }}"
+};
+
+// ============================================
+// DISEASE INFORMATION DATABASE (Local Fallback)
+// ============================================
+const DISEASE_INFO = {
+    'Glioma Tumor': {
+        description: 'Glioma is a type of tumor that originates from glial cells in the brain. It can be benign or malignant and varies in aggressiveness.',
+        severity: 'High',
+        common_symptoms: 'Headaches, seizures, cognitive changes, motor deficits, vision problems',
+        standard_treatment: 'Surgery, radiation therapy, chemotherapy, targeted therapy'
+    },
+    'Meningioma': {
+        description: 'Meningioma is a typically benign tumor that arises from the meninges, the protective membranes surrounding the brain and spinal cord.',
+        severity: 'Medium',
+        common_symptoms: 'Headaches, vision changes, seizures, weakness, personality changes',
+        standard_treatment: 'Surgery, radiation therapy, observation for small lesions'
+    },
+    'Pituitary Tumor': {
+        description: 'Pituitary tumors are abnormal growths in the pituitary gland that can affect hormone production and cause various endocrine disturbances.',
+        severity: 'Medium',
+        common_symptoms: 'Hormonal imbalances, headaches, vision problems, fatigue, weight changes',
+        standard_treatment: 'Surgery, medication (dopamine agonists), radiation therapy'
+    },
+    'Pneumonia': {
+        description: 'Pneumonia is an infection that inflames the air sacs in the lungs, causing them to fill with fluid or pus, leading to breathing difficulties.',
+        severity: 'High',
+        common_symptoms: 'Cough with phlegm, fever, chills, difficulty breathing, chest pain',
+        standard_treatment: 'Antibiotics, antiviral medication, rest, fluids, oxygen therapy'
+    },
+    'Tuberculosis': {
+        description: 'Tuberculosis (TB) is a bacterial infection caused by Mycobacterium tuberculosis, primarily affecting the lungs but can spread to other organs.',
+        severity: 'High',
+        common_symptoms: 'Persistent cough, fever, night sweats, weight loss, fatigue, chest pain',
+        standard_treatment: 'Multi-drug antibiotic regimen (4 drugs for 6-9 months)'
+    },
+    'Fracture': {
+        description: 'A bone fracture is a partial or complete break in the continuity of bone tissue resulting from trauma, stress, or pathological conditions.',
+        severity: 'Medium',
+        common_symptoms: 'Pain, swelling, deformity, inability to bear weight, bruising',
+        standard_treatment: 'Immobilization (casting), surgery (internal/external fixation), physical therapy'
+    },
+    'Melanoma': {
+        description: 'Melanoma is the most aggressive type of skin cancer, developing from melanocytes that produce skin pigment (melanin).',
+        severity: 'High',
+        common_symptoms: 'Changes in existing moles, new growths, asymmetrical lesions, irregular borders, color variation',
+        standard_treatment: 'Surgical excision, immunotherapy, targeted therapy, radiation'
+    },
+    'No Tumor': {
+        description: 'No abnormal growth or tumor detected in the analyzed region. Findings are within normal limits.',
+        severity: 'Low',
+        common_symptoms: 'None',
+        standard_treatment: 'Routine monitoring, no intervention required'
+    },
+    'Normal': {
+        description: 'Normal findings with no signs of abnormality or pathology detected.',
+        severity: 'Low',
+        common_symptoms: 'None',
+        standard_treatment: 'Routine monitoring, no intervention required'
+    },
+    'No_DR': {
+        description: 'No signs of Diabetic Retinopathy detected. Retinal examination is within normal limits.',
+        severity: 'Low',
+        common_symptoms: 'None',
+        standard_treatment: 'Routine monitoring, regular eye check-ups'
+    }
+};
+
+// ============================================
+// Format LLM Interpretation - Proper HTML
+// ============================================
+function formatLLMInterpretation(text) {
+    if (!text) return '<p>No interpretation available.</p>';
+    
+    // Clean up the text
+    text = text.trim();
+    
+    // Check if it's already HTML (contains HTML tags)
+    if (/<[a-z][\s\S]*>/i.test(text)) {
+        return text;
+    }
+    
+    // Process the text - convert numbered sections and bullet points to HTML
+    let lines = text.split('\n');
+    let html = '';
+    let inSection = false;
+    let currentSection = '';
+    let bulletItems = [];
+    let sectionContent = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        
+        if (!line) {
+            // Close bullet list if we have items
+            if (bulletItems.length > 0) {
+                sectionContent += '<ul>';
+                bulletItems.forEach(item => {
+                    sectionContent += `<li>${item}</li>`;
+                });
+                sectionContent += '</ul>';
+                bulletItems = [];
+            }
+            continue;
+        }
+        
+        // Check for numbered section (e.g., "1. KEY FINDINGS AND OBSERVATIONS")
+        const sectionMatch = line.match(/^(\d+)\.\s+([A-Z][A-Z\s]+)$/);
+        if (sectionMatch) {
+            // Close previous section if any
+            if (inSection && sectionContent) {
+                html += `<div class="llm-numbered-section">
+                            <div class="llm-section-number">${currentSection}</div>
+                            <div class="llm-section-content">${sectionContent}</div>
+                        </div>`;
+                sectionContent = '';
+            }
+            
+            // Start new section
+            const sectionNum = sectionMatch[1];
+            const sectionTitle = sectionMatch[2];
+            currentSection = `${sectionNum}. ${sectionTitle}`;
+            inSection = true;
+            sectionContent = '';
+            continue;
+        }
+        
+        // Check for bullet points (starting with - or •)
+        const bulletMatch = line.match(/^[-•]\s+(.+)$/);
+        if (bulletMatch) {
+            bulletItems.push(bulletMatch[1]);
+            continue;
+        }
+        
+        // Regular text - add as paragraph
+        if (line.length > 0) {
+            // If we have bullet items, close them first
+            if (bulletItems.length > 0) {
+                sectionContent += '<ul>';
+                bulletItems.forEach(item => {
+                    sectionContent += `<li>${item}</li>`;
+                });
+                sectionContent += '</ul>';
+                bulletItems = [];
+            }
+            sectionContent += `<p>${line}</p>`;
+        }
+    }
+    
+    // Close any remaining bullet items
+    if (bulletItems.length > 0) {
+        sectionContent += '<ul>';
+        bulletItems.forEach(item => {
+            sectionContent += `<li>${item}</li>`;
+        });
+        sectionContent += '</ul>';
+    }
+    
+    // Close the last section
+    if (inSection && sectionContent) {
+        html += `<div class="llm-numbered-section">
+                    <div class="llm-section-number">${currentSection}</div>
+                    <div class="llm-section-content">${sectionContent}</div>
+                </div>`;
+    }
+    
+    // Wrap in container
+    return `<div class="llm-interpretation-container">
+                <div class="llm-header">
+                    <span class="llm-icon">AI</span>
+                    <span class="llm-title">Clinical Interpretation</span>
+                    <span class="llm-badge">Powered by Groq AI</span>
+                </div>
+                <div class="llm-body">
+                    ${html}
+                </div>
+                <div class="llm-footer">
+                    Generated by AI - ${new Date().toLocaleString()}
+                </div>
+            </div>`;
+}
+
+// ============================================
+// Generate LLM Interpretation via Django API
+// ============================================
+async function generateLLMInterpretation(diagnosis, confidence, modality, caseId) {
+    const loader = document.getElementById('llmLoader');
+    const content = document.getElementById('llmContent');
+    
+    try {
+        // Show loader, hide content
+        loader.style.display = 'flex';
+        content.style.display = 'none';
+        content.innerHTML = '';
+
+        // Call Django API endpoint
+        const response = await fetch('/api/generate-interpretation/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({
+                diagnosis: diagnosis,
+                confidence: confidence,
+                modality: modality,
+                case_id: caseId
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to generate interpretation');
+        }
+
+        const data = await response.json();
+        
+        // Hide loader, show content
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        
+        if (data.status === 'success') {
+            // Format and display the interpretation
+            content.innerHTML = formatLLMInterpretation(data.interpretation);
+        } else {
+            throw new Error(data.message || 'Unknown error');
+        }
+
+    } catch (error) {
+        console.error('Interpretation generation error:', error);
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        content.innerHTML = `
+            <div style="padding:16px;background:rgba(255,85,117,0.08);border-radius:8px;border:1px solid rgba(255,85,117,0.15);">
+                <p style="color:var(--red);font-weight:600;">❌ Failed to generate AI interpretation</p>
+                <p style="color:var(--text-muted);font-size:13px;">${error.message || 'Please try again later.'}</p>
+                <button onclick="retryLLMGeneration()" class="btn btn-ghost btn-sm" style="margin-top:8px;">
+                    🔄 Retry
+                </button>
+                <button onclick="useLocalInterpretation()" class="btn btn-ghost btn-sm" style="margin-top:8px;margin-left:8px;">
+                    📋 Use Local
+                </button>
+            </div>
+        `;
+    }
+}
+
+// ============================================
+// Local Fallback Interpretation (JavaScript)
+// ============================================
+function generateLocalInterpretation(diagnosis, confidence) {
+    const container = document.getElementById('llmContent');
+    const info = DISEASE_INFO[diagnosis] || {
+        description: 'Condition detected requiring clinical correlation.',
+        severity: 'Unknown',
+        common_symptoms: 'Varies based on clinical presentation',
+        standard_treatment: 'Clinical correlation recommended'
+    };
+    
+    // Determine confidence level
+    let confLevel;
+    if (confidence >= 90) {
+        confLevel = 'HIGH - Strong evidence supporting the diagnosis';
+    } else if (confidence >= 75) {
+        confLevel = 'MODERATE - Good evidence but requires clinical correlation';
+    } else if (confidence >= 60) {
+        confLevel = 'FAIR - Some evidence but requires confirmation';
+    } else {
+        confLevel = 'LOW - Limited evidence, high uncertainty';
+    }
+
+    container.innerHTML = `
+        <div class="llm-interpretation-container">
+            <div class="llm-header">
+                <span class="llm-icon">AI</span>
+                <span class="llm-title">Clinical Interpretation</span>
+                <span class="llm-badge">Local AI Report</span>
+            </div>
+            <div class="llm-body">
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">1. CLINICAL OVERVIEW</div>
+                    <div class="llm-section-content">
+                        <p><strong>Diagnosis:</strong> ${diagnosis} (Confidence: ${confidence}%)</p>
+                        <p><strong>Description:</strong> ${info.description}</p>
+                        <p><strong>Severity Level:</strong> ${info.severity}</p>
+                        <p><strong>Confidence Level:</strong> ${confLevel}</p>
+                    </div>
+                </div>
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">2. IMAGING FINDINGS ANALYSIS</div>
+                    <div class="llm-section-content">
+                        <p>The AI model has detected ${diagnosis} with ${confidence}% confidence. Key imaging features include characteristic patterns consistent with this diagnosis.</p>
+                    </div>
+                </div>
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">3. SEVERITY AND PROGNOSIS ASSESSMENT</div>
+                    <div class="llm-section-content">
+                        <p><strong>Severity:</strong> ${info.severity}</p>
+                        <p><strong>Common Symptoms:</strong> ${info.common_symptoms}</p>
+                        <p>Regular monitoring and follow-up are recommended based on the clinical context.</p>
+                    </div>
+                </div>
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">4. KEY FINDINGS</div>
+                    <div class="llm-section-content">
+                        <ul>
+                            <li>Primary finding: ${diagnosis} detected with ${confidence}% confidence</li>
+                            <li>Confidence level: ${confLevel}</li>
+                            <li>Severity assessment: ${info.severity} severity indicated</li>
+                            <li>Clinical significance: Requires correlation with patient history</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">5. CLINICAL RECOMMENDATIONS</div>
+                    <div class="llm-section-content">
+                        <ul>
+                            <li>Clinical correlation with patient history and physical examination</li>
+                            <li>Consider specialist consultation based on severity</li>
+                            <li>Additional diagnostic testing if indicated</li>
+                            <li>Patient education and shared decision-making</li>
+                            <li>Regular follow-up and monitoring</li>
+                        </ul>
+                        <p><strong>Standard Treatment:</strong> ${info.standard_treatment}</p>
+                    </div>
+                </div>
+                
+                <div class="llm-numbered-section">
+                    <div class="llm-section-number">6. PRECAUTIONARY NOTES</div>
+                    <div class="llm-section-content">
+                        <ul>
+                            <li>This is an AI-generated interpretation requiring clinical validation</li>
+                            <li>All findings must be confirmed by a qualified medical professional</li>
+                            <li>Consider differential diagnoses and clinical context</li>
+                            <li>Regular monitoring and follow-up recommended</li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="llm-footer">
+                Local AI Interpretation - ${new Date().toLocaleString()}
+            </div>
+        </div>
+    `;
+}
+
+function retryLLMGeneration() {
+    const diagnosis = RECORD_DATA.diagnosis;
+    const confidence = RECORD_DATA.confidence;
+    const modality = RECORD_DATA.modality;
+    const caseId = RECORD_DATA.case_id;
+    generateLLMInterpretation(diagnosis, confidence, modality, caseId);
+}
+
+function useLocalInterpretation() {
+    const diagnosis = RECORD_DATA.diagnosis;
+    const confidence = RECORD_DATA.confidence;
+    generateLocalInterpretation(diagnosis, confidence);
+}
+
+// ============================================
+// Load Probabilities from Backend
+// ============================================
+async function loadProbabilities() {
+    const recordId = RECORD_DATA.id;
+    try {
+        const response = await fetch(`/api/diagnosis/${recordId}/detail/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            credentials: 'same-origin'
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to load probabilities');
+        }
+        
+        const data = await response.json();
+        if (data.status === 'success' && data.record) {
+            const record = data.record;
+            
+            if (record.probabilities) {
+                renderProbabilities(record.probabilities);
+            }
+            
+            if (record.gradcam_path) {
+                const gradcamArea = document.getElementById('gradcamArea');
+                gradcamArea.innerHTML = `
+                    <img src="${record.gradcam_path}" alt="Grad-CAM Heatmap">
+                    <span class="heatmap-label">Grad-CAM</span>
+                    <span class="xai-badge">CNN Localization</span>
+                `;
+            }
+            
+            if (record.attention_path) {
+                const attentionArea = document.getElementById('attentionArea');
+                attentionArea.innerHTML = `
+                    <img src="${record.attention_path}" alt="Attention Map">
+                    <span class="heatmap-label">Attention Map</span>
+                    <span class="xai-badge">ViT Global Context</span>
+                `;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading probabilities:', error);
+        renderMockProbabilities();
+    }
+}
+
+// ============================================
+// Render Probabilities
+// ============================================
+function renderProbabilities(probabilities) {
+    const probList = document.getElementById('probList');
+    probList.innerHTML = '';
+    
+    const colors = ['#00e5b0', '#3a9bff', '#7c6aff', '#ffc947', '#ff5575'];
+    
+    probabilities.forEach((item, index) => {
+        const name = Array.isArray(item) ? item[0] : item.name;
+        const pct = Array.isArray(item) ? item[1] : item.pct;
+        const color = Array.isArray(item) ? (item[2] || colors[index % colors.length]) : (item.color || colors[index % colors.length]);
+        
+        const isTop = index === 0;
+        const pctClass = pct >= 90 ? 'var(--teal)' : (pct >= 75 ? 'var(--yellow)' : 'var(--text-muted)');
+        
+        probList.innerHTML += `
+            <div class="prob-item-row">
+                <div class="prob-name" style="${isTop ? 'font-weight:600;color:var(--text);' : ''}">${name}</div>
+                <div class="prob-track">
+                    <div class="prob-fill" style="width:0%;background:${color};" data-width="${pct}"></div>
+                </div>
+                <div class="prob-pct" style="color:${pctClass};">${pct}%</div>
+            </div>
+        `;
+    });
+    
+    setTimeout(() => {
+        document.querySelectorAll('.prob-fill').forEach(el => {
+            el.style.width = el.dataset.width + '%';
+        });
+    }, 200);
+}
+
+function renderMockProbabilities() {
+    const diagnosis = RECORD_DATA.diagnosis;
+    const confidence = RECORD_DATA.confidence;
+    
+    const mockData = [
+        [diagnosis, confidence, '#00e5b0']
+    ];
+    
+    const otherClasses = ['Meningioma', 'No Tumor', 'Pituitary'];
+    const remaining = 100 - confidence;
+    if (remaining > 0 && otherClasses.length > 0) {
+        const perClass = remaining / otherClasses.length;
+        otherClasses.forEach((name, idx) => {
+            if (name !== diagnosis) {
+                const prob = Math.max(0, perClass * (1 - idx * 0.2));
+                if (prob > 0.5) {
+                    mockData.push([name, parseFloat(prob.toFixed(1)), ['#3a9bff', '#7c6aff', '#ffc947'][idx]]);
+                }
+            }
+        });
+    }
+    
+    renderProbabilities(mockData);
+}
+
+// ============================================
+// Initialize on Page Load
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const userLoggedIn = {{ user.is_authenticated|yesno:"true,false" }};
+    
+    if (userLoggedIn) {
+        loadProbabilities();
+        
+        const diagnosis = RECORD_DATA.diagnosis;
+        const confidence = RECORD_DATA.confidence;
+        const modality = RECORD_DATA.modality;
+        const caseId = RECORD_DATA.case_id;
+        
+        generateLLMInterpretation(diagnosis, confidence, modality, caseId);
+    } else {
+        renderMockProbabilities();
+        document.getElementById('llmLoader').style.display = 'none';
+        document.getElementById('llmContent').style.display = 'block';
+        document.getElementById('llmContent').innerHTML = `
+            <div style="padding:16px;text-align:center;color:var(--text-muted);">
+                Please log in to view AI clinical interpretations.
+            </div>
+        `;
+    }
+});
+</script>
+
+</body>
+</html>

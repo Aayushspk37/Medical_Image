@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: xhvit
+    runtime: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn XHVIT.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: XHVIT.settings
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: .onrender.com,xhvit.onrender.com,localhost,127.0.0.1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: xhvit-db
+          property: connectionString
+      - key: GROQ_API_KEY
+        sync: false
+    databases:
+      - name: xhvit-db
+        plan: free
+        databaseName: xhvit_db
+        user: xhvit_user

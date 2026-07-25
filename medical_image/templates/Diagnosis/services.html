@@ -1,449 +1,681 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>X-HViT | Services</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="{% static 'css/shared.css' %}">
 <style>
-.services-hero {
-  padding: 160px 32px 80px; position: relative; z-index:1;
-  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(58,155,255,0.08) 0%, transparent 70%);
+/* ============================================
+   SERVICES PAGE STYLES
+   ============================================ */
+.services-page {
+    padding: 120px 0 60px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Main services */
-#main-services { padding: 90px 0; position: relative; z-index:1; }
-.services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 60px; }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    background: rgba(0, 229, 176, 0.06);
+    border: 1px solid rgba(0, 229, 176, 0.1);
+    border-radius: 100px;
+    margin-bottom: 12px;
+}
+
+.section-tag .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+.page-title {
+    font-family: var(--font-head);
+    font-size: clamp(36px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+}
+
+.page-title .gradient-text {
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.page-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Services Grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 56px;
+}
+
 .service-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden;
-  transition: all 0.3s;
-}
-.service-card:hover { border-color: rgba(0,229,176,0.2); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.sc-top {
-  padding: 32px 28px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.sc-icon { font-size: 40px; margin-bottom: 18px; }
-.sc-title { font-family: var(--font-head); font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
-.sc-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
-.sc-features { padding: 22px 28px; display: flex; flex-direction: column; gap: 10px; }
-.sc-feat {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px; color: var(--text-muted);
-}
-.sc-feat::before { content: '✓'; color: var(--teal); font-family: var(--font-mono); font-size: 12px; flex-shrink:0; }
-.sc-footer { padding: 16px 28px; border-top: 1px solid var(--border); }
-.sc-tag { font-family: var(--font-mono); font-size: 10px; color: var(--teal); letter-spacing: 0.5px; }
-
-/* Process */
-#process { padding: 90px 0; background: var(--bg2); position: relative; z-index:1; }
-.process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 60px; position: relative; }
-.process-steps::before {
-  content: ''; position: absolute;
-  top: 30px; left: 12.5%; right: 12.5%;
-  height: 1px; background: linear-gradient(90deg, var(--teal), var(--blue), var(--violet), var(--yellow));
-  opacity: 0.3;
-}
-.proc-step {
-  text-align: center; padding: 0 16px;
-  position: relative;
-}
-.proc-step-circle {
-  width: 60px; height: 60px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 18px; font-family: var(--font-mono); font-size: 16px;
-  position: relative; z-index:1; border: 2px solid;
-}
-.proc-step h4 { font-family: var(--font-head); font-size: 16px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px; }
-.proc-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-
-/* Why Choose Us Section - New */
-#why-choose { padding: 90px 0; position: relative; z-index:1; }
-.benefits-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin-top: 56px; }
-.benefit-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 32px 28px;
-  transition: all 0.3s ease;
-  display: flex; gap: 20px; align-items: flex-start;
-}
-.benefit-card:hover {
-  border-color: var(--teal);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-}
-.benefit-icon {
-  font-size: 32px; flex-shrink: 0;
-  width: 56px; height: 56px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(0,229,176,0.08);
-  border-radius: var(--r-md);
-}
-.benefit-content h4 { font-family: var(--font-head); font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px; }
-.benefit-content p { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
-.benefit-tag {
-  font-family: var(--font-mono); font-size: 10px;
-  color: var(--teal); letter-spacing: 0.5px;
-  text-transform: uppercase; opacity: 0.7;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 32px 28px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Stats Section */
-#stats { padding: 60px 0; background: var(--bg2); position: relative; z-index:1; }
-.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 40px; }
-.stat-item {
-  text-align: center; padding: 32px 20px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  transition: all 0.3s;
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    opacity: 0;
+    transition: opacity 0.3s;
 }
-.stat-item:hover { border-color: var(--teal); transform: translateY(-3px); }
-.stat-number {
-  font-family: var(--font-head); font-size: 42px;
-  font-weight: 800; letter-spacing: -2px;
-  background: linear-gradient(135deg, var(--teal), var(--blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+
+.service-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 229, 176, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
-.stat-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.5px; }
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-card .service-icon {
+    font-size: 44px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.service-card .service-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--teal);
+    background: rgba(0, 229, 176, 0.08);
+    padding: 2px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 229, 176, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-card h3 {
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+}
+
+.service-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.service-card .service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.service-card .service-features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 4px 0;
+}
+
+.service-card .service-features li .check {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.service-card .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: gap 0.3s ease;
+}
+
+.service-card .service-link:hover {
+    gap: 12px;
+}
+
+/* Process Section */
+.process-section {
+    margin-bottom: 56px;
+}
+
+.process-section .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.process-step {
+    text-align: center;
+    position: relative;
+}
+
+.process-step .step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 auto 12px;
+}
+
+.process-step .step-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.process-step h4 {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.process-step p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* Pricing CTA Banner */
+.pricing-cta-banner {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 40px 48px;
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    transition: all 0.3s;
+}
+
+.pricing-cta-banner:hover {
+    border-color: rgba(0, 229, 176, 0.2);
+}
+
+.pricing-cta-banner .banner-content {
+    flex: 1;
+}
+
+.pricing-cta-banner .banner-content h3 {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.pricing-cta-banner .banner-content p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.pricing-cta-banner .banner-content .price-highlight {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.pricing-cta-banner .banner-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 
 /* CTA */
-#services-cta { padding: 90px 0; background: var(--bg2); position: relative; z-index:1; text-align:center; }
-#services-cta::before {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,229,176,0.05) 0%, transparent 70%);
+.services-cta {
+    background: linear-gradient(135deg, rgba(0, 229, 176, 0.06), rgba(0, 229, 176, 0.01));
+    border: 1px solid rgba(0, 229, 176, 0.15);
+    border-radius: var(--r-lg);
+    padding: 48px;
+    text-align: center;
 }
 
-@media(max-width:1024px) {
-  .services-grid { grid-template-columns: 1fr; }
-  .process-steps { grid-template-columns: repeat(2,1fr); gap: 32px; }
-  .process-steps::before { display: none; }
-  .benefits-grid { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2,1fr); }
+.services-cta h2 {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
 }
-@media(max-width:640px) {
-  .process-steps { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: 1fr; }
+
+.services-cta h2 .gradient-text {
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
+
+.services-cta p {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 24px;
+    line-height: 1.7;
+}
+
+.services-cta .btn-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: var(--r-sm);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+    color: var(--bg);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 229, 176, 0.3);
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-ghost:hover {
+    background: var(--bg3);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(0, 229, 176, 0.2);
+    color: var(--teal);
+}
+
+.btn-outline:hover {
+    background: rgba(0, 229, 176, 0.06);
+    border-color: rgba(0, 229, 176, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 32px;
+    font-size: 15px;
+}
+
+/* Responsive */
+@media(max-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .pricing-cta-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 24px;
+    }
+}
+
+@media(max-width: 768px) {
+    .services-page {
+        padding: 100px 0 40px;
+    }
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .process-steps {
+        grid-template-columns: 1fr;
+    }
+    .services-cta {
+        padding: 28px 20px;
+    }
+    .services-cta h2 {
+        font-size: 22px;
+    }
+    .page-title {
+        font-size: 28px;
+    }
+    .pricing-cta-banner {
+        padding: 24px 20px;
+    }
+    .pricing-cta-banner .banner-content h3 {
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 480px) {
+    .services-cta .btn-group .btn {
+        flex: 1;
+        justify-content: center;
+    }
+    .service-card {
+        padding: 24px 20px;
+    }
+    .pricing-cta-banner .banner-actions {
+        width: 100%;
+    }
+    .pricing-cta-banner .banner-actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+/* Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
 </style>
 </head>
 <body>
 <div class="grid-bg"></div>
-<nav>
-  <div class="nav-logo"><a href="/index" style="display:flex;align-items:center;gap:12px"><div class="logo-icon">X⚡</div><div class="logo-text"><span>X-HViT</span> Medical</div></a></div>
-  <ul class="nav-links"><li><a href="/index" class="">Home</a></li>
-    <li><a href="/diagnose" class="">Diagnose</a></li>
-    <li><a href="/modalities" class="">Modalities</a></li>
-    <li><a href="/dashboard" class="">Dashboard</a></li>
-    <li><a href="/reports" class="">Reports</a></li>
-    <li><a href="/research" class="">Research</a></li>
-    <li><a href="/about" class="">About</a></li></ul>
-  <div class="nav-cta"><a href="/login" class="btn btn-ghost">Login</a><a href="/register" class="btn btn-primary">Get Started</a></div>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-</nav>
 
-<div class="services-hero">
-  <div class="container">
-    <div style="animation:fadeUp 0.6s ease both">
-      <div class="section-tag">Services</div>
-      <h1 style="font-family:var(--font-head);font-size:clamp(38px,6vw,68px);font-weight:800;letter-spacing:-3px;margin-bottom:18px">What X-HViT <span style="color:var(--teal)">Offers</span></h1>
-      <p style="font-size:17px;color:var(--text-muted);max-width:580px;line-height:1.75">A complete suite of AI-powered medical imaging services: from multi-modal diagnosis and explainability visualization to report generation and diagnostic history management.</p>
+<!-- Navigation -->
+{% include 'includes/nav.html' %}
+
+<div class="services-page">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="page-header reveal">
+            <div class="section-tag">
+                <span class="pulse-dot"></span>
+                Our Services
+            </div>
+            <h1 class="page-title">AI-Powered <span class="gradient-text">Medical Imaging</span> Services</h1>
+            <p class="page-desc">Comprehensive AI solutions for medical image analysis, diagnosis, and research.</p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="services-grid">
+            <!-- Service 1: Diagnosis -->
+            <div class="service-card reveal reveal-delay-1">
+                <span class="service-badge">Core</span>
+                <span class="service-icon">🧠</span>
+                <h3>AI Diagnosis</h3>
+                <p>Advanced deep learning models for accurate medical image diagnosis across multiple modalities.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> MRI Brain Tumor Detection</li>
+                    <li><span class="check">✓</span> Chest X-ray Analysis</li>
+                    <li><span class="check">✓</span> Skin Lesion Classification</li>
+                    <li><span class="check">✓</span> Diabetic Retinopathy Grading</li>
+                </ul>
+                <a href="{% url 'Diagnosis:diagnose' %}" class="service-link">Start Diagnosis →</a>
+            </div>
+
+            <!-- Service 2: Explainability -->
+            <div class="service-card reveal reveal-delay-2">
+                <span class="service-badge">XAI</span>
+                <span class="service-icon">🔬</span>
+                <h3>Explainable AI</h3>
+                <p>Every diagnosis comes with visual explanations, making AI decisions transparent and trustworthy.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> Grad-CAM Heatmaps</li>
+                    <li><span class="check">✓</span> Attention Maps</li>
+                    <li><span class="check">✓</span> Feature Visualization</li>
+                    <li><span class="check">✓</span> Clinical Interpretation</li>
+                </ul>
+                <a href="{% url 'Diagnosis:documentation' %}" class="service-link">Learn More →</a>
+            </div>
+
+            <!-- Service 3: Reports -->
+            <div class="service-card reveal reveal-delay-3">
+                <span class="service-badge">Reporting</span>
+                <span class="service-icon">📄</span>
+                <h3>PDF Reports</h3>
+                <p>Auto-generated diagnostic reports with comprehensive findings, heatmaps, and clinical notes.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> Structured Reports</li>
+                    <li><span class="check">✓</span> Heatmap Visualizations</li>
+                    <li><span class="check">✓</span> Confidence Scores</li>
+                    <li><span class="check">✓</span> Downloadable PDF</li>
+                </ul>
+                <a href="{% url 'Diagnosis:reports' %}" class="service-link">View Reports →</a>
+            </div>
+
+            <!-- Service 4: Research -->
+            <div class="service-card reveal reveal-delay-1">
+                <span class="service-badge">Research</span>
+                <span class="service-icon">🔬</span>
+                <h3>Research Tools</h3>
+                <p>Advanced tools for medical AI research, including model benchmarking and dataset analysis.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> Model Performance Metrics</li>
+                    <li><span class="check">✓</span> Dataset Analysis</li>
+                    <li><span class="check">✓</span> Cross-Validation</li>
+                    <li><span class="check">✓</span> Research Publications</li>
+                </ul>
+                <a href="#" class="service-link">Explore Research →</a>
+            </div>
+
+            <!-- Service 5: Education -->
+            <div class="service-card reveal reveal-delay-2">
+                <span class="service-badge">Learning</span>
+                <span class="service-icon">📚</span>
+                <h3>Education & Training</h3>
+                <p>Learn about AI in medical imaging through comprehensive documentation and tutorials.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> Interactive Tutorials</li>
+                    <li><span class="check">✓</span> Documentation</li>
+                    <li><span class="check">✓</span> Case Studies</li>
+                    <li><span class="check">✓</span> Best Practices</li>
+                </ul>
+                <a href="{% url 'Diagnosis:documentation' %}" class="service-link">Start Learning →</a>
+            </div>
+
+            <!-- Service 6: API Access -->
+            <div class="service-card reveal reveal-delay-3">
+                <span class="service-badge">Enterprise</span>
+                <span class="service-icon">⚡</span>
+                <h3>API Access</h3>
+                <p>Integrate X-HViT's powerful diagnostic capabilities into your own applications and workflows.</p>
+                <ul class="service-features">
+                    <li><span class="check">✓</span> RESTful API</li>
+                    <li><span class="check">✓</span> Batch Processing</li>
+                    <li><span class="check">✓</span> Custom Models</li>
+                    <li><span class="check">✓</span> Enterprise Support</li>
+                </ul>
+                <a href="{% url 'Diagnosis:contact' %}" class="service-link">Contact Sales →</a>
+            </div>
+        </div>
+
+        <!-- Process Steps -->
+        <div class="process-section reveal">
+            <div class="section-header">
+                <div class="section-tag" style="justify-content:center;">
+                    <span class="pulse-dot"></span>
+                    How It Works
+                </div>
+                <h2 style="font-family:var(--font-head);font-size:32px;font-weight:800;letter-spacing:-1px;">
+                    Simple <span class="teal">4-Step</span> Process
+                </h2>
+                <p style="font-size:15px;color:var(--text-muted);max-width:480px;margin:0 auto;">From upload to diagnosis in seconds.</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step reveal reveal-delay-1">
+                    <div class="step-number">1</div>
+                    <span class="step-icon">📤</span>
+                    <h4>Upload Image</h4>
+                    <p>Upload your medical image (MRI, CT, X-ray, or Microscopic).</p>
+                </div>
+                <div class="process-step reveal reveal-delay-2">
+                    <div class="step-number">2</div>
+                    <span class="step-icon">🧠</span>
+                    <h4>AI Analysis</h4>
+                    <p>Our models analyze the image with 95%+ accuracy.</p>
+                </div>
+                <div class="process-step reveal reveal-delay-3">
+                    <div class="step-number">3</div>
+                    <span class="step-icon">🔬</span>
+                    <h4>Explainability</h4>
+                    <p>View Grad-CAM heatmaps and attention maps for transparency.</p>
+                </div>
+                <div class="process-step reveal reveal-delay-4">
+                    <div class="step-number">4</div>
+                    <span class="step-icon">📄</span>
+                    <h4>Get Report</h4>
+                    <p>Download a comprehensive PDF report with findings.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing CTA Banner - Replaces the pricing grid -->
+        <div class="pricing-cta-banner reveal">
+            <div class="banner-content">
+                <h3>💳 Flexible <span class="price-highlight">Pricing Plans</span></h3>
+                <p>Choose from Free, Research, or Enterprise plans to fit your needs. <span class="price-highlight">Starting from $0/month</span></p>
+            </div>
+            <div class="banner-actions">
+                <a href="{% url 'Diagnosis:pricing' %}" class="btn btn-primary">💰 View Pricing Plans</a>
+                <a href="{% url 'Diagnosis:contact' %}" class="btn btn-ghost">📧 Contact Sales</a>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="services-cta reveal">
+            <h2>Ready to Get <span class="gradient-text">Started</span>?</h2>
+            <p>Experience the power of explainable AI for medical image diagnosis.</p>
+            <div class="btn-group">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'Diagnosis:diagnose' %}" class="btn btn-primary btn-lg">🧠 Start Diagnosing</a>
+                    <a href="{% url 'Diagnosis:dashboard' %}" class="btn btn-ghost btn-lg">📊 Dashboard</a>
+                {% else %}
+                    <a href="{% url 'Diagnosis:register' %}" class="btn btn-primary btn-lg">🚀 Create Free Account</a>
+                    <a href="{% url 'Diagnosis:diagnose' %}" class="btn btn-outline btn-lg">🧠 Try Demo</a>
+                    <a href="{% url 'Diagnosis:login' %}" class="btn btn-ghost btn-lg">🔑 Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+
     </div>
-  </div>
 </div>
 
-<div class="section-divider"></div>
+<!-- Footer -->
+{% include 'includes/footer.html' %}
 
-<section id="main-services">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-tag">Core Services</div>
-      <h2 class="section-title">Platform <span class="teal">Capabilities</span></h2>
-    </div>
-    <div class="services-grid">
-
-      <div class="service-card reveal">
-        <div class="sc-top">
-          <div class="sc-icon">🧠</div>
-          <div class="sc-title">AI Diagnosis</div>
-          <div class="sc-desc">Upload medical images and receive instant AI-powered classification with multi-class probability distributions across supported disease categories.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Multi-modal: CT, MRI, X-ray, Microscopic</div>
-          <div class="sc-feat">Real-time inference pipeline</div>
-          <div class="sc-feat">Multi-class probability scores</div>
-          <div class="sc-feat">95%+ target classification accuracy</div>
-          <div class="sc-feat">Auto-modality detection</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">CNN + Vision Transformer</div></div>
-      </div>
-
-      <div class="service-card reveal reveal-delay-1">
-        <div class="sc-top">
-          <div class="sc-icon">🔬</div>
-          <div class="sc-title">XAI Visualization</div>
-          <div class="sc-desc">Understand why the model made its prediction through dual explainability: Grad-CAM heatmaps for localized CNN regions and transformer attention maps for global context.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Grad-CAM localized heatmaps</div>
-          <div class="sc-feat">Transformer attention map overlay</div>
-          <div class="sc-feat">Side-by-side comparison mode</div>
-          <div class="sc-feat">Color-coded region importance</div>
-          <div class="sc-feat">Downloadable overlay images</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">Grad-CAM + Attention</div></div>
-      </div>
-
-      <div class="service-card reveal reveal-delay-2">
-        <div class="sc-top">
-          <div class="sc-icon">📄</div>
-          <div class="sc-title">Report Generation</div>
-          <div class="sc-desc">Generate structured diagnostic reports including disease classification, confidence scores, probability tables, heatmap overlays, and model metadata — exportable as PDF.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Structured PDF diagnostic reports</div>
-          <div class="sc-feat">Embedded Grad-CAM heatmaps</div>
-          <div class="sc-feat">Probability distribution table</div>
-          <div class="sc-feat">Model metadata &amp; timestamp</div>
-          <div class="sc-feat">Case ID and modality tracking</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">PDF Export</div></div>
-      </div>
-
-      <div class="service-card reveal">
-        <div class="sc-top">
-          <div class="sc-icon">📁</div>
-          <div class="sc-title">Diagnosis History</div>
-          <div class="sc-desc">Track all previous diagnostic analyses in a searchable, filterable history log. Re-analyze cases, download reports, and monitor diagnostic patterns over time.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Searchable case records</div>
-          <div class="sc-feat">Filter by modality and status</div>
-          <div class="sc-feat">Re-run previous analyses</div>
-          <div class="sc-feat">Batch report download</div>
-          <div class="sc-feat">Export to CSV</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">Session Storage</div></div>
-      </div>
-
-      <div class="service-card reveal reveal-delay-1">
-        <div class="sc-top">
-          <div class="sc-icon">📊</div>
-          <div class="sc-title">Performance Metrics</div>
-          <div class="sc-desc">Full evaluation dashboard with accuracy, precision, recall, and F1-score metrics. K-fold cross-validation results and per-class performance breakdown available.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Accuracy, Precision, Recall, F1</div>
-          <div class="sc-feat">K-fold cross-validation results</div>
-          <div class="sc-feat">Per-class performance tables</div>
-          <div class="sc-feat">Training/validation loss curves</div>
-          <div class="sc-feat">Confusion matrix visualization</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">Scikit-learn Evaluation</div></div>
-      </div>
-
-      <div class="service-card reveal reveal-delay-2">
-        <div class="sc-top">
-          <div class="sc-icon">🏥</div>
-          <div class="sc-title">Clinical Interface</div>
-          <div class="sc-desc">A clinician-friendly web interface with drag-and-drop upload, modality selection, XAI mode configuration, and one-click report export — no technical expertise required.</div>
-        </div>
-        <div class="sc-features">
-          <div class="sc-feat">Drag-and-drop image upload</div>
-          <div class="sc-feat">DICOM / PNG / JPEG support</div>
-          <div class="sc-feat">Real-time processing feedback</div>
-          <div class="sc-feat">Mobile-responsive layout</div>
-          <div class="sc-feat">Django REST API backend</div>
-        </div>
-        <div class="sc-footer"><div class="sc-tag">Django + REST API</div></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<section id="process">
-  <div class="container">
-    <div class="reveal" style="text-align:center">
-      <div class="section-tag">Workflow</div>
-      <h2 class="section-title">How It <span class="teal">Works</span></h2>
-      <p class="section-desc" style="margin:16px auto 0">Four steps from image upload to clinical-grade diagnostic report.</p>
-    </div>
-    <div class="process-steps">
-      <div class="proc-step reveal">
-        <div class="proc-step-circle" style="background:rgba(0,229,176,0.1);color:var(--teal);border-color:rgba(0,229,176,0.3)">📤</div>
-        <h4>Upload Image</h4>
-        <p>Drag-and-drop or browse to upload CT, MRI, X-ray, or microscopic image. Select modality and disease category.</p>
-      </div>
-      <div class="proc-step reveal reveal-delay-1">
-        <div class="proc-step-circle" style="background:rgba(58,155,255,0.1);color:var(--blue);border-color:rgba(58,155,255,0.3)">⚡</div>
-        <h4>AI Inference</h4>
-        <p>X-HViT processes the image through CNN feature extraction, patch embedding, and transformer attention in &lt;3 seconds.</p>
-      </div>
-      <div class="proc-step reveal reveal-delay-2">
-        <div class="proc-step-circle" style="background:rgba(124,106,255,0.1);color:var(--violet);border-color:rgba(124,106,255,0.3)">🔬</div>
-        <h4>XAI Overlay</h4>
-        <p>Grad-CAM heatmaps and attention maps generated to highlight the regions driving the classification decision.</p>
-      </div>
-      <div class="proc-step reveal reveal-delay-3">
-        <div class="proc-step-circle" style="background:rgba(255,201,71,0.1);color:var(--yellow);border-color:rgba(255,201,71,0.3)">📄</div>
-        <h4>Export Report</h4>
-        <p>Download a structured PDF diagnostic report with results, heatmaps, confidence scores, and case metadata.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- Stats Section -->
-<section id="stats">
-  <div class="container">
-    <div class="reveal" style="text-align:center">
-      <div class="section-tag">Impact</div>
-      <h2 class="section-title">By The <span class="teal">Numbers</span></h2>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-item reveal">
-        <div class="stat-number">4</div>
-        <div class="stat-label">Medical Imaging Modalities</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-1">
-        <div class="stat-number">6</div>
-        <div class="stat-label">Core Platform Services</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-2">
-        <div class="stat-number">2</div>
-        <div class="stat-label">XAI Visualization Layers</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-3">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">Explainable Predictions</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- Why Choose Us Section - Replaces Comparison -->
-<section id="why-choose">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-tag">Why X-HViT</div>
-      <h2 class="section-title">Built for <span class="teal">Clinical Excellence</span></h2>
-      <p class="section-desc">Designed specifically for medical professionals who need accuracy, transparency, and reliability in AI-assisted diagnosis.</p>
-    </div>
-    <div class="benefits-grid">
-      <div class="benefit-card reveal">
-        <div class="benefit-icon">🎯</div>
-        <div class="benefit-content">
-          <h4>Unmatched Accuracy</h4>
-          <p>Hybrid CNN-ViT architecture combines local feature extraction with global context understanding, achieving 95%+ accuracy across all supported modalities.</p>
-          <span class="benefit-tag">State-of-the-art Performance</span>
-        </div>
-      </div>
-      <div class="benefit-card reveal reveal-delay-1">
-        <div class="benefit-icon">🔍</div>
-        <div class="benefit-content">
-          <h4>Full Transparency</h4>
-          <p>Dual explainability with Grad-CAM heatmaps and attention maps ensures every diagnosis is verifiable and clinically interpretable.</p>
-          <span class="benefit-tag">XAI First Approach</span>
-        </div>
-      </div>
-      <div class="benefit-card reveal">
-        <div class="benefit-icon">🌐</div>
-        <div class="benefit-content">
-          <h4>Multi-Modal Support</h4>
-          <p>One unified framework handles CT, MRI, X-ray, and microscopic imaging without needing separate models for each modality.</p>
-          <span class="benefit-tag">4 Modalities Supported</span>
-        </div>
-      </div>
-      <div class="benefit-card reveal reveal-delay-1">
-        <div class="benefit-icon">⚡</div>
-        <div class="benefit-content">
-          <h4>Deployable Design</h4>
-          <p>Optimized architecture enables deployment in resource-constrained clinical environments without expensive GPU infrastructure.</p>
-          <span class="benefit-tag">Lightweight &amp; Efficient</span>
-        </div>
-      </div>
-      <div class="benefit-card reveal reveal-delay-2">
-        <div class="benefit-icon">📋</div>
-        <div class="benefit-content">
-          <h4>Clinical Workflow Integration</h4>
-          <p>Seamless integration with existing clinical workflows through PDF report generation, history tracking, and easy-to-use interface.</p>
-          <span class="benefit-tag">Ready for Clinical Use</span>
-        </div>
-      </div>
-      <div class="benefit-card reveal reveal-delay-2">
-        <div class="benefit-icon">🔬</div>
-        <div class="benefit-content">
-          <h4>Research-Backed</h4>
-          <p>Built on open-source tools and publicly available datasets with full reproducibility and transparent methodology.</p>
-          <span class="benefit-tag">Open &amp; Reproducible</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<section id="services-cta">
-  <div class="container" style="position:relative;z-index:1;text-align:center">
-    <div class="reveal">
-      <div class="section-tag" style="justify-content:center">Get Started</div>
-      <h2 class="section-title">Experience the <span class="teal">Platform</span></h2>
-      <p class="section-desc" style="margin:16px auto 32px">Try X-HViT's full diagnostic service — no registration required.</p>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-        <a href="/diagnose" class="btn btn-primary btn-lg">🧠 Run Diagnosis</a>
-        <a href="/reports" class="btn btn-ghost btn-lg">📄 View Sample Report</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="nav-logo" style="margin-bottom:8px;">
-          <div class="logo-icon" style="width:32px;height:32px;font-size:12px;">X⚡</div>
-          <div class="logo-text" style="font-size:15px;"><span>X-HViT</span> Medical</div>
-        </div>
-        <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Explainable Hybrid Vision Transformer for AI-assisted medical image diagnosis.</p>
-        <div class="social-links">
-          <a href="#" class="social-link" aria-label="Facebook">
-            <img src="{% static 'images/diagnosis/facebook.png' %}" alt="Facebook" onerror="this.style.display='none'">
-          </a>
-          <a href="#" class="social-link" aria-label="Instagram">
-            <img src="{% static 'images/diagnosis/instagram.png' %}" alt="Instagram" onerror="this.style.display='none'">
-          </a>
-          <a href="#" class="social-link" aria-label="GitHub">
-            <img src="{% static 'images/diagnosis/github.png' %}" alt="GitHub" onerror="this.style.display='none'">
-          </a>
-        </div>
-      </div>
-      <div class="footer-col"><h5>Platform</h5><ul><li><a href="/index">Home</a></li><li><a href="/diagnose">Diagnose</a></li><li><a href="/dashboard">Dashboard</a></li><li><a href="/reports">Reports</a></li><li><a href="/research">Research</a></li></ul></div>
-      <div class="footer-col"><h5>Learn</h5><ul><li><a href="/modalities">Modalities</a></li><li><a href="/documentation">Documentation</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/faq">FAQ</a></li><li><a href="/team">Team</a></li></ul></div>
-      <div class="footer-col"><h5>Company</h5><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/services">Services</a></li></ul></div>
-      <div class="footer-col"><h5>Legal</h5><ul><li><a href="/terms">Terms of Service</a></li><li><a href="/privacy">Privacy Policy</a></li></ul></div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Explainable HViT for Medical Imaging. All rights reserved.</span>
-      <div class="footer-bottom-links">
-        <a href="/terms">Terms</a>
-        <a href="/privacy">Privacy</a>
-      </div>
-    </div>
-  </div>
-</footer>
 <script src="{% static 'js/shared.js' %}"></script>
+
+<script>
+    // ============================================
+    // REVEAL ANIMATIONS
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        reveals.forEach(el => observer.observe(el));
+        
+        console.log('Services page loaded');
+    });
+</script>
+
 </body>
 </html>

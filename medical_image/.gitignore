@@ -1,11 +1,64 @@
-# Python cache
-__pycache__/
+# Python
 *.pyc
-
-# Virtual environment
-venv/
+__pycache__/
+*.pyo
+*.pyd
+*.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.db
+*.sqlite3
 
 # Django
-*.sqlite3
 media/
 staticfiles/
+static/
+.env
+.env.local
+.secrets
+*.log
+
+# Development
+venv/
+env/
+ENV/
+.venv
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# API Keys
+api.txt
+secrets.txt
+*.key
+*.pem
+*.crt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ML Model files (large files)
+*.h5
+*.pth
+*.pt
+*.onnx
+*.pb
+*.ckpt
+
+# Render
+.cache/
+
+# Jupyter Notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Test outputs
+tests/__pycache__/
+.coverage
+htmlcov/
+.tox/
+>>>>>>> origin/main

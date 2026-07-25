@@ -1,28 +1,658 @@
-<!-- templates/Diagnosis/includes/nav.html -->
+<!-- templates/includes/nav.html -->
 {% load static %}
 
 <nav>
   <div class="nav-logo">
-    <a href="/index" style="display:flex;align-items:center;gap:12px">
+    <a href="{% url 'Diagnosis:index' %}" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
       <div class="logo-icon">X⚡</div>
       <div class="logo-text"><span>X-HViT</span> Medical</div>
     </a>
   </div>
-  <ul class="nav-links">
-    <li><a href="/index" {% if request.path == '/index' or request.path == '/' %}class="active"{% endif %}>Home</a></li>
-    <li><a href="/diagnose" {% if request.path == '/diagnose' %}class="active"{% endif %}>Diagnose</a></li>
-    <li><a href="/modalities" {% if request.path == '/modalities' %}class="active"{% endif %}>Modalities</a></li>
-    <li><a href="/dashboard" {% if request.path == '/dashboard' %}class="active"{% endif %}>Dashboard</a></li>
-    <li><a href="/reports" {% if request.path == '/reports' %}class="active"{% endif %}>Reports</a></li>
-    <li><a href="/research" {% if request.path == '/research' %}class="active"{% endif %}>Research</a></li>
-    <li><a href="/about" {% if request.path == '/about' %}class="active"{% endif %}>About</a></li>
-    <li><a href="/services" {% if request.path == '/services' %}class="active"{% endif %}>Services</a></li>
+  
+  <ul class="nav-links" id="navLinks">
+    <li><a href="{% url 'Diagnosis:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Home</a></li>
+    <li><a href="{% url 'Diagnosis:services' %}" {% if request.resolver_match.url_name == 'services' %}class="active"{% endif %}>Services</a></li>
+    <li><a href="{% url 'Diagnosis:diagnose' %}" {% if request.resolver_match.url_name == 'diagnose' %}class="active"{% endif %}>Diagnose</a></li>
+    <li><a href="{% url 'Diagnosis:modalities' %}" {% if request.resolver_match.url_name == 'modalities' %}class="active"{% endif %}>Modalities</a></li>
+    
+    <!-- Show Dashboard & Reports only for authenticated users -->
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'Diagnosis:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
+      <li><a href="{% url 'Diagnosis:reports' %}" {% if request.resolver_match.url_name == 'reports' %}class="active"{% endif %}>Reports</a></li>
+    {% endif %}
+    
+    <li><a href="{% url 'Diagnosis:about' %}" {% if request.resolver_match.url_name == 'about' %}class="active"{% endif %}>About</a></li>
+    
+    <!-- Show Notifications & Feedback only for authenticated users -->
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'Diagnosis:notifications' %}" class="notif-link" {% if request.resolver_match.url_name == 'notifications' %}class="active"{% endif %}>
+        🔔 Notifications
+        {% if unread_notifications_count > 0 %}
+          <span class="nav-bubble"></span>
+        {% endif %}
+      </a></li>
+      <li><a href="{% url 'Diagnosis:feedback' %}" {% if request.resolver_match.url_name == 'feedback' %}class="active"{% endif %}>⭐ Feedback</a></li>
+    {% endif %}
+    
+    <!-- Mobile CTA inside menu -->
+    <li class="mobile-cta-item">
+      <div class="mobile-cta">
+        {% if user.is_authenticated %}
+          <div class="user-greeting">
+            👋 Welcome, {{ user.first_name|default:user.username }}
+          </div>
+          <a href="{% url 'Diagnosis:profile' %}" class="btn btn-ghost btn-sm">👤 Profile</a>
+          <form method="post" action="{% url 'Diagnosis:logout' %}" style="display:inline;margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">🚪 Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'Diagnosis:login' %}" class="btn btn-ghost">Login</a>
+          <a href="{% url 'Diagnosis:register' %}" class="btn btn-primary">Get Started</a>
+        {% endif %}
+      </div>
+    </li>
   </ul>
-  <div class="nav-cta">
-    <a href="/login" class="btn btn-ghost">Login</a>
-    <a href="/register" class="btn btn-primary">Get Started</a>
+  
+  <div class="nav-cta" id="navCta">
+    {% if user.is_authenticated %}
+      <span class="user-greeting">
+        👋 Welcome, {{ user.first_name|default:user.username }}
+      </span>
+      <a href="{% url 'Diagnosis:profile' %}" class="btn btn-ghost btn-sm">👤 Profile</a>
+      <form method="post" action="{% url 'Diagnosis:logout' %}" style="display:inline;margin:0;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">🚪 Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'Diagnosis:login' %}" class="btn btn-ghost">Login</a>
+      <a href="{% url 'Diagnosis:register' %}" class="btn btn-primary">Get Started</a>
+    {% endif %}
   </div>
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
+  
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<style>
+/* ============================================
+   NAVIGATION STYLES
+   ============================================ */
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 68px;
+  background: rgba(10, 14, 26, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+/* Logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--bg);
+  font-weight: 800;
+  box-shadow: 0 0 20px rgba(0, 212, 170, 0.15);
+}
+
+.logo-text {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+.logo-text span {
+  color: var(--teal);
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links li a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-links li a.active {
+  color: var(--teal);
+  background: rgba(0, 229, 176, 0.08);
+}
+
+/* Notification Link with Bubble */
+.notif-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-bubble {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid var(--bg);
+  animation: bubblePulse 2s infinite;
+}
+
+@keyframes bubblePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* Right Side - User Greeting & Buttons */
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.user-greeting {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--r-sm);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 11px;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: var(--teal-dim);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 212, 170, 0.25);
+}
+
+.btn-danger {
+  background: var(--red);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #e6455a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(255, 85, 117, 0.25);
+}
+
+/* Mobile CTA Item (hidden on desktop) */
+.mobile-cta-item {
+  display: none !important;
+}
+
+.mobile-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0 4px;
+  width: 100%;
+}
+
+.mobile-cta .user-greeting {
+  text-align: center;
+  padding: 4px 0;
+  color: var(--text-muted);
+}
+
+.mobile-cta .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 10px 16px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: none;
+  border: none;
+  border-radius: var(--r-sm);
+  transition: background 0.2s ease;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-muted);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  nav {
+    padding: 0 24px;
+  }
+  
+  .nav-links li a {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .btn-sm {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+  
+  .user-greeting {
+    font-size: 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  nav {
+    padding: 0 16px;
+    height: 60px;
+  }
+  
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .logo-text {
+    font-size: 15px;
+  }
+  
+  /* Desktop navigation hidden */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(10, 14, 26, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 16px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 2px;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  
+  .nav-links.open {
+    display: flex !important;
+  }
+  
+  .nav-links li {
+    width: 100%;
+  }
+  
+  .nav-links li a {
+    display: flex;
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: var(--r-sm);
+    width: 100%;
+    text-align: left;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .nav-links li a:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  
+  .nav-links li a.active {
+    background: rgba(0, 229, 176, 0.08);
+  }
+  
+  /* Show mobile CTA item */
+  .mobile-cta-item {
+    display: block !important;
+    margin-top: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+  
+  /* Desktop CTA hidden */
+  .nav-cta {
+    display: none;
+  }
+  
+  /* Show hamburger */
+  .hamburger {
+    display: flex;
+  }
+  
+  /* Notification bubble adjustment for mobile */
+  .nav-bubble {
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  nav {
+    padding: 0 12px;
+    height: 56px;
+  }
+  
+  .logo-text {
+    font-size: 13px;
+  }
+  
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+  
+  .nav-links {
+    top: 56px;
+    padding: 12px 16px 16px;
+    max-height: calc(100vh - 56px);
+  }
+  
+  .nav-links li a {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .hamburger span {
+    width: 20px;
+    height: 2px;
+  }
+  
+  .mobile-cta .btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   SCROLL SHADOW EFFECT
+   ============================================ */
+
+nav.scrolled {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(10, 14, 26, 0.98);
+}
+
+/* ============================================
+   OVERLAY FOR MOBILE MENU
+   ============================================ */
+
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.nav-overlay.active {
+  display: block;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-links.open {
+  animation: slideDown 0.3s ease forwards;
+}
+</style>
+
+<script>
+// ============================================
+// NAVIGATION JAVASCRIPT
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  
+  // Create overlay if it doesn't exist
+  let overlay = document.querySelector('.nav-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'nav-overlay';
+    document.body.appendChild(overlay);
+  }
+  
+  // Toggle menu
+  function toggleMenu() {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('open');
+    overlay.classList.toggle('active');
+    
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+  }
+  
+  // Close menu
+  function closeMenu() {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  // Hamburger click
+  if (hamburger) {
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleMenu();
+    });
+  }
+  
+  // Overlay click to close
+  if (overlay) {
+    overlay.addEventListener('click', closeMenu);
+  }
+  
+  // Close menu when clicking a link (mobile)
+  if (navLinks) {
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          closeMenu();
+        }
+      });
+    });
+  }
+  
+  // Close menu on window resize to desktop
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768 && navLinks.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+  
+  // Close menu on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+  
+  // Nav shadow on scroll
+  const nav = document.querySelector('nav');
+  if (nav) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 10) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  }
+  
+  // Handle logout form submission (prevent double submission)
+  const logoutForms = document.querySelectorAll('form[action*="logout"]');
+  logoutForms.forEach(form => {
+    form.addEventListener('submit', function() {
+      const button = this.querySelector('button[type="submit"]');
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Logging out...';
+      }
+    });
+  });
+});
+
+// ============================================
+// DETECT ACTIVE PAGE
+// ============================================
+(function() {
+  const currentPath = window.location.pathname;
+  const navLinks = document.querySelectorAll('.nav-links a');
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href) {
+      // Check if current path matches the link href
+      // Handle both exact match and partial match for nested routes
+      if (currentPath === href || 
+          (href !== '/' && currentPath.startsWith(href)) ||
+          (href !== '/' && currentPath.includes(href.replace('/', '')))) {
+        link.classList.add('active');
+      }
+    }
+  });
+})();
+</script>
